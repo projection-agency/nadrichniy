@@ -1,0 +1,87 @@
+.section {
+  height: 56.25vw;
+  padding-top: 5.1vw;
+  padding-bottom: 1.04vw;
+  position: relative;
+  border-bottom-left-radius: 4.2vw;
+  border-bottom-right-radius: 4.2vw;
+
+  .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    width: 100vw;
+    height: auto;
+    aspect-ratio: 1920/1080;
+  }
+
+  .container {
+    max-width: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    margin-bottom: 0.63vw;
+    font-size: 18.2vw;
+    line-height: 1;
+    color: var(--text-light);
+  }
+
+  .catalogPageLink {
+    display: flex;
+    align-items: center;
+    margin-bottom: auto;
+    gap: 0.6vw;
+    padding: 0.8vw 0.8vw 0.8vw 1.3vw;
+
+    font-family: "Gilroy";
+    font-weight: 700;
+    font-size: 1vw;
+    color: var(--text-light);
+    background-color: var(--brand-primary);
+    border-radius: 5.2vw;
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 2.1vw;
+      height: 2.1vw;
+      background-color: #fff;
+      border-radius: 50%;
+
+      img {
+        width: 1.25vw !important;
+        height: 1.25vw !important;
+      }
+    }
+  }
+
+  .anchorLinkCont {
+    justify-self: end;
+    padding: 1.3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8vw;
+
+    font-size: 0.8vw;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    color: var(--text-light);
+    background-color: var(--background-semi-transparent);
+
+    border-radius: 1.25vw;
+
+    span {
+      display: block;
+      margin-top: 0.21vw;
+      color: var(--text-semi-transparent);
+    }
+  }
+}

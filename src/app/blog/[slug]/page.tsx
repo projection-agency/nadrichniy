@@ -1,12 +1,14 @@
-type Props = {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+// type Props = {
+//   params: { slug: string };
+//   searchParams: { [key: string]: string | string[] | undefined };
+// };
 
-export default function BlogPostPage({ params }: Props) {
-  return (
+const BlogPostPage = () =>{
+ return (
     <div>
-      <h1>Blog Post: {params.slug}</h1>
+      <h1>Blog Post:</h1>
     </div>
   );
 } 
+export default BlogPostPage;
+// { params }: Props
