@@ -26,6 +26,7 @@
 
       .titleCont {
         width: max-content;
+        margin-left: 0.42vw;
         padding: 0.63vw 0.83vw;
         border: 0.1vw solid #ffffff;
         border-radius: 8.65vw;
