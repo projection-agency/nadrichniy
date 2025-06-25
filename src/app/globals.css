@@ -37,7 +37,6 @@ body {
   font-family: "Gilroy";
   font-style: normal;
   max-width: 100vw;
-  overflow-x: hidden;
 }
 
 h1,
@@ -93,4 +92,22 @@ button {
   outline: none;
   padding-block: 0;
   padding-inline: 0;
+}
+
+.rangeCont .range-slider {
+  background: none;
+}
+
+.rangeCont .range-slider .range-slider__range {
+  background: none;
+  background-color: var(--brand-primary);
+  height: 0.1vw;
+}
+
+.rangeCont .range-slider .range-slider__thumb{
+  width: 1.09vw;
+  height: 0.57vw;
+  background-color: #fff;
+  border: 1px solid var(--brand-primary) ;
+  border-radius: 1.56vw;
 }
