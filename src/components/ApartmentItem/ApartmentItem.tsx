@@ -19,9 +19,9 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
         </div>
       </div>
       <div className={s.bottomBlock}>
-        <img
+        <Image
           className={s.layoutImg}
-          src={`${item.guid.rendered}`}
+          src={`${item.Flour_layout}`}
           width={372}
           height={289}
           alt="floor-image"
