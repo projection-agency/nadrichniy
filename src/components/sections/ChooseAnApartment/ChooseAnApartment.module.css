@@ -1,0 +1,36 @@
+.section {
+  padding-bottom: 4.17vw;
+  .sectionHead {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3.13vw;
+
+    h2 {
+      font-size: 3.33vw;
+      line-height: 0.9;
+      color: var(--text-grey-dark);
+    }
+
+    .advantages {
+      display: flex;
+      gap: 1.04vw;
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 0.63vw;
+
+        font-weight: 600;
+        font-size: 0.83vw;
+        line-height: 1;
+      }
+    }
+  }
+
+  .apartmentsList {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.83vw;
+
+  }
+}

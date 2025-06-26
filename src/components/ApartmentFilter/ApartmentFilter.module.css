@@ -1,0 +1,103 @@
+.filter {
+  padding: 1.67vw 2.71vw;
+  border-radius: 1.67vw;
+  background-color: var(--background-white);
+  margin-bottom: 0.83vw;
+
+  .form {
+    display: flex;
+    align-items: center;
+    gap: 1.46vw;
+
+    a {
+      height: max-content;
+      margin-left: auto;
+      padding: 1.25vw 1.67vw;
+      border-radius: 5.21vw;
+
+      color: #ffffff;
+      background-color: var(--brand-primary);
+
+      img {
+        margin-left: 0.52vw;
+        width: 0.47vw;
+      }
+    }
+  }
+
+  .filterGroup {
+    .filterOption {
+      display: block;
+      margin-bottom: 0.83vw;
+
+      font-weight: 600;
+      font-size: 0.73vw;
+      text-transform: uppercase;
+      color: rgba(25, 27, 26, 1);
+      opacity: 0.6;
+    }
+
+    .options {
+      display: flex;
+      gap: 0.31vw;
+
+      label {
+        padding: 0.73vw 1.04vw;
+        border-radius: 5.21vw;
+        background-color: rgba(250, 248, 248, 1);
+
+        font-size: 0.83vw;
+        input {
+          visibility: hidden;
+          width: 0;
+          height: 0;
+        }
+      }
+    }
+
+    .rangeValuesCont {
+      display: flex;
+      background-color: rgba(250, 248, 248, 1);
+      border-radius: 5.21vw;
+
+      p {
+        display: flex;
+        align-items: baseline;
+        gap: 0.63vw;
+        padding: 0.73vw 2.08vw 0.73vw 1.04vw;
+
+        font-size: 0.83vw;
+        font-weight: 600;
+        line-height: 1;
+        color: var(--text-gray-dark);
+
+        .min,
+        .max {
+          font-size: 0.63vw;
+          font-weight: 600;
+          color: var(--text-gray-dark);
+          text-transform: uppercase;
+          opacity: 0.6;
+        }
+
+        .area {
+          width: 2.5vw;
+        }
+
+        .floor {
+          width: 0.5vw;
+        }
+      }
+
+      p:first-child {
+        border-right: 1px solid rgba(131, 131, 131, 1);
+      }
+    }
+
+    .range {
+      position: relative;
+      bottom: 0.22vw;
+      padding: 0 1.04vw 0 1.04vw;
+    }
+  }
+}
