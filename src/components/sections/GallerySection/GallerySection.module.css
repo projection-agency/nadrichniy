@@ -1,0 +1,123 @@
+.section {
+  padding-top: 4.17vw;
+  padding-bottom: 4.17vw;
+
+  h2 {
+    font-size: 3.33vw;
+    color: var(--text-gray-dark);
+    line-height: 0.9;
+    letter-spacing: -1.92px;
+    margin-bottom: 3.13vw;
+  }
+  .swiperCont {
+    display: flex;
+    gap: 0.83vw;
+
+    .swiper {
+      width: 77.08vw;
+      height: 41.67vw;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      border-radius: 2.71vw;
+
+      .swiperSlide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 77.08vw;
+        height: 41.67vw;
+        border-radius: 2.71vw;
+        background-color: #ffffff;
+
+        img {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+    }
+    .controls {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.25vw;
+      background-color: #ffffff;
+      border-radius: 1.67vw;
+
+      .paginationCont {
+        height: 28.33vw;
+        overflow-y: scroll;
+
+        .paginationItem {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 0.83vw;
+
+          width: 5vw;
+          height: 5vw;
+          background-image: var(--brand-primary-transparent);
+          border-radius: 100%;
+
+          .imageContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 4.6vw;
+            height: 4.6vw;
+            border-radius: 100%;
+            background-color: #fff;
+
+            img {
+              width: 4.17vw;
+              height: 4.17vw;
+              border-radius: 100%;
+            }
+          }
+        }
+        .paginationItem.unactive {
+          background-color: var(--brand-primary-transparent);
+
+          img{
+            opacity: 0.2;
+          }
+        }
+
+        .paginationItem.active {
+          background-color: none;
+          background-image: conic-gradient(
+            var(--brand-primary) calc(var(--progress, 0) * 100%),
+            var(--brand-primary-transparent) 0%
+          );
+        }
+      }
+
+      .swiperController {
+        display: flex;
+        flex-direction: column;
+        gap: 0.63vw;
+
+        div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: var(--background-light);
+        }
+
+        .swiperPrev {
+          width: 3.33vw;
+          height: 3.33vw;
+          border-radius: 5.21vw;
+        }
+
+        .swiperNext {
+          transform: rotateZ(180deg);
+          width: 3.33vw;
+          height: 3.33vw;
+          border-radius: 5.21vw;
+        }
+      }
+    }
+  }
+}

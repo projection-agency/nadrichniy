@@ -6,6 +6,7 @@
   --background-light: rgb(246, 246, 246);
   --background-white: rgba(255, 255, 255, 1);
   --brand-primary: rgba(64, 91, 231, 1);
+  --brand-primary-transparent: rgba(64, 91, 231, 0.2);
   --background-semi-transparent: rgba(246, 246, 246, 0.2);
   --background-semi-transparent-blue: rgba(64, 91, 231, 0.1);
   --text-semi-transparent: rgba(255, 255, 255, 0.5);
@@ -104,10 +105,10 @@ button {
   height: 0.1vw;
 }
 
-.rangeCont .range-slider .range-slider__thumb{
+.rangeCont .range-slider .range-slider__thumb {
   width: 1.09vw;
   height: 0.57vw;
   background-color: #fff;
-  border: 1px solid var(--brand-primary) ;
+  border: 1px solid var(--brand-primary);
   border-radius: 1.56vw;
 }
