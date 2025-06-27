@@ -15,7 +15,6 @@ const GallerySection = () => {
   const nextRef = useRef<HTMLDivElement | null>(null);
   const swiperRef = useRef<any>(null);
   const progressRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const progressCircle = useRef<HTMLOrSVGElement | null>(null);
   const onAutoplayTimeLeft = (s: any, time: number, progress: number) => {
     const index = s.activeIndex;
     const ref = progressRefs.current[index];
@@ -24,21 +23,6 @@ const GallerySection = () => {
       ref.style.setProperty("--progress", `${1 - progress}`);
     }
   };
-
-  // const pagination: PaginationOptions = {
-  //   clickable: true,
-  //   el: `.${s.paginationCont}`,
-  //   renderCustom: function (swiper, index, className) {
-  //     return `<div className={autoplay-progress ${s.paginationItem} ${
-  //       swiper.activeIndex == index ? s.active : s.unactive
-  //     }} slot="container-end">
-  //         <svg viewBox="0 0 48 48" ref={progressCircle}>
-  //           <circle cx="24" cy="24" r="20"></circle>
-  //         </svg>
-  //         <span ref={progressContent}></span>
-  //       </div>`;
-  //   },
-  // };
 
   useEffect(() => {
     if (
@@ -95,14 +79,13 @@ const GallerySection = () => {
           <div className={s.controls}>
             <div className={s.paginationCont}>
               {array.map((item, idx) => {
-                console.log(idx);
                 return (
                   <div
                     key={item}
                     className={`${s.paginationItem} ${
                       idx === activeSlide ? s.active : s.unactive
                     }`}
-                    ref={(el) => (progressRefs.current[idx] = el)}
+                    ref={(el) => {progressRefs.current[idx] = el}}
                   >
                     <div className={s.imageContainer}>
                       <Image
@@ -145,9 +128,3 @@ const GallerySection = () => {
 
 export default GallerySection;
 
-// {
-//               type: "bullets",
-//               el: `.${s.paginationCont}`,
-//               bulletElement: "p",
-//               clickable: true,
-//             }
