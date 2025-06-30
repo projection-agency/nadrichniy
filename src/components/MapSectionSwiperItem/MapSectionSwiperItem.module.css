@@ -1,0 +1,93 @@
+.item {
+  display: flex;
+  border-radius: 2.92vw;
+
+  .itemImg {
+    width: 42.71vw;
+    height: 40.63vw;
+    border-radius: 2.71vw;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.92vw;
+    border-radius: 2.92vw;
+    background-color: #fff;
+
+    .itemSubtitle {
+      width: max-content;
+      padding: 0.63vw 0.83vw;
+      margin-bottom: 1.25vw;
+
+      font-size: 0.83vw;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.48px;
+      text-transform: uppercase;
+      color: var(--brand-primary);
+      border: 0.1vw solid var(--brand-primary);
+      border-radius: 8.65vw;
+    }
+
+    h3 {
+      font-size: 3.33vw;
+      line-height: 1.1;
+      letter-spacing: -1.92px;
+    }
+
+    .info {
+      h4 {
+        margin-bottom: 1.67vw;
+        font-size: 1.67vw;
+        line-height: 1.2;
+        color: var(--text-gray-dark);
+      }
+
+      article {
+        display: flex;
+        gap: 1.04vw;
+        margin-bottom: 2.08vw;
+
+        p {
+          width: calc(100% / 2 - 1.04vw);
+          font-size: 0.83vw;
+          line-height: 1.4;
+          font-weight: 600;
+          letter-spacing: -0.48px;
+          color: var(--text-gray);
+        }
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 0.6vw;
+        padding: 0.63vw 0.63vw 0.63vw 1.04vw;
+
+        font-family: "Gilroy";
+        font-weight: 700;
+        font-size: 0.83vw;
+        color: var(--text-light);
+        background-color: var(--brand-primary);
+        border-radius: 5.2vw;
+
+        span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 2.1vw;
+          height: 2.1vw;
+          background-color: #fff;
+          border-radius: 50%;
+
+          .linkIcon {
+            width: 1.25vw !important;
+            height: 1.25vw !important;
+          }
+        }
+      }
+    }
+  }
+}
