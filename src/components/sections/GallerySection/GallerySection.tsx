@@ -59,7 +59,6 @@ const GallerySection = () => {
             className={`${s.swiper} swiper`}
             onAutoplayTimeLeft={onAutoplayTimeLeft}
             onSlideChange={(swiper) => {
-              console.log(swiper.activeIndex);
               setActiveSlide(swiper.activeIndex);
             }}
           >
