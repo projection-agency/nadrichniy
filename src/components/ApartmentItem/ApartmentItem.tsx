@@ -3,7 +3,6 @@ import { Apartment } from "@/Redux/apartmentSlice/slice";
 import Image from "next/image";
 import Link from "next/link";
 const ApartmentItem = ({ item }: { item: Apartment }) => {
-  console.log(item)
   return (
     <li className={s.item}>
       <div className={s.topBlock}>

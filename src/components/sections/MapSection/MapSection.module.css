@@ -1,0 +1,61 @@
+.section {
+  padding-top: 4.17vw;
+  padding-bottom: 4.17vw;
+  h2 {
+    margin-bottom: 3.13vw;
+
+    font-size: 3.33vw;
+    line-height: 0.9;
+    letter-spacing: -1.92px;
+    color: var(--text-gray-dark);
+    text-align: center;
+  }
+
+  .mapContainer {
+    margin-bottom: 8.33vw;
+  }
+  .swiperCont {
+    position: relative;
+
+    .navCont {
+      position: absolute;
+      bottom: 2.92vw;
+      right: 2.92vw;
+      z-index: 10;
+      display: flex;
+      gap: 0.63vw;
+
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--brand-primary);
+        svg {
+          stroke: white;
+          width: 0.73vw;
+          height: 0.83vw;
+        }
+      }
+
+      .disabled {
+        background-color: #F6F6F6;
+        svg{
+          stroke: Gray;
+        }
+      }
+
+      .swiperPrev {
+        transform: rotateZ(-180deg);
+        width: 3.33vw;
+        height: 3.33vw;
+        border-radius: 5.21vw;
+      }
+
+      .swiperNext {
+        width: 3.33vw;
+        height: 3.33vw;
+        border-radius: 5.21vw;
+      }
+    }
+  }
+}
