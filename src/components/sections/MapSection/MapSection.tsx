@@ -10,7 +10,6 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import MapSectionSwiperItem from "@/components/MapSectionSwiperItem/MapSectionSwiperItem";
 
-// Fix іконки, бо Leaflet їх не бачить без цього
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -26,7 +25,8 @@ const items = [
 
 const MapSection = () => {
   useEffect(() => {
-    const container = document.querySelector(".leaflet-container");
+    const container = document.querySelector(".leaflet-container") as any;
+    console.log(container)
     if (container && container._leaflet_id) {
       // Prevent duplicate map error
       container._leaflet_id = null;
