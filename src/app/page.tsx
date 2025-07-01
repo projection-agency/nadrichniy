@@ -5,6 +5,7 @@ import ChooseAnApartment from "@/components/sections/ChooseAnApartment/ChooseAnA
 import AdvantagesSection from "@/components/sections/AdvantagesSection/AdvantagesSection";
 import GallerySection from "@/components/sections/GallerySection/GallerySection";
 import NewsSection from "@/components/sections/NewsSection/NewsSection";
+import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 import dynamic from "next/dynamic";
 
 const MapSection = dynamic(
@@ -22,6 +23,7 @@ export default function Home() {
         <GallerySection></GallerySection>
         <MapSection></MapSection>
         <NewsSection />
+        <QuestionsFormSection />
       </main>
     </div>
   );

@@ -2,9 +2,10 @@
 import Container from "@/components/Container/Container";
 import s from "./MapSection.module.css";
 import Image from "next/image";
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { useEffect } from "react";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import MapSectionSwiperItem from "@/components/MapSectionSwiperItem/MapSectionSwiperItem";
@@ -24,6 +25,13 @@ const items = [
 ];
 
 const MapSection = () => {
+  useEffect(() => {
+    const container = document.querySelector(".leaflet-container");
+    if (container && container._leaflet_id) {
+      // Prevent duplicate map error
+      container._leaflet_id = null;
+    }
+  }, []);
   return (
     <section className={s.section}>
       <Container>
@@ -42,7 +50,9 @@ const MapSection = () => {
           {items.map((item, idx) => {
             return (
               <Marker key={idx} position={[item.lat, item.lng]}>
-                <p>{item.title}</p>
+                <Popup>
+                  <p>{item.title}</p>
+                </Popup>
               </Marker>
             );
           })}

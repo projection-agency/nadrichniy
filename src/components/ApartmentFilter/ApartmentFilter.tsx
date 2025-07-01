@@ -30,6 +30,7 @@ const ApartmentFilter = () => {
   const handleChangeFloor = (e:number[]) => {
     dispatch(setFloorFilter([e[0], e[1]]))
   }
+  
   const debouncedArea = debounce(handleChangeArea,1000);
   const debouncedFloor = debounce(handleChangeFloor,1000)
 
