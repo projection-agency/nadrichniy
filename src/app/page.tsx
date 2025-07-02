@@ -8,6 +8,11 @@ import NewsSection from "@/components/sections/NewsSection/NewsSection";
 import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 import dynamic from "next/dynamic";
 
+const ContactsSection = dynamic(
+  () => import("@/components/sections/ContactsSection/ContactsSection"),
+  { ssr: false }
+);
+
 const MapSection = dynamic(
   () => import("@/components/sections/MapSection/MapSection"),
   { ssr: false }
@@ -24,6 +29,7 @@ export default function Home() {
         <MapSection></MapSection>
         <NewsSection />
         <QuestionsFormSection />
+        <ContactsSection />
       </main>
     </div>
   );

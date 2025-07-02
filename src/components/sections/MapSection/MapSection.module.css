@@ -12,7 +12,137 @@
   }
 
   .mapContainer {
+    position: relative;
     margin-bottom: 8.33vw;
+    height: 41.67vw;
+    border-radius: 2.71vw;
+    overflow: hidden;
+
+    .map {
+      height: 100% !important;
+    }
+
+    .mainMarker {
+      width: 2.5vw;
+      height: 2.5vw;
+    }
+
+    .iconContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 2.5vw;
+      height: 2.5vw;
+      border-radius: 50%;
+      background-color: rgba(49, 49, 49, 1);
+
+      img {
+        width: 1.25vw !important;
+        height: 1.25vw !important;
+        fill: white !important;
+        stroke: #ffffff !important;
+
+        use {
+          width: 1.25vw !important;
+          height: 1.25vw !important;
+        }
+      }
+    }
+
+    .mapLegend {
+      width: 21.98vw;
+      position: absolute;
+      top: 1.67vw;
+      left: 1.67vw;
+      z-index: 500;
+      padding: 1.67vw;
+      background-color: #ffffff;
+      border-radius: 1.67vw;
+
+      .infoList {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 3.91vw;
+        gap: 0.83vw;
+
+        .infoItem {
+          display: flex;
+          justify-content: space-between;
+
+          .infoIconCont {
+            display: flex;
+            align-items: center;
+            gap: 0.63vw;
+
+            .infoIcon {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 2.5vw;
+              height: 2.5vw;
+              border-radius: 50%;
+              background-color: rgba(250, 248, 248, 1);
+
+              img {
+                width: 1.25vw;
+                height: 1.25vw;
+              }
+            }
+          }
+        }
+      }
+
+      h3 {
+        width: max-content;
+        padding: 0.63vw 0.83vw;
+        margin-bottom: 1.67vw;
+
+        font-size: 0.83vw;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.48px;
+        text-transform: uppercase;
+        color: var(--brand-primary);
+        border: 0.1vw solid var(--brand-primary);
+        border-radius: 8.65vw;
+      }
+
+      .googleMapsLinks {
+        p {
+          margin-bottom: 0.83vw;
+
+          font-size: 0.73vw;
+          font-weight: 600;
+          line-height: normal;
+          letter-spacing: normal;
+          text-transform: uppercase;
+          color: rgba(25, 27, 26, 0.6);
+        }
+
+        .linkList {
+          display: flex;
+          gap: 0.31vw;
+
+          li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 3.13vw;
+            height: 3.13vw;
+            border-radius: 50%;
+            background-color: rgba(250, 248, 248, 1);
+
+            .link {
+              line-height: 0;
+              img {
+                width: 1.88vw;
+                height: 1.88vw;
+              }
+            }
+          }
+        }
+      }
+    }
   }
   .swiperCont {
     position: relative;
@@ -38,8 +168,8 @@
       }
 
       .disabled {
-        background-color: #F6F6F6;
-        svg{
+        background-color: #f6f6f6;
+        svg {
           stroke: Gray;
         }
       }

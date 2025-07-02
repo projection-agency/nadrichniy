@@ -1,7 +1,7 @@
 .section {
   padding-top: 4.17vw;
   padding-bottom: 4.17vw;
-  
+
   .container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -109,6 +109,7 @@
 
           .label {
             height: 4.69vw;
+            font-family: "Onest";
 
             width: calc((100% - 0.63vw) / 2);
           }

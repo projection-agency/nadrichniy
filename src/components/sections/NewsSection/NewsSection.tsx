@@ -43,7 +43,6 @@ const NewsSection = () => {
         <h2>Новини</h2>
         <ul className={s.newsList}>
           {newsData.slice(0, 3).map((item: NewItem) => {
-            console.log(item);
             return (
               <div key={item.id} className={s.newsItem}>
                 <p className={s.subtitle}>Новина</p>
