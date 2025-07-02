@@ -5,7 +5,13 @@ import ChooseAnApartment from "@/components/sections/ChooseAnApartment/ChooseAnA
 import AdvantagesSection from "@/components/sections/AdvantagesSection/AdvantagesSection";
 import GallerySection from "@/components/sections/GallerySection/GallerySection";
 import NewsSection from "@/components/sections/NewsSection/NewsSection";
+import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 import dynamic from "next/dynamic";
+
+const ContactsSection = dynamic(
+  () => import("@/components/sections/ContactsSection/ContactsSection"),
+  { ssr: false }
+);
 
 const MapSection = dynamic(
   () => import("@/components/sections/MapSection/MapSection"),
@@ -22,6 +28,8 @@ export default function Home() {
         <GallerySection></GallerySection>
         <MapSection></MapSection>
         <NewsSection />
+        <QuestionsFormSection />
+        <ContactsSection />
       </main>
     </div>
   );

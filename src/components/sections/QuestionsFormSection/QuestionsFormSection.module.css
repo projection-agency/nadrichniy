@@ -1,0 +1,238 @@
+.section {
+  padding-top: 4.17vw;
+  padding-bottom: 4.17vw;
+
+  .container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+
+    .sectionTitle {
+      grid-area: 1 / 1 / 2 / 2;
+      position: relative;
+      height: 100%;
+      padding: 12.08vw 3.13vw 0 3.13vw;
+      border-radius: 2.71vw;
+      overflow: hidden;
+
+      .bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -10;
+        width: 100%;
+        height: 100%;
+      }
+
+      .titleIcon {
+        width: 7.29vw;
+        height: 7.29vw;
+        margin-bottom: 1.25vw;
+      }
+
+      h2 {
+        margin-bottom: 1.25vw;
+
+        font-size: 3.33vw;
+        line-height: 0.9;
+        letter-spacing: -1.92px;
+        text-transform: uppercase;
+        color: #ffffff;
+      }
+
+      p {
+        font-size: 1.25vw;
+        font-weight: 600;
+        line-height: 1.4;
+        letter-spacing: -0.72px;
+        color: #ffffff;
+      }
+    }
+
+    .formContainer {
+      grid-area: 1 / 2 / 2 / 3;
+      border-radius: 2.71vw;
+      padding: 3.13vw;
+      background-color: #ffffff;
+
+      .form {
+        width: 100%;
+
+        label {
+          font-family: "Gilroy" !important;
+          font-size: 0.73vw;
+          line-height: 1;
+          font-style: normal;
+          font-weight: 600;
+          color: rgba(25, 27, 26, 1);
+
+          .required {
+            width: max-content;
+            position: relative;
+            margin-bottom: 0.62vw;
+          }
+
+          .required::after {
+            content: "*";
+            position: absolute;
+            top: 0;
+            right: -0.5vw;
+            font-size: 0.73vw;
+            line-height: 1;
+            font-style: normal;
+            font-weight: 600;
+            color: rgba(255, 85, 30, 1);
+          }
+
+          input {
+            width: 100%;
+            padding: 1.25vw;
+            border: none;
+            outline: none;
+            background-color: var(--background-light);
+            border-radius: 8.65vw;
+          }
+
+          input::placeholder {
+            font-size: 0.83vw;
+            font-weight: 600;
+            line-height: 1;
+          }
+        }
+
+        .inputLine {
+          display: flex;
+          gap: 0.63vw;
+          margin-bottom: 1.25vw;
+
+          .label {
+            height: 4.69vw;
+            font-family: "Onest";
+
+            width: calc((100% - 0.63vw) / 2);
+          }
+        }
+
+        .emailLabel {
+          display: block;
+          margin-bottom: 1.25vw;
+        }
+
+        .dateLabel {
+          position: relative;
+          display: block;
+          margin-bottom: 1.25vw;
+
+          .inputCont {
+            position: relative;
+
+            img {
+              position: absolute;
+              width: 0.83vw;
+              height: 0.83vw;
+              top: 1.25vw;
+              left: 1.25vw;
+            }
+
+            .dateInput {
+              padding-left: 2.92vw;
+              font-size: 0.83vw;
+              font-family: "Gilroy" !important;
+              line-height: 1;
+              font-style: normal;
+              font-weight: 600;
+              color: rgba(25, 27, 26, 1);
+            }
+          }
+        }
+
+        .checkboxesCont {
+          margin-bottom: 1.67vw;
+
+          .required {
+            position: relative;
+            width: max-content;
+            margin-bottom: 0.63vw;
+
+            font-size: 0.73vw;
+            line-height: 1;
+            font-style: normal;
+            font-weight: 600;
+            color: rgba(25, 27, 26, 1);
+          }
+
+          .required::after {
+            content: "*";
+            position: absolute;
+            top: 0;
+            right: -0.5vw;
+            font-size: 0.73vw;
+            line-height: 1;
+            font-style: normal;
+            font-weight: 600;
+            color: rgba(255, 85, 30, 1);
+          }
+
+          .list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.31vw;
+
+            input {
+              visibility: hidden;
+              opacity: 0;
+              width: 0px;
+              height: 0px;
+            }
+
+            .item {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: calc((100% - 0.31vw * 5) / 6);
+            }
+
+            label.timeCheckbox {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 100%;
+              padding: 1.04vw 0;
+              border: 0.05vw solid var(--background-light);
+              border-radius: 8.65vw;
+
+              font-size: 0.83vw;
+              font-weight: 600;
+              line-height: 1;
+              color: var(--text-gray);
+              background-color: rgba(251, 251, 251, 1);
+              white-space: nowrap;
+            }
+
+            input:checked + .timeCheckbox {
+              border-color: rgba(25, 27, 26, 1);
+              color: rgba(25, 27, 26, 1);
+            }
+          }
+        }
+
+        .submitBtn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 3.33vw;
+
+          font-size: 0.83vw;
+          font-weight: 700;
+          line-height: normal;
+          color: #ffffff;
+          background-color: var(--brand-primary);
+          border-radius: 5.21vw;
+        }
+      }
+    }
+  }
+}

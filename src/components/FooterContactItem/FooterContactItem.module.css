@@ -1,0 +1,52 @@
+.item {
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 0.63vw;
+    margin-bottom: 0.21vw;
+
+    font-family: "Onest";
+    font-weight: 500;
+    font-size: 0.63vw;
+    line-height: 1;
+    letter-spacing: normal;
+    color: rgba(25, 27, 26, 1);
+
+    .itemIcon {
+      width: 1.67vw;
+      height: 1.67vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(64, 91, 231, 0.1);
+      border-radius: 50%;
+
+      img {
+        width: 0.83vw;
+        height: 0.83vw;
+      }
+    }
+  }
+
+  .itemDataList {
+    padding-left: 2.29vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.63vw;
+
+    .listItem {
+      font-family: "Onest";
+      font-weight: 700;
+      font-size: 1.67vw;
+      line-height: normal;
+      letter-spacing: -0.64px;
+    }
+  }
+}
+
+.item:nth-child(3) {
+  .listItem {
+    font-size: 1.25vw;
+    letter-spacing: -0.48px;
+  }
+}
