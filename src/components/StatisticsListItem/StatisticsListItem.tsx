@@ -2,7 +2,6 @@ import s from "./StatisticsListItem.module.css";
 import { StatsItem } from "../StatisticsList/StatisticsList";
 
 const StatisticsListItem = ({ item }: { item: StatsItem }) => {
-  console.log(item);
   const checkItemTitle = (itemId: number) => {
     if (itemId == 66) {
       return (

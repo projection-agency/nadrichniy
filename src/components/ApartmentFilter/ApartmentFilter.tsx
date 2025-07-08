@@ -19,7 +19,6 @@ import {
   selectArea,
   selectFloor,
   selectHouseNumbers,
-  selectPrice,
   selectRoomTypes,
   selectYear,
 } from "@/Redux/apartmentSlice/selectors";
@@ -58,10 +57,6 @@ const ApartmentFilter = () => {
   const handleChangeYear = (e: number[]) => {
     dispatch(setYearFilter([e[0], e[1]]));
   };
-
-  useEffect(() => {
-    console.log(houseNumbers);
-  }, [houseNumbers]);
 
   const debouncedArea = debounce(handleChangeArea, 1000);
   const debouncedFloor = debounce(handleChangeFloor, 1000);
