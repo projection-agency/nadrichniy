@@ -26,7 +26,7 @@ export default function Home() {
         <ChooseAnApartment></ChooseAnApartment>
         <AdvantagesSection></AdvantagesSection>
         <GallerySection></GallerySection>
-        <MapSection></MapSection>
+        <MapSection/>
         <NewsSection />
         <QuestionsFormSection />
         <ContactsSection />
