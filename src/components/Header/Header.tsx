@@ -6,7 +6,7 @@ import Container from "../Container/Container";
 import Link from "next/link";
 
 const navLinks = [
-  { title: "Головна", link: "/home" },
+  { title: "Головна", link: "/" },
   { title: "Про нас", link: "#" },
   { title: "Каталог", link: "/catalog" },
   { title: "Новини", link: "#" },
@@ -41,7 +41,7 @@ const Header = () => {
             <ul className={s.navList}>
               {navLinks.map((item, idx) => {
                 return (
-                  <li className={`${pathname.includes(item.link) ? s.active : ""}`} key={idx}>
+                  <li className={`${pathname === item.link ? s.active : ""}`} key={idx}>
                     <Link href={item.link}>{item.title}</Link>
                   </li>
                 );
