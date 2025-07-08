@@ -1,25 +1,40 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
+import { API_URL } from "@/constants";
+import { Apartment } from "@/Redux/apartmentSlice/slice";
 import Container from "@/components/Container/Container";
 import Image from "next/image";
 import s from "./ChooseAnApartment.module.css";
-import { API_URL } from "@/constants";
 import ApartmentFilter from "@/components/ApartmentFilter/ApartmentFilter";
-import { useSelector } from "react-redux";
 import {
   selectArea,
   selectFloor,
+  selectHouseNumbers,
   selectRoomTypes,
+  selectYear,
 } from "@/Redux/apartmentSlice/selectors";
 import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
-import { Apartment } from "@/Redux/apartmentSlice/slice";
+
 const ChooseAnApartment = () => {
   const [apartmentData, setApartmentData] = useState([]);
   const selectedArea = useSelector(selectArea);
   const selectedFloor = useSelector(selectFloor);
   const selectedRoomTypes = useSelector(selectRoomTypes);
+  const selectedHouses = useSelector(selectHouseNumbers);
+  const selectDelivery = useSelector(selectYear);
+  const pathname = usePathname();
+  const endSliceNumber = pathname.includes("/catalog") ? 9 : 3;
 
   useEffect(() => {
+    const selectedDeliveryParams = `delivery_min=${selectDelivery[0]}-01-01&delivery_max=${selectDelivery[1]}-12-31`;
+    const selectedHouseParams = `${
+      selectedHouses.length !== 0
+        ? `house_number=${selectedHouses.join(",")}`
+        : ""
+    }`;
+
     const selectedRoomParams = `${
       selectedRoomTypes.length !== 0
         ? `apartments_category=${selectedRoomTypes.join(",")}`
@@ -32,7 +47,7 @@ const ChooseAnApartment = () => {
     const fetchApartments = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/wp-json/wp/v2/apartments?${selectedRoomParams}&${selectedFloorParams}&${selectedAreaParams}`
+          `${API_URL}/wp-json/wp/v2/apartments?${selectedRoomParams}&${selectedFloorParams}&${selectedAreaParams}&${selectedHouseParams}${selectedDeliveryParams}`
         );
         const data = await response.json();
         setApartmentData(data);
@@ -42,7 +57,13 @@ const ChooseAnApartment = () => {
     };
 
     fetchApartments();
-  }, [selectedRoomTypes, selectedFloor, selectedArea]);
+  }, [
+    selectedRoomTypes,
+    selectedFloor,
+    selectedArea,
+    selectedHouses,
+    selectDelivery,
+  ]);
 
   return (
     <section className={s.section}>
@@ -80,8 +101,8 @@ const ChooseAnApartment = () => {
           </ul>
         </div>
         <ApartmentFilter></ApartmentFilter>
-        <ul className={s.apartmentsList}>
-          {apartmentData.slice(0, 3).map((item: Apartment) => {
+        <ul className={`${s.apartmentsList} `}>
+          {apartmentData.slice(0, endSliceNumber).map((item: Apartment) => {
             return <ApartmentItem item={item} key={item.id} />;
           })}
         </ul>

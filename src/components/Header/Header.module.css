@@ -4,7 +4,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99;
+  z-index: 99999999;
   width: 100%;
 
   .container {
@@ -18,19 +18,31 @@
     display: flex;
     align-items: center;
     gap: 3.3vw;
+
+    svg {
+      fill: var(--background-white);
+      transition: fill 500ms ease-in-out;
+    }
   }
 
   .navList {
     display: flex;
 
     li {
-      padding-right: 1.05vw;
-      padding-left: 1.05vw;
+      height: max-content;
+      padding: 0.63vw 1.04vw;
+      border-radius: 5.21vw;
 
       a {
+        display: block;
         font-size: 0.6vw;
         color: var(--text-light);
+        transition: color 500ms ease-in-out;
       }
+    }
+
+    li.active {
+      background-color: var(--background-semi-transparent);
     }
   }
 
@@ -50,12 +62,18 @@
         font-weight: 700;
         font-size: 0.6vw;
         color: var(--text-light);
+        transition: color 500ms ease-in-out;
 
         span {
           font-size: 0.6vw;
           font-weight: 500;
           margin-bottom: 0.2vw;
         }
+      }
+
+      svg {
+        fill: var(--text-light);
+        transition: fill 500ms ease-in-out;
       }
     }
 
@@ -67,6 +85,41 @@
       font-weight: 500;
       color: var(--text-primary);
       background-color: var(--background-light);
+      transition: background-color 500ms ease-in-out;
+      transition: color 500ms ease-in-out;
+    }
+  }
+}
+
+.header.scrolled {
+  .topBlock {
+    svg {
+      fill: #000000;
+    }
+  }
+
+  .navList {
+    li {
+      a {
+        color: var(--text-gray-dark);
+      }
+    }
+  }
+
+  .bottomBlock {
+    .numberAccordion {
+      .number {
+        color: var(--text-gray-dark);
+      }
+      svg {
+        stroke: var(--text-gray-dark);
+        fill: var(--text-gray-dark);
+      }
+    }
+
+    .orderCallBtn {
+      color: var(--text-light);
+      background-color: var(--brand-primary);
     }
   }
 }

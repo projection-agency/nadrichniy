@@ -7,7 +7,8 @@
   .form {
     display: flex;
     align-items: center;
-    gap: 1.46vw;
+    row-gap: 1.46vw;
+    column-gap: 1.46vw;
 
     a {
       height: max-content;
@@ -16,88 +17,147 @@
       border-radius: 5.21vw;
 
       color: #ffffff;
+      transition: background-color 300ms ease-in-out;
       background-color: var(--brand-primary);
 
-      img {
+      svg {
         margin-left: 0.52vw;
+        transition: width 300ms ease-in-out;
         width: 0.47vw;
+        stroke: var(--text-light);
+      }
+    }
+
+    a:hover {
+      background-color: var(--brand-primary-hover);
+
+      svg {
+        width: 0.63vw;
+      }
+    }
+    .filterGroup {
+      .filterOption {
+        display: block;
+        margin-bottom: 0.83vw;
+
+        font-weight: 600;
+        font-size: 0.73vw;
+        text-transform: uppercase;
+        color: rgba(25, 27, 26, 1);
+        opacity: 0.6;
+      }
+
+      .options {
+        display: flex;
+        gap: 0.31vw;
+
+        label {
+          padding: 0.73vw 1.04vw;
+          border-radius: 5.21vw;
+          transition: color 300ms ease-in-out;
+          background-color: rgba(250, 248, 248, 1);
+          transition: background-color 300ms ease-in-out;
+
+          font-size: 0.83vw;
+          input {
+            visibility: hidden;
+            width: 0;
+            height: 0;
+          }
+        }
+
+        label.selected {
+          background-color: var(--text-gray-dark);
+          color: var(--text-light);
+        }
+      }
+
+      .rangeValuesCont {
+        display: flex;
+        background-color: rgba(250, 248, 248, 1);
+        border-radius: 5.21vw;
+
+        p {
+          display: flex;
+          align-items: baseline;
+          gap: 0.63vw;
+          padding: 0.73vw 2.08vw 0.73vw 1.04vw;
+
+          font-size: 0.83vw;
+          font-weight: 600;
+          line-height: 1;
+          color: var(--text-gray-dark);
+
+          .min,
+          .max {
+            font-size: 0.63vw;
+            font-weight: 600;
+            color: var(--text-gray-dark);
+            text-transform: uppercase;
+            opacity: 0.6;
+          }
+
+          .area {
+            width: 2.5vw;
+          }
+
+          .floor {
+            width: 0.5vw;
+          }
+        }
+
+        p:first-child {
+          border-right: 1px solid rgba(131, 131, 131, 1);
+        }
+      }
+
+      .range {
+        position: relative;
+        bottom: 0.22vw;
+        padding: 0 1.04vw 0 1.04vw;
       }
     }
   }
 
-  .filterGroup {
-    .filterOption {
-      display: block;
-      margin-bottom: 0.83vw;
+  .form.onCatalogPage {
+    flex-wrap: wrap;
+    row-gap: 2.08vw;
 
-      font-weight: 600;
-      font-size: 0.73vw;
-      text-transform: uppercase;
-      color: rgba(25, 27, 26, 1);
-      opacity: 0.6;
+    a {
+      margin-left: 0;
     }
 
-    .options {
-      display: flex;
-      gap: 0.31vw;
-
-      label {
-        padding: 0.73vw 1.04vw;
-        border-radius: 5.21vw;
-        background-color: rgba(250, 248, 248, 1);
-
-        font-size: 0.83vw;
-        input {
-          visibility: hidden;
-          width: 0;
-          height: 0;
+    .roomFilter {
+      flex-grow: 1;
+      .options {
+        label:last-child {
+          display: flex;
+          justify-content: center;
+          flex-grow: 1;
         }
       }
     }
 
-    .rangeValuesCont {
-      display: flex;
-      background-color: rgba(250, 248, 248, 1);
-      border-radius: 5.21vw;
-
-      p {
-        display: flex;
-        align-items: baseline;
-        gap: 0.63vw;
-        padding: 0.73vw 2.08vw 0.73vw 1.04vw;
-
-        font-size: 0.83vw;
-        font-weight: 600;
-        line-height: 1;
-        color: var(--text-gray-dark);
-
-        .min,
-        .max {
-          font-size: 0.63vw;
-          font-weight: 600;
-          color: var(--text-gray-dark);
-          text-transform: uppercase;
-          opacity: 0.6;
+    .houseFilter {
+      .options {
+        label {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 7.6vw;
         }
-
-        .area {
-          width: 2.5vw;
-        }
-
-        .floor {
-          width: 0.5vw;
-        }
-      }
-
-      p:first-child {
-        border-right: 1px solid rgba(131, 131, 131, 1);
       }
     }
 
-    .range {
-      position: relative;
-      bottom: 0.22vw;
-      padding: 0 1.04vw 0 1.04vw;
+    .filterGroup:nth-child(3),
+    .filterGroup:nth-child(4),
+    .filterGroup:nth-child(5),
+    .filterGroup:nth-child(6) {
+        .rangeValuesCont{
+          p{
+            justify-content: space-between;
+          }
+        }
     }
   }
 }

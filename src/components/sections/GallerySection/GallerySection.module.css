@@ -1,5 +1,5 @@
 .section {
-  padding-top: 4.17vw;
+  padding-top: 3.13vw;
   padding-bottom: 4.17vw;
 
   h2 {
@@ -48,7 +48,7 @@
       .paginationCont {
         height: 28.33vw;
         overflow-y: scroll;
-
+        scroll-behavior: smooth;
         .paginationItem {
           display: flex;
           justify-content: center;
@@ -69,9 +69,9 @@
             border-radius: 100%;
             background-color: #fff;
 
-            img {
-              width: 4.17vw;
-              height: 4.17vw;
+            .image {
+              width: 4.17vw !important;
+              height: 4.17vw !important;
               border-radius: 100%;
             }
           }
@@ -79,13 +79,13 @@
         .paginationItem.unactive {
           background-color: var(--brand-primary-transparent);
 
-          img{
+          img {
             opacity: 0.2;
           }
         }
 
         .paginationItem.active {
-          background-color: none;
+          background-color: transparent;
           background-image: conic-gradient(
             var(--brand-primary) calc(var(--progress, 0) * 100%),
             var(--brand-primary-transparent) 0%
@@ -102,7 +102,21 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          transition: background-color 300ms ease-in-out;
           background-color: var(--background-light);
+
+          svg {
+            transition: stroke 300ms ease-in-out;
+            stroke: rgba(25, 27, 26, 1);
+          }
+        }
+
+        div:hover {
+          background-color: var(--brand-primary-hover);
+
+          svg {
+            stroke: var(--text-light);
+          }
         }
 
         .swiperPrev {
@@ -116,6 +130,22 @@
           width: 3.33vw;
           height: 3.33vw;
           border-radius: 5.21vw;
+        }
+
+        .disabled {
+          background-color: var(--background-light);
+
+          svg {
+            stroke: rgba(101, 109, 122, 1);
+          }
+        }
+
+        .disabled:hover {
+          background-color: var(--background-light);
+
+          svg {
+            stroke: rgba(101, 109, 122, 1);
+          }
         }
       }
     }

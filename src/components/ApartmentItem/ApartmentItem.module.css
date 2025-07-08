@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 27.92vw;
+  width: 27.9vw;
   padding: 2.71vw;
   border-radius: 2.71vw;
   background-color: #ffffff;
@@ -61,16 +61,30 @@
       justify-content: space-between;
 
       a {
+        display: flex;
+        align-items: center;
+        gap: 0.63vw;
         height: max-content;
         font-size: 0.83vw;
         padding: 0.94vw 1.25vw;
         border-radius: 5.21vw;
 
+        transition: background-color 300ms ease-in-out;
         color: #ffffff;
         background-color: var(--brand-primary);
 
-        img {
-          margin-left: 0.63vw;
+        svg {
+          width: 0.47vw;
+          transition: width 300ms ease-in-out;
+
+          stroke: var(--text-light);
+        }
+      }
+
+      a:hover {
+        background-color: var(--brand-primary-hover);
+
+        svg {
           width: 0.63vw;
         }
       }

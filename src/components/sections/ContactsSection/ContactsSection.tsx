@@ -1,9 +1,9 @@
 "use client";
 import Container from "@/components/Container/Container";
 import "leaflet/dist/leaflet.css";
-// import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import s from "./ContactsSection.module.css";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "leaflet";
 import { MapContainer } from "react-leaflet/MapContainer";
 import { TileLayer } from "react-leaflet/TileLayer";
@@ -37,17 +37,25 @@ const contactsData = [
 ];
 
 const ContactsSection = () => {
+  const getLinkUrl = (item: string) => {
+    if (item.includes("+38")) {
+      return `tel:${item}`;
+    }
+    if (item.includes("@")) {
+      return `mailto:${item}`;
+    } else {
+      return `https://g.co/kgs/7w4BSLH`;
+    }
+  };
 
-    useEffect(() => {
-      const container = document.querySelector("#mapTwo") as any;
-      console.log(container)
-      if (container && container._leaflet_id) {
-        // Prevent duplicate map error
-        container._leaflet_id = null;
-        console.log(container._leaflet_id)
-      }
-    }, []);
-  
+  useEffect(() => {
+    const container = document.querySelector("#mapTwo") as any;
+    if (container && container._leaflet_id) {
+      // Prevent duplicate map error
+      container._leaflet_id = null;
+    }
+  }, []);
+
   return (
     <section className={s.section}>
       <Container>
@@ -74,7 +82,7 @@ const ContactsSection = () => {
                       {item.data.map((item, idx) => {
                         return (
                           <p className={s.listItem} key={idx}>
-                            {item}
+                            <Link href={getLinkUrl(item)}>{item}</Link>
                           </p>
                         );
                       })}

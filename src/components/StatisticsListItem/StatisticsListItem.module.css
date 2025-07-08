@@ -1,0 +1,33 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.04vw 1.67vw;
+  border-radius: 1.67vw;
+  background-color: var(--background-light);
+
+  p {
+    margin-bottom: 0.21vw;
+    text-align: center;
+    font-size: 3.33vw;
+    font-weight: 800;
+    line-height: normal;
+    color: var(--brand-primary);
+  }
+
+  h3 {
+    text-align: center;
+    font-size: 0.83vw;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.48px;
+    color: var(--text-gray);
+  }
+
+  svg {
+    width: 1.67vw;
+    height: 1.67vw;
+    margin-bottom: 0.63vw;
+    fill: var(--brand-primary);
+  }
+}
