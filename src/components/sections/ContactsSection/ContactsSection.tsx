@@ -5,11 +5,14 @@ import s from "./ContactsSection.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "leaflet";
+import L from "leaflet";
 import { MapContainer } from "react-leaflet/MapContainer";
 import { TileLayer } from "react-leaflet/TileLayer";
 import { Marker } from "react-leaflet/Marker";
 import { Popup } from "react-leaflet/Popup";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useHasMounted } from "@/utils/useHasMounted";
 
 const mainMarker = new Icon({
   iconUrl: "/icons/nadrichnyi.svg",
@@ -37,6 +40,49 @@ const contactsData = [
 ];
 
 const ContactsSection = () => {
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const leafletMapRef = useRef<L.Map | null>(null);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    // Очищаємо попередній вміст перед ініціалізацією
+    mapRef.current.innerHTML = "";
+
+    if (leafletMapRef.current) {
+      leafletMapRef.current.remove();
+      leafletMapRef.current = null;
+    }
+
+    leafletMapRef.current = L.map(mapRef.current, {
+      scrollWheelZoom: false,
+    }).setView([48.9407815, 24.7164726], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(leafletMapRef.current);
+
+    const markerIcon = L.icon({
+      iconUrl: "/icons/nadrichnyi.svg",
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+      className: s.mainMarker,
+    });
+
+    L.marker([48.9407815, 24.7164726], { icon: markerIcon })
+      .addTo(leafletMapRef.current)
+      .bindPopup("Надрічний");
+
+    return () => {
+      leafletMapRef.current?.remove();
+      leafletMapRef.current = null;
+    };
+  }, []);
+  // const pathname = usePathname();
+  // const hasMounted = useHasMounted();
+  // const mapKey = pathname.includes("catalog") ? s.mapFour : s.mapTwo;
+  // console.log(mapKey);
+
   const getLinkUrl = (item: string) => {
     if (item.includes("+38")) {
       return `tel:${item}`;
@@ -47,15 +93,6 @@ const ContactsSection = () => {
       return `https://g.co/kgs/7w4BSLH`;
     }
   };
-
-  useEffect(() => {
-    const container = document.querySelector("#mapTwo") as any;
-    if (container && container._leaflet_id) {
-      // Prevent duplicate map error
-      container._leaflet_id = null;
-    }
-  }, []);
-
   return (
     <section className={s.section}>
       <Container>
@@ -143,27 +180,32 @@ const ContactsSection = () => {
               </ul>
             </div>
           </div>
+          <div
+            ref={mapRef}
+            className={s.map}
+            style={{ width: "100%", zIndex: 0 }}
+          ></div>
+          {/* {hasMounted && (
+            <MapContainer
+              key={pathname}
+              center={[48.9407815, 24.7164726]}
+              className={s.mapTwo}
+              zoom={13}
+              scrollWheelZoom={false}
+              style={{ height: "400px", width: "100%" }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; OpenStreetMap contributors"
+              />
 
-          <MapContainer
-            key={"map1"}
-            id="mapTwo"
-            center={[48.9407815, 24.7164726]}
-            className={s.mapTwo}
-            zoom={13}
-            scrollWheelZoom={false}
-            style={{ height: "400px", width: "100%" }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution="&copy; OpenStreetMap contributors"
-            />
-
-            <Marker icon={mainMarker} position={[48.9407815, 24.7164726]}>
-              <Popup>
-                <p>Надрічний</p>
-              </Popup>
-            </Marker>
-          </MapContainer>
+              <Marker icon={mainMarker} position={[48.9407815, 24.7164726]}>
+                <Popup>
+                  <p>Надрічний</p>
+                </Popup>
+              </Marker>
+            </MapContainer>
+          )} */}
         </div>
       </Container>
     </section>

@@ -2,13 +2,16 @@
 import Container from "@/components/Container/Container";
 import s from "./MapSection.module.css";
 import Image from "next/image";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L, { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import { useRef } from "react";
 import MapSectionSwiperItem from "@/components/MapSectionSwiperItem/MapSectionSwiperItem";
+import { useHasMounted } from "@/utils/useHasMounted";
+import { forEach } from "rsuite/esm/internals/utils/ReactChildren";
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -30,26 +33,25 @@ const mainMarker = new Icon({
 });
 
 const MapSection = () => {
-  const [markersData, setMarkersData] = useState<any>([]);
+  const [markersData, setMarkersData] = useState<[]>([]);
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const leafletMapRef = useRef<L.Map | null>(null);
 
-  const getCustomIcon = (type: string) => {
-    return new L.DivIcon({
-      className: `${s.markerIcon}`,
-      iconUrl: `/icons/${type}.svg`,
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32],
-      shadowUrl: undefined,
-      shadowSize: undefined,
-      shadowAnchor: undefined,
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const response = await fetch(
+          "https://api.lcdoy.projection-learn.website/wp-json/wp/v2/theme_settings"
+        );
+        const data = await response.json();
+        setMarkersData(data.map_markers);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-      html: `
-      <div class=${s.iconContainer}>
-        <img src="/icons/white-${type}.svg" alt="${type}" />
-      </div>
-    `,
-    });
-  };
+    fetchdata();
+  }, []);
 
   const iconMap: Record<string, JSX.Element> = {
     mall,
@@ -60,6 +62,87 @@ const MapSection = () => {
     restaurant,
     gym,
   };
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    // Очищаємо попередній вміст перед ініціалізацією
+    mapRef.current.innerHTML = "";
+
+    if (leafletMapRef.current) {
+      leafletMapRef.current.remove();
+      leafletMapRef.current = null;
+    }
+
+    leafletMapRef.current = L.map(mapRef.current, {
+      scrollWheelZoom: false,
+    }).setView([48.9407815, 24.7164726], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(leafletMapRef.current);
+
+    const markerIcon = L.icon({
+      iconUrl: "/icons/nadrichnyi.svg",
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+      className: s.mainMarker,
+    });
+
+    const getCustomIcon = (type: string) => {
+      return new L.DivIcon({
+        className: `${s.markerIcon}`,
+        iconUrl: `/icons/${type}.svg`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+        shadowUrl: undefined,
+        shadowSize: undefined,
+        shadowAnchor: undefined,
+
+        html: `
+      <div class=${s.iconContainer}>
+        <img src="/icons/white-${type}.svg" alt="${type}" />
+      </div>
+    `,
+      });
+    };
+
+    L.marker([48.9407815, 24.7164726], { icon: markerIcon })
+      .addTo(leafletMapRef.current)
+      .bindPopup("Надрічний");
+
+    const markers = L.layerGroup().addTo(leafletMapRef.current)
+
+    if (markersData.length !== 0) {
+      markersData.forEach((item: Location, idx) => {
+        const title = item.title;
+        const coordsArray =
+          Array.isArray(item.coordinates) && item.coordinates.length > 0
+            ? Array.isArray(item.coordinates[0])
+              ? (item.coordinates as number[][])
+              : [item.coordinates as number[]]
+            : [];
+
+        return coordsArray.forEach((coords, subIdx) => {
+          if (coords.length !== 0) {
+            return L.marker([coords[0], coords[1]], {
+              icon: getCustomIcon(item.title),
+            })
+              .addTo(markers)
+              .bindPopup(title);
+          } else {
+            return;
+          }
+        });
+      });
+    }
+
+    return () => {
+      leafletMapRef.current?.remove();
+      leafletMapRef.current = null;
+    };
+  }, [markersData]);
 
   const checkLocationTitle = (value: string) => {
     if (value == "school") {
@@ -80,30 +163,6 @@ const MapSection = () => {
       return "Торговий центр";
     }
   };
-
-  useEffect(() => {
-    const container = document.querySelector(".leaflet-container") as any;
-    if (container && container._leaflet_id) {
-      // Prevent duplicate map error
-      container._leaflet_id = null;
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchdata = async () => {
-      try {
-        const response = await fetch(
-          "https://api.lcdoy.projection-learn.website/wp-json/wp/v2/theme_settings"
-        );
-        const data = await response.json();
-        setMarkersData(data.map_markers);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchdata();
-  }, []);
 
   return (
     <section className={s.section}>
@@ -179,51 +238,56 @@ const MapSection = () => {
               </ul>
             </div>
           </div>
-          <MapContainer
-            key={"map2"}
-            id="mapOne"
-            center={[48.9407815, 24.7164726]}
+          <div
+            ref={mapRef}
             className={s.map}
-            zoom={13}
-            scrollWheelZoom={false}
-            style={{ height: "400px", width: "100%" }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution="&copy; OpenStreetMap contributors"
-            />
-            {markersData?.map((item: Location, idx: number) => {
-              const title = item.title;
-              const coordsArray =
-                Array.isArray(item.coordinates) && item.coordinates.length > 0
-                  ? Array.isArray(item.coordinates[0])
-                    ? (item.coordinates as number[][])
-                    : [item.coordinates as number[]]
-                  : [];
-              return coordsArray.map((coords, subIdx) => {
-                if (coords.length !== 0) {
-                  return (
-                    <Marker
-                      key={idx - subIdx}
-                      icon={getCustomIcon(item.title)}
-                      position={[coords[0], coords[1]]}
-                    >
-                      <Popup>
-                        <p>{title}</p>
-                      </Popup>
-                    </Marker>
-                  );
-                } else {
-                  return;
-                }
-              });
-            })}
-            <Marker icon={mainMarker} position={[48.9407815, 24.7164726]}>
-              <Popup>
-                <p>Надрічний</p>
-              </Popup>
-            </Marker>
-          </MapContainer>
+            style={{ width: "100%", zIndex: 0 }}
+          ></div>
+          {/* {
+            <MapContainer
+              center={[48.9407815, 24.7164726]}
+              className={s.map}
+              zoom={13}
+              scrollWheelZoom={false}
+              style={{ height: "400px", width: "100%" }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; OpenStreetMap contributors"
+              />
+              {markersData?.map((item: Location, idx: number) => {
+                const title = item.title;
+                const coordsArray =
+                  Array.isArray(item.coordinates) && item.coordinates.length > 0
+                    ? Array.isArray(item.coordinates[0])
+                      ? (item.coordinates as number[][])
+                      : [item.coordinates as number[]]
+                    : [];
+                return coordsArray.map((coords, subIdx) => {
+                  if (coords.length !== 0) {
+                    return (
+                      <Marker
+                        key={idx - subIdx}
+                        icon={getCustomIcon(item.title)}
+                        position={[coords[0], coords[1]]}
+                      >
+                        <Popup>
+                          <p>{title}</p>
+                        </Popup>
+                      </Marker>
+                    );
+                  } else {
+                    return;
+                  }
+                });
+              })}
+              <Marker icon={mainMarker} position={[48.9407815, 24.7164726]}>
+                <Popup>
+                  <p>Надрічний</p>
+                </Popup>
+              </Marker>
+            </MapContainer>
+          } */}
         </div>
         <div className={s.swiperCont}>
           <Swiper
@@ -232,7 +296,6 @@ const MapSection = () => {
             navigation={{
               nextEl: `.${s.swiperNext}`,
               prevEl: `.${s.swiperPrev}`,
-              // lockClass: s.disabled,
               disabledClass: s.disabled,
             }}
           >
