@@ -28,7 +28,7 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
         <div>
           <Link href="#">
             Дізнатись вартість
-            <Image src={"/icons/arrow.svg"} width={9} height={8} alt="arrow" />
+            {arrow}
           </Link>
           <ul className={s.advantages}>
             {item.Postponement == "1" ? (
@@ -75,3 +75,15 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
 };
 
 export default ApartmentItem;
+
+const arrow = (
+  <svg
+    width="10"
+    height="9"
+    viewBox="0 0 10 9"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M0 4.5H9M9 4.5L4.76471 0.5M9 4.5L4.76471 8.5" />
+  </svg>
+);

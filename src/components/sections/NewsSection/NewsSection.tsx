@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Container from "@/components/Container/Container";
 import s from "./NewsSection.module.css";
 import Image from "next/image";
@@ -12,6 +12,9 @@ export interface NewItem {
   date_gmt: string;
   link: string;
   slug: string;
+  excerpt: {
+    rendered: string;
+  };
   title: {
     rendered: string;
   };
@@ -20,6 +23,7 @@ export interface NewItem {
   };
   reading_time: number;
 }
+
 const NewsSection = () => {
   const [newsData, setNewsData] = useState([]);
   useEffect(() => {
@@ -37,6 +41,7 @@ const NewsSection = () => {
 
     fetchNews();
   }, []);
+
   return (
     <section className={s.section}>
       <Container>
@@ -47,11 +52,10 @@ const NewsSection = () => {
               <div key={item.id} className={s.newsItem}>
                 <p className={s.subtitle}>Новина</p>
                 <h3>{item.title.rendered}</h3>
-                <p className={s.content}>
-                  {item.content.rendered.length >= 100
-                    ? item.content.rendered.slice(0, 100)
-                    : item.content.rendered}
-                </p>
+                <p
+                  className={s.content}
+                  dangerouslySetInnerHTML={{ __html: item.excerpt.rendered }}
+                ></p>
                 <div className={s.timeAndDate}>
                   <p className={s.readingTime}>
                     <span>
@@ -75,13 +79,7 @@ const NewsSection = () => {
                 />
                 <Link href={"#"} className={s.articleLink}>
                   Читати статтю
-                  <Image
-                    className={s.icon}
-                    src={"/icons/swiper-arrow.svg"}
-                    width={9}
-                    height={8}
-                    alt="icon"
-                  />
+                  {swiperArrow}
                 </Link>
               </div>
             );
@@ -93,3 +91,16 @@ const NewsSection = () => {
 };
 
 export default NewsSection;
+
+const swiperArrow = (
+  <svg
+    width="16"
+    height="18"
+    viewBox="0 0 16 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={s.icon}
+  >
+    <path d="M8 18L8 2M8 2L1 9.52941M8 2L15 9.52941" stroke-width="2" />
+  </svg>
+);

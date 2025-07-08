@@ -1,7 +1,7 @@
 .section {
   padding-top: 4.17vw;
   padding-bottom: 4.17vw;
-  
+
   h2 {
     margin-bottom: 3.13vw;
     font-size: 3.33vw;
@@ -27,7 +27,7 @@
         border: 0.1vw solid var(--brand-primary);
         border-radius: 8.65vw;
         margin-bottom: 1.04vw;
-        padding: 0.63vw 0.83vw;
+        padding: 0.52vw 0.83vw;
         font-size: 0.83vw;
         font-weight: 800;
         line-height: 1;
@@ -80,6 +80,7 @@
         margin-bottom: 1.67vw;
         width: 22.08vw !important;
         height: 15.05vw !important;
+        transition: border-radius 300ms ease-in-out;
         border-radius: 2.08vw;
       }
 
@@ -94,11 +95,33 @@
         line-height: normal;
         font-weight: 600;
         text-align: center;
+        transition: background-color 300ms ease-in-out;
+        transition: color 300ms ease-in-out;
+
         background-color: rgba(246, 246, 246, 1);
         border-radius: 5.21vw;
 
-        .icon {
+        svg {
+          width: 0.47vw;
+          height: 0.42vw;
+          transition: stroke 300ms ease-in-out;
           transform: rotateZ(90deg);
+          stroke: #656d7a;
+        }
+      }
+    }
+
+    .newsItem:hover {
+      .image {
+        border-radius: 4.17vw;
+      }
+
+      .articleLink {
+        color: var(--text-light);
+        background-color: var(--brand-primary);
+
+        svg {
+          stroke: var(--text-light);
         }
       }
     }

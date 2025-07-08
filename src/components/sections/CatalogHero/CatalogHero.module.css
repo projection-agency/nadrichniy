@@ -1,0 +1,71 @@
+.section {
+  position: relative;
+  padding-bottom: 3.13vw;
+  .background {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    width: 100vw !important;
+    height: auto;
+  }
+
+  .container {
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5.1vw;
+    padding-bottom: 4.22vw;
+
+    border-bottom-left-radius: 4.2vw;
+    border-bottom-right-radius: 4.2vw;
+    overflow: hidden;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0.4) 100%
+      ),
+      url(/images/home-hero.jpg) lightgray 50% / cover no-repeat;
+  }
+
+  h1 {
+    font-size: 18.2vw;
+    line-height: 1;
+    letter-spacing: -10.468px;
+    color: var(--text-light);
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    gap: 0.83vw;
+    padding: 0.83vw 1.67vw;
+    margin-bottom: 3.75vw;
+
+    border-radius: 4.17vw;
+    font-size: 1.04vw;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.6px;
+    background-color: var(--brand-primary);
+    color: var(--text-light);
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 1.67vw;
+      height: 1.67vw;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    svg {
+      width: 0.63vw;
+      height: 0.83vw;
+      fill: var(--background-light);
+    }
+  }
+}

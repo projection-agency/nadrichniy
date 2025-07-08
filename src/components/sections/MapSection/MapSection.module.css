@@ -83,7 +83,8 @@
               border-radius: 50%;
               background-color: rgba(250, 248, 248, 1);
 
-              img {
+              svg {
+                fill: rgba(49, 49, 49, 1);
                 width: 1.25vw;
                 height: 1.25vw;
               }

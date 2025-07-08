@@ -102,6 +102,11 @@
           }
         }
 
+        .phone {
+          height: 3.33vw;
+          border-radius: 8vw;
+        }
+
         .inputLine {
           display: flex;
           gap: 0.63vw;
@@ -135,16 +140,6 @@
               top: 1.25vw;
               left: 1.25vw;
             }
-
-            .dateInput {
-              padding-left: 2.92vw;
-              font-size: 0.83vw;
-              font-family: "Gilroy" !important;
-              line-height: 1;
-              font-style: normal;
-              font-weight: 600;
-              color: rgba(25, 27, 26, 1);
-            }
           }
         }
 
@@ -174,48 +169,6 @@
             font-weight: 600;
             color: rgba(255, 85, 30, 1);
           }
-
-          .list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.31vw;
-
-            input {
-              visibility: hidden;
-              opacity: 0;
-              width: 0px;
-              height: 0px;
-            }
-
-            .item {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: calc((100% - 0.31vw * 5) / 6);
-            }
-
-            label.timeCheckbox {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 100%;
-              padding: 1.04vw 0;
-              border: 0.05vw solid var(--background-light);
-              border-radius: 8.65vw;
-
-              font-size: 0.83vw;
-              font-weight: 600;
-              line-height: 1;
-              color: var(--text-gray);
-              background-color: rgba(251, 251, 251, 1);
-              white-space: nowrap;
-            }
-
-            input:checked + .timeCheckbox {
-              border-color: rgba(25, 27, 26, 1);
-              color: rgba(25, 27, 26, 1);
-            }
-          }
         }
 
         .submitBtn {
@@ -231,6 +184,18 @@
           color: #ffffff;
           background-color: var(--brand-primary);
           border-radius: 5.21vw;
+        }
+
+        .error {
+          border: 0.05vw solid rgba(255, 85, 30, 1);
+        }
+
+        .errorMessage {
+          margin-top: 0.63vw;
+          font-size: 0.63vw;
+          font-weight: 500;
+          line-height: 1;
+          color: rgba(255, 85, 30, 1);
         }
       }
     }

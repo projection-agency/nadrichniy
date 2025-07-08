@@ -97,6 +97,10 @@
   display: none;
 }
 
+.inputContainer{
+  border-radius: 8.65vw;
+}
+
 @media (max-width: 1024px) {
   .react-tel-input .form-control {
     height: 13.8vw !important;

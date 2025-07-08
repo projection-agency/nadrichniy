@@ -1,0 +1,7 @@
+.list {
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 1.25vw;
+  background-color: var(--background-white);
+  border-radius: 1.67vw;
+}
