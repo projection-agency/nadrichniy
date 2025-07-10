@@ -91,7 +91,9 @@
   }
 }
 
-.header.scrolled {
+
+
+.header.scrolled,.header.dark {
   .topBlock {
     svg {
       fill: #000000;

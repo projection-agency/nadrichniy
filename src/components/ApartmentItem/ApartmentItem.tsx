@@ -1,10 +1,15 @@
+"use client"
 import s from "./ApartmentItem.module.css";
 import { Apartment } from "@/Redux/apartmentSlice/slice";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 const ApartmentItem = ({ item }: { item: Apartment }) => {
+  const router = useRouter();
+  console.log(item)
   return (
-    <li className={s.item}>
+    <li className={s.item} onClick={()=>router.push(`catalog/${item.id}`)}>
       <div className={s.topBlock}>
         <ul className={s.apartmentInfo}>
           <li>{item.Area} м²</li>

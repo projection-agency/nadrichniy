@@ -1,0 +1,228 @@
+.section {
+  padding-top: 9.17vw;
+  padding-bottom: 5.21vw;
+
+  .apartment {
+    margin-bottom: 8.96vw;
+    display: flex;
+    gap: 0.83vw;
+
+    .apartmentInfo {
+      width: calc((100% - 0.83vw) / 2);
+      padding: 2.71vw;
+      border-radius: 2.71vw;
+      background-color: #fff;
+
+      .backLink {
+        padding: 0.94vw 1.25vw;
+        margin-bottom: 2.5vw;
+        width: max-content;
+        display: flex;
+        align-items: center;
+        gap: 0.63vw;
+        border-radius: 5.21vw;
+        background-color: var(--background-light);
+
+        font-size: 0.83vw;
+        font-weight: 600;
+        line-height: normal;
+        color: var(--text-gray);
+
+        svg {
+          transform: rotateZ(180deg);
+          stroke: var(--text-gray);
+          width: 0.47vw;
+          height: 0.42vw;
+        }
+      }
+
+      .topInfo {
+        margin-bottom: 2.5vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 0.05vw solid rgba(49, 49, 49, 0.1);
+
+        .rooms {
+          margin-bottom: 1.04vw;
+          font-size: 2.08vw;
+          font-weight: 500;
+          line-height: normal;
+          letter-spacing: -1.2px;
+          color: rgba(25, 27, 26, 1);
+        }
+
+        .area {
+          font-size: 3.33vw;
+          font-weight: 600;
+          line-height: normal;
+          letter-spacing: -1.92px;
+          color: rgba(25, 27, 26, 1);
+        }
+
+        .delivery {
+          padding-bottom: 0.7vw;
+          font-size: 1.04vw;
+          font-weight: 500;
+          line-height: normal;
+          letter-spacing: -0.6px;
+          color: rgba(25, 27, 26, 1);
+        }
+      }
+
+      .bottomInfo {
+        .houseNumber {
+          margin-bottom: 0.63vw;
+          font-size: 1.04vw;
+          font-weight: 500;
+          line-height: normal;
+          letter-spacing: -0.6px;
+        }
+
+        .floor {
+          margin-bottom: 2.5vw;
+          font-size: 1.04vw;
+          font-weight: 500;
+          line-height: normal;
+          letter-spacing: -0.6px;
+        }
+
+        .advantages {
+          display: flex;
+          justify-content: space-between;
+          padding: 1.67vw;
+          border-radius: 1.67vw;
+          margin-bottom: 2.5vw;
+          background-color: var(--background-light);
+          li {
+            display: flex;
+            align-items: center;
+            gap: 0.63vw;
+
+            font-size: 0.83vw;
+            font-weight: 600;
+            line-height: normal;
+            letter-spacing: -0.48px;
+            color: rgba(25, 27, 26, 1);
+          }
+        }
+
+        .buttons {
+          display: flex;
+          gap: 0.83vw;
+
+          button {
+            width: 18.02vw;
+            height: 3.33vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 0.05vw solid var(--brand-primary);
+            border-radius: 5.21vw;
+
+            font-size: 0.83vw;
+            font-weight: 700;
+            font-style: normal;
+            line-height: normal;
+          }
+
+          .secondary {
+            background-color: #fff;
+            color: var(--brand-primary);
+          }
+
+          .primary {
+            background-color: var(--brand-primary);
+            color: var(--text-light);
+          }
+        }
+      }
+    }
+
+    .apartmentPlanning {
+      width: calc((100% - 0.83vw) / 2);
+      padding: 2.71vw;
+      border-radius: 2.71vw;
+      background-color: #fff;
+
+      .topBlock {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2.29vw;
+
+        .planningToggler {
+          display: flex;
+          gap: 0.52vw;
+          position: relative;
+          overflow: hidden;
+          background-color: var(--background-light);
+          border-radius: 2.71vw;
+          border: 0.21vw solid var(--background-light);
+
+          .background {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            border-radius: 5.21vw;
+            background-color: var(--brand-primary);
+            transition: transform 300ms ease-in-out;
+          }
+
+          button {
+            position: relative;
+            width: 8.85vw;
+            height: 2.4vw;
+            background-color: transparent;
+
+            transition: color 300ms ease-in-out;
+
+            font-size: 0.83vw;
+            font-weight: 700;
+            line-height: normal;
+            color: rgba(25, 27, 26, 1);
+          }
+
+          .active {
+            color: var(--text-light);
+          }
+        }
+
+        .links {
+          display: flex;
+          gap: 0.63vw;
+          li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 2.81vw;
+            height: 2.81vw;
+            border-radius: 5.21vw;
+            background-color: var(--brand-primary-transparent);
+
+            svg {
+              width: 1.25vw;
+              height: 1.25vw;
+              fill: var(--brand-primary);
+            }
+          }
+        }
+      }
+
+      .layoutImg {
+        width: 36.88vw;
+        height: 27.6vw;
+      }
+    }
+  }
+
+  h2 {
+    font-size: 3.33vw;
+    margin-bottom: 3.13vw;
+  }
+
+  .apartmentsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.83vw;
+  }
+}
