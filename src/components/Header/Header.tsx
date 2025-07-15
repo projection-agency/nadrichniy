@@ -18,7 +18,6 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const { slug } = useParams();
-  console.log(slug);
 
   useEffect(() => {
     const handleScroll = () => {

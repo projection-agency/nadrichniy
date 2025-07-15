@@ -9,6 +9,7 @@ import Image from "next/image";
 import { API_URL } from "@/constants";
 import { Apartment } from "@/Redux/apartmentSlice/slice";
 import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
+
 const PlanningSection = () => {
   const [active, setActive] = useState<"flat" | "floor">("flat");
   const [apartmentData, setApartmentData] = useState([]);
@@ -21,10 +22,10 @@ const PlanningSection = () => {
     const fetchApartment = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/wp-json/wp/v2/apartments/${slug}`
+          `${API_URL}/wp-json/wp/v2/apartments?slug=${slug}`
         );
         const data = await response.json();
-        setItem(data);
+        setItem(data[0]);
         console.log(data);
       } catch (error) {
         console.log(error);

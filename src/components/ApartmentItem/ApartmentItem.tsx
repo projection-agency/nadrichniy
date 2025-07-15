@@ -1,15 +1,17 @@
-"use client"
+"use client";
 import s from "./ApartmentItem.module.css";
 import { Apartment } from "@/Redux/apartmentSlice/slice";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const ApartmentItem = ({ item }: { item: Apartment }) => {
   const router = useRouter();
-  console.log(item)
+  const pathname = usePathname();
+  console.log(pathname);
   return (
-    <li className={s.item} onClick={()=>router.push(`catalog/${item.id}`)}>
+    <li className={s.item}>
       <div className={s.topBlock}>
         <ul className={s.apartmentInfo}>
           <li>{item.Area} м²</li>
@@ -31,7 +33,13 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
           alt="floor-image"
         />
         <div>
-          <Link href="#">
+          <Link
+            href={`${
+              pathname === "/catalog" || pathname === "/"
+                ? `catalog/${item.slug}`
+                : item.slug
+            }`}
+          >
             Дізнатись вартість
             {arrow}
           </Link>

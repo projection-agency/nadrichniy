@@ -2,7 +2,6 @@
 import Container from "@/components/Container/Container";
 import s from "./MapSection.module.css";
 import Image from "next/image";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L, { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
@@ -10,8 +9,6 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useRef } from "react";
 import MapSectionSwiperItem from "@/components/MapSectionSwiperItem/MapSectionSwiperItem";
-import { useHasMounted } from "@/utils/useHasMounted";
-import { forEach } from "rsuite/esm/internals/utils/ReactChildren";
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({

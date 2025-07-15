@@ -35,7 +35,7 @@
 
       a {
         display: block;
-        font-size: 0.6vw;
+        font-size: 0.72vw;
         color: var(--text-light);
         transition: color 500ms ease-in-out;
       }
