@@ -61,7 +61,7 @@ const initialState: ApartmentState = {
         floor: [1, 9],
         house: [],
         price: [1000, 2000],
-        year: [year, 2027]
+        year: [year, 2029]
     }
 }
 

@@ -1,0 +1,114 @@
+    .newsItem {
+      padding: 2.92vw;
+      width: 27.92vw;
+      background-color: #ffffff;
+      border-radius: 2.71vw;
+
+      .subtitle {
+        letter-spacing: -0.48px;
+        text-transform: uppercase;
+        width: max-content;
+        color: var(--brand-primary);
+        border: 0.1vw solid var(--brand-primary);
+        border-radius: 8.65vw;
+        margin-bottom: 1.04vw;
+        padding: 0.52vw 0.83vw;
+        font-size: 0.83vw;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      h3 {
+        height: 3.96vw;
+        margin-bottom: 0.63vw;
+        font-size: 1.67vw;
+        line-height: normal;
+        letter-spacing: -0.96px;
+        color: rgba(25, 27, 26, 1);
+      }
+
+      .content {
+        margin-bottom: 0.83vw;
+        height: 4.5vw;
+
+        font-size: 0.83vw;
+        line-height: 1.4;
+        letter-spacing: -0.48px;
+        color: var(--text-gray);
+      }
+
+      .timeAndDate {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.83vw;
+
+        .readingTime {
+          display: flex;
+          align-items: center;
+          gap: 0.42vw;
+
+          font-size: 0.83vw;
+          line-height: normal;
+          letter-spacing: -0.32px;
+          color: var(--text-gray);
+        }
+
+        .date {
+          font-size: 0.83vw;
+          line-height: normal;
+          letter-spacing: -0.32px;
+          color: var(--text-gray);
+        }
+      }
+
+      .image {
+        display: block;
+        margin-bottom: 1.67vw;
+        width: 22.08vw !important;
+        height: 15.05vw !important;
+        transition: border-radius 300ms ease-in-out;
+        border-radius: 2.08vw;
+      }
+
+      .articleLink {
+        display: flex;
+        gap: 0.63vw;
+        justify-content: center;
+        align-items: center;
+        padding-top: 0.94vw;
+        padding-bottom: 0.94vw;
+        font-size: 0.83vw;
+        line-height: normal;
+        font-weight: 600;
+        text-align: center;
+        transition: background-color 300ms ease-in-out;
+        transition: color 300ms ease-in-out;
+
+        background-color: rgba(246, 246, 246, 1);
+        border-radius: 5.21vw;
+
+        svg {
+          width: 0.47vw;
+          height: 0.42vw;
+          transition: stroke 300ms ease-in-out;
+          transform: rotateZ(90deg);
+          stroke: #656d7a;
+        }
+      }
+    }
+
+    .newsItem:hover {
+      .image {
+        border-radius: 4.17vw;
+      }
+
+      .articleLink {
+        color: var(--text-light);
+        background-color: var(--brand-primary);
+
+        svg {
+          stroke: var(--text-light);
+        }
+      }
+    }
