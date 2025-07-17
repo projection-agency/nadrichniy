@@ -156,10 +156,10 @@ const PlanningSection = () => {
               {active === "flat" ? (
                 <Image
                   className={s.layoutImg}
-                  src={`${item.Room_layout}`}
+                  src={`/images/bg_about.jpg`}
                   width={372}
                   height={289}
-                  alt="floor-image"
+                  alt="room-image"
                 />
               ) : (
                 <Image

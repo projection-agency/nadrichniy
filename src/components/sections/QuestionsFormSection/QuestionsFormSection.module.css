@@ -61,6 +61,7 @@
         width: 100%;
 
         label {
+          position: relative;
           font-family: "Gilroy" !important;
           font-size: 0.73vw;
           line-height: 1;
@@ -89,6 +90,7 @@
           input {
             width: 100%;
             padding: 1.25vw;
+            height: 3.33vw;
             border: none;
             outline: none;
             background-color: var(--background-light);
@@ -191,6 +193,9 @@
         }
 
         .errorMessage {
+          position: absolute;
+          bottom: -1.0vw;
+          left: 0;
           margin-top: 0.63vw;
           font-size: 0.63vw;
           font-weight: 500;

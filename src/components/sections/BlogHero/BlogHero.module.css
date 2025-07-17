@@ -1,0 +1,84 @@
+.section {
+  padding-bottom: 3.75vw;
+  .topBlock {
+    position: relative;
+    height: 17.08vw;
+    padding-top: 6.67vw;
+    padding-left: 6.98vw;
+    border-bottom-left-radius: 4.17vw;
+    border-bottom-right-radius: 4.17vw;
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -10;
+      width: 100%;
+      height: 100%;
+    }
+
+    h1 {
+      font-size: 5.1vw;
+      font-style: normal;
+      font-weight: 800;
+      line-height: normal;
+      letter-spacing: -2.94px;
+      color: var(--text-light);
+    }
+  }
+
+  .content {
+    width: 85.42vw;
+    padding-top: 5.21vw;
+    margin-left: auto;
+    margin-right: auto;
+
+    .planningToggler {
+      width: 44.74vw;
+      padding: 0.52vw;
+      margin-bottom: 3.13vw;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background-color: #ffffff;
+      border-radius: 2.71vw;
+
+      .background {
+        position: absolute;
+        height: 2.86vw;
+        width: 10.89vw;
+        border-radius: 5.21vw;
+        background-color: var(--brand-primary);
+        transition: transform 300ms ease-in-out;
+      }
+
+      button {
+        position: relative;
+        width: 10.89vw;
+        height: 2.4vw;
+        background-color: transparent;
+
+        transition: color 300ms ease-in-out;
+
+        font-size: 0.83vw;
+        font-weight: 700;
+        line-height: normal;
+        color: rgba(25, 27, 26, 1);
+      }
+
+      .active {
+        color: var(--text-light);
+      }
+    }
+
+    .newsList {
+      display: flex;
+      gap: 0.83vw;
+      flex-wrap: wrap;
+
+      
+    }
+  }
+}
