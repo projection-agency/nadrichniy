@@ -4,10 +4,28 @@ import s from "./NewsItem.module.css";
 import Link from "next/link";
 
 export default function NewsItem({ item }: { item: NewItem }) {
-  console.log(item)
+
+  const togglePostType = () => {
+    switch (item.categories[0]) {
+      case 8: {
+        return "Новина";
+      }
+      case 11: {
+        return "Спеціальна пропозиція";
+      }
+
+      case 10: {
+        return "Хід робіт";
+      }
+      default: {
+        return "Новина";
+      }
+    }
+  };
+  
   return (
     <div key={item.id} className={s.newsItem}>
-      <p className={s.subtitle}>Новина</p>
+      <p className={s.subtitle}>{togglePostType()}</p>
       <h3>{item.title.rendered}</h3>
       <p
         className={s.content}

@@ -1,7 +1,12 @@
+import ClientsHero from "@/components/sections/ClientsHero/ClientsHero";
+import ProposalsList from "@/components/sections/ProposalsList/ProposalsList";
+import FaqSection from "@/components/sections/FaqSection/FaqSection";
 export default function ClientsPage() {
   return (
     <div>
-      <h1>Clients Page</h1>
+      <ClientsHero />
+      <ProposalsList />
+      {/* <FaqSection /> */}
     </div>
   );
-} 
+}
