@@ -2,7 +2,9 @@ import Image from "next/image";
 import { NewItem } from "../sections/NewsSection/NewsSection";
 import s from "./NewsItem.module.css";
 import Link from "next/link";
+
 export default function NewsItem({ item }: { item: NewItem }) {
+  console.log(item)
   return (
     <div key={item.id} className={s.newsItem}>
       <p className={s.subtitle}>Новина</p>
@@ -27,7 +29,7 @@ export default function NewsItem({ item }: { item: NewItem }) {
         src={"/images/interier.jpg"}
         alt="image"
       />
-      <Link href={"#"} className={s.articleLink}>
+      <Link href={`/blog/${item.slug}`} className={s.articleLink}>
         Читати статтю
         {swiperArrow}
       </Link>

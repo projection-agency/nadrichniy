@@ -15,6 +15,7 @@ const GallerySection = () => {
   const swiperRef = useRef<any>(null);
   const progressRefs = useRef<(HTMLDivElement | null)[]>([]);
   const paginationContRef = useRef<HTMLDivElement | null>(null);
+  
   const onAutoplayTimeLeft = (s: any, time: number, progress: number) => {
     const index = s.activeIndex;
     const ref = progressRefs.current[index];

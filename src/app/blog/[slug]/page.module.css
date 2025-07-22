@@ -1,0 +1,71 @@
+.page {
+  .heroSection {
+    padding-top: 6.46vw;
+    padding-bottom: 4.17vw;
+    background-color: var(--brand-primary);
+    border-bottom-left-radius: 4.17vw;
+    border-bottom-right-radius: 4.17vw;
+
+    h1 {
+      margin-bottom: 1.25vw;
+      font-size: 3.02vw;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: -1.74px;
+      color: var(--text-light);
+    }
+
+    .subtitleBlock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      p {
+        font-size: 1.04vw;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 1.4;
+        letter-spacing: -0.6px;
+
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .timeBlock {
+        width: 50%;
+        display: flex;
+        align-items: center;
+        gap: 1.25vw;
+
+        p {
+          color: var(--text-light);
+        }
+
+        .readingTime {
+          display: flex;
+          align-items: center;
+          gap: 0.42vw;
+        }
+      }
+    }
+  }
+
+  .content {
+    padding-top: 3.13vw;
+
+    p {
+      font-size: 0.94vw;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 1.4;
+      color: rgba(101, 109, 122, 1);
+    }
+
+    img {
+      width: 100%;
+      height: 37.5vw;
+      border-radius: 2.71vw;
+      overflow: hidden;
+    }
+  }
+}
