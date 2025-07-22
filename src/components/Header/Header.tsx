@@ -17,8 +17,9 @@ const navLinks = [
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const { slug } = useParams();
-
+  const params = useParams();
+  const isCatalogPage = pathname.includes("/catalog")
+  
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -35,7 +36,11 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`${s.header} ${slug ? s.dark : ""} ${isScrolled ? s.scrolled : ""}`}>
+    <header
+      className={`${s.header} ${params.slug && isCatalogPage ? s.dark : ""} ${
+        isScrolled ? s.scrolled : ""
+      }`}
+    >
       <Container className={s.container}>
         <div className={s.topBlock}>
           <Link href="/">{mainLogo}</Link>
