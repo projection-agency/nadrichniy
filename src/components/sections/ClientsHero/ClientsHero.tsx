@@ -5,8 +5,8 @@ export default function ClientsHero() {
   return (
     <section className={s.section}>
       <Image
-        src={"/images/bg_clients_hero.jpg"}
-        width={1920}
+        src={"/images/client_bg.svg"}
+        width={750}
         height={328}
         alt="house"
         className={s.bg}

@@ -32,6 +32,8 @@
       height: max-content;
       padding: 0.63vw 1.04vw;
       border-radius: 5.21vw;
+      transition: background-color 300ms ease-in-out;
+      background-color: transparent;
 
       a {
         display: block;
@@ -39,6 +41,10 @@
         color: var(--text-light);
         transition: color 500ms ease-in-out;
       }
+    }
+
+    li:hover {
+      background-color: var(--background-semi-transparent);
     }
 
     li.active {
@@ -83,17 +89,22 @@
 
       font-size: 0.6vw;
       font-weight: 500;
+      /* transition: background-color 300ms ease-in-out; */
+      transition: color, background-color 300ms, 300ms ease-in-out, ease-in-out;
       color: var(--text-primary);
       background-color: var(--background-light);
-      transition: background-color 500ms ease-in-out;
-      transition: color 500ms ease-in-out;
+    }
+
+    .orderCallBtn:hover {
+      background-color: var(--button-hover-primary);
+      color: rgba(246, 246, 246, 1);
     }
   }
 }
 
-
-
-.header.scrolled,.header.dark {
+.header.scrolled,
+.header.dark {
+  background-color: #ffffff;
   .topBlock {
     svg {
       fill: #000000;
@@ -105,6 +116,14 @@
       a {
         color: var(--text-gray-dark);
       }
+    }
+
+    li:hover {
+      background-color: rgba(223, 223, 223, 1);
+    }
+
+    li.active {
+      background-color: rgba(223, 223, 223, 1);
     }
   }
 

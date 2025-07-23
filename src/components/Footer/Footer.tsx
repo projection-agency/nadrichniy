@@ -4,12 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import FooterContactItem from "../FooterContactItem/FooterContactItem";
 const navLinks = [
-  "Головна",
-  "Про нас",
-  "Каталог",
-  "Новини",
-  "Клієнтам",
-  "Контакти",
+  { title: "Головна", href: "/" },
+  { title: "Каталог", href: "/catalog" },
+  { title: "Блог", href: "/blog" },
+  { title: "Клієнтам", href: "/clients" },
+  { title: "Контакти", href: "/contacts" },
 ];
 
 const contactsData = [
@@ -55,10 +54,10 @@ const Footer = () => {
           <div className={s.rightBlock}>
             <nav>
               <ul className={s.navigationList}>
-                {navLinks.map((value, idx) => {
+                {navLinks.map((item, idx) => {
                   return (
                     <li className={s.navigationItem} key={idx}>
-                      <Link href={""}>{value}</Link>
+                      <Link href={`${item.href}`}>{item.title}</Link>
                     </li>
                   );
                 })}
@@ -99,9 +98,14 @@ const Footer = () => {
         </div>
         <div className={s.privacyPolicyCont}>
           <p>2025© :ЖК Надрічний. Всі права захищені</p>
-          <Link className={s.link} href={"#"}>Політика конфіденційності</Link>
+          <Link className={s.link} href={"#"}>
+            Політика конфіденційності
+          </Link>
           <p>
-            Розробка сайту <Link className={s.link} href={"#"}>Before/After</Link>
+            Розробка сайту{" "}
+            <Link className={s.link} href={"#"}>
+              Before/After
+            </Link>
           </p>
         </div>
       </Container>

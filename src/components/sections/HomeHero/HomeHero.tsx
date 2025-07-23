@@ -13,7 +13,7 @@ const HomeHero = () => {
           height={2160}
           src={"/images/home-hero.jpg"}
         />
-        <h1>Надрічний</h1>
+        <h1>Житловий масив Надрічний</h1>
         <Link href={"#"} className={s.catalogPageLink}>
           Дивитись квартири
           <span>

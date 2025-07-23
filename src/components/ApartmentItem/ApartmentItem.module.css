@@ -100,6 +100,11 @@
           display: flex;
           align-items: center;
           gap: 0.63vw;
+
+          img {
+            width: 1.98vw;
+            height: 1.98vw;
+          }
         }
       }
     }

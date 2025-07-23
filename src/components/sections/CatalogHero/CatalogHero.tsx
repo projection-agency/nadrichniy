@@ -14,7 +14,7 @@ const CatalogHero = () => {
           height={2160}
           src={"/images/home-hero.jpg"}
         />
-        <h1>Надрічний</h1>
+        <h1>Житловий масив Надрічний</h1>
         <Link
           className={s.link}
           href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"

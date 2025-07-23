@@ -114,3 +114,11 @@ button {
   border: 1px solid var(--brand-primary);
   border-radius: 1.56vw;
 }
+
+.rangeCont .range-slider .range-slider__range:hover {
+  box-shadow: rgba(88, 88, 88, 0.3) 0px 2px 8px 0px;
+}
+
+.rangeCont .range-slider .range-slider__thumb:hover {
+  box-shadow: rgba(88, 88, 88, 0.3) 0px 2px 8px 0px;
+}

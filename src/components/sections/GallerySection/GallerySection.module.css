@@ -50,6 +50,7 @@
         overflow-y: scroll;
         scroll-behavior: smooth;
         .paginationItem {
+          cursor: pointer;
           display: flex;
           justify-content: center;
           align-items: center;

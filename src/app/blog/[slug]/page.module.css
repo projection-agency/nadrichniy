@@ -32,7 +32,7 @@
       }
 
       .timeBlock {
-        width: 50%;
+        width: max-content;
         display: flex;
         align-items: center;
         gap: 1.25vw;
@@ -52,6 +52,7 @@
 
   .content {
     padding-top: 3.13vw;
+    padding-bottom: 4.17vw;
 
     p {
       font-size: 0.94vw;
