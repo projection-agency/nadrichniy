@@ -22,6 +22,9 @@ export default function NewsItem({ item }: { item: NewItem }) {
     }
   };
 
+  const date = new Date(item.date);
+  const formatted = date.toLocaleDateString("uk-UA");
+
   return (
     <div key={item.id} className={s.newsItem}>
       <Link href={`/blog/${item.slug}`}>
@@ -43,7 +46,7 @@ export default function NewsItem({ item }: { item: NewItem }) {
             </span>
             {item.reading_time} хвилин читання
           </p>
-          <p className={s.date}>{item.date}</p>
+          <p className={s.date}>{formatted}</p>
         </div>
         <Image
           className={s.image}

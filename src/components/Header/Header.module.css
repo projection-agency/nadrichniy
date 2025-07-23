@@ -6,6 +6,8 @@
   left: 0;
   z-index: 99999999;
   width: 100%;
+  transition: background-color 300ms ease-in-out;
+  background-color: transparent;
 
   .container {
     display: flex;
@@ -89,8 +91,7 @@
 
       font-size: 0.6vw;
       font-weight: 500;
-      /* transition: background-color 300ms ease-in-out; */
-      transition: color, background-color 300ms, 300ms ease-in-out, ease-in-out;
+      transition: color 300ms ease-in-out, background-color 300ms ease-in-out;
       color: var(--text-primary);
       background-color: var(--background-light);
     }

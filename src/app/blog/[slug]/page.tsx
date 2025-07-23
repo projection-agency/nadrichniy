@@ -242,7 +242,7 @@ const BlogPostPage = () => {
                         console.log(item);
                         return (
                           <li key={idx}>
-                            <Link href={`#${item.id}`}>{item.text}</Link>
+                            <a href={`#${item.id}`}>{item.text}</a>
                           </li>
                         );
                       })}

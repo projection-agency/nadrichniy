@@ -55,10 +55,9 @@
           cursor: pointer;
           padding: 0.73vw 1.04vw;
           border-radius: 5.21vw;
-          transition: color 300ms ease-in-out;
           background-color: rgba(250, 248, 248, 1);
-          transition: background-color, color 300ms, 300ms ease-in-out,
-            ease-in-out;
+          transition: color 300ms ease-in-out,
+            background-color 300ms ease-in-out;
 
           font-size: 0.83vw;
           input {
