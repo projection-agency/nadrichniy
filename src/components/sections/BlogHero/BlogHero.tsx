@@ -54,7 +54,7 @@ export default function BlogHero() {
     <section className={s.section}>
       <div className={s.topBlock}>
         <Image
-          src={"/images/blog_bg_desktop.jpg"}
+          src={"/images/blog_bg.svg"}
           width={1920}
           height={328}
           alt="background"

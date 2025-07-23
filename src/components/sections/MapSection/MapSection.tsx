@@ -144,7 +144,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-type Location = {
+type  Location = {
   title: string;
   coordinates: number[][] | number[];
 };
@@ -201,7 +201,7 @@ const MapSection = () => {
 
     leafletMapRef.current = L.map(mapRef.current, {
       scrollWheelZoom: false,
-    }).setView([48.9407815, 24.7164726], 13);
+    }).setView([48.9407815, 24.7164726], 14);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
@@ -255,7 +255,7 @@ const MapSection = () => {
               icon: getCustomIcon(item.title),
             })
               .addTo(markers)
-              .bindPopup(title);
+              .bindPopup(checkLocationTitle(title));
           } else {
             return;
           }

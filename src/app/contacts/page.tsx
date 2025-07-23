@@ -19,7 +19,7 @@ export default function ContactsPage() {
     <div>
       <section className={s.section}>
         <Image
-          src={"/images/contacts_page_bg.jpg"}
+          src={"/images/contacts_bg.svg"}
           width={1920}
           height={328}
           alt="background"

@@ -4,7 +4,6 @@ import s from "./NewsItem.module.css";
 import Link from "next/link";
 
 export default function NewsItem({ item }: { item: NewItem }) {
-
   const togglePostType = () => {
     switch (item.categories[0]) {
       case 8: {
@@ -22,34 +21,41 @@ export default function NewsItem({ item }: { item: NewItem }) {
       }
     }
   };
-  
+
   return (
     <div key={item.id} className={s.newsItem}>
-      <p className={s.subtitle}>{togglePostType()}</p>
-      <h3>{item.title.rendered}</h3>
-      <p
-        className={s.content}
-        dangerouslySetInnerHTML={{ __html: item.excerpt.rendered }}
-      ></p>
-      <div className={s.timeAndDate}>
-        <p className={s.readingTime}>
-          <span>
-            <Image src={"/icons/clock.svg"} width={24} height={24} alt="icon" />
-          </span>
-          {item.reading_time} хвилин читання
-        </p>
-        <p className={s.date}>{item.date}</p>
-      </div>
-      <Image
-        className={s.image}
-        width={424}
-        height={429}
-        src={"/images/interier.jpg"}
-        alt="image"
-      />
-      <Link href={`/blog/${item.slug}`} className={s.articleLink}>
-        Читати статтю
-        {swiperArrow}
+      <Link href={`/blog/${item.slug}`}>
+        <p className={s.subtitle}>{togglePostType()}</p>
+        <h3>{item.title.rendered}</h3>
+        <p
+          className={s.content}
+          dangerouslySetInnerHTML={{ __html: item.excerpt.rendered }}
+        ></p>
+        <div className={s.timeAndDate}>
+          <p className={s.readingTime}>
+            <span>
+              <Image
+                src={"/icons/clock.svg"}
+                width={24}
+                height={24}
+                alt="icon"
+              />
+            </span>
+            {item.reading_time} хвилин читання
+          </p>
+          <p className={s.date}>{item.date}</p>
+        </div>
+        <Image
+          className={s.image}
+          width={424}
+          height={429}
+          src={"/images/interier.jpg"}
+          alt="image"
+        />
+        <Link href={`/blog/${item.slug}`} className={s.articleLink}>
+          Читати статтю
+          {swiperArrow}
+        </Link>
       </Link>
     </div>
   );

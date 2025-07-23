@@ -52,11 +52,13 @@
         gap: 0.31vw;
 
         label {
+          cursor: pointer;
           padding: 0.73vw 1.04vw;
           border-radius: 5.21vw;
           transition: color 300ms ease-in-out;
           background-color: rgba(250, 248, 248, 1);
-          transition: background-color 300ms ease-in-out;
+          transition: background-color, color 300ms, 300ms ease-in-out,
+            ease-in-out;
 
           font-size: 0.83vw;
           input {
@@ -67,6 +69,11 @@
         }
 
         label.selected {
+          background-color: var(--text-gray-dark);
+          color: var(--text-light);
+        }
+
+        label:hover {
           background-color: var(--text-gray-dark);
           color: var(--text-light);
         }
@@ -153,11 +160,11 @@
     .filterGroup:nth-child(4),
     .filterGroup:nth-child(5),
     .filterGroup:nth-child(6) {
-        .rangeValuesCont{
-          p{
-            justify-content: space-between;
-          }
+      .rangeValuesCont {
+        p {
+          justify-content: space-between;
         }
+      }
     }
   }
 }

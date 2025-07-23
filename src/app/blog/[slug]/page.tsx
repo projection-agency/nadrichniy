@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import extractHeadingsWithIds from "@/utils/extractHeadingsWithIds";
 import extractImagesFromHtml from "@/utils/extractImagesFromHtml";
+
 const ContactsSection = dynamic(
   () => import("@/components/sections/ContactsSection/ContactsSection"),
   { ssr: false }
@@ -151,6 +152,8 @@ const BlogPostPage = () => {
   if (!postData) {
     return;
   }
+  const date = new Date(postData.date);
+  const formatted = date.toLocaleDateString("uk-UA");
 
   const { images, htmlWithoutImages } = extractImagesFromHtml(
     postData.content.rendered
@@ -196,7 +199,7 @@ const BlogPostPage = () => {
                 <p className={s.readingTime}>
                   <span>{clock}</span> {postData.reading_time} хвилин читання
                 </p>
-                <p>{postData.date}</p>
+                <p>{formatted}</p>
               </div>
             </div>
           </Container>

@@ -56,7 +56,7 @@ const ContactsSection = () => {
 
     leafletMapRef.current = L.map(mapRef.current, {
       scrollWheelZoom: false,
-    }).setView([48.9407815, 24.7164726], 13);
+    }).setView([48.9407815, 24.7164726], 14);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
