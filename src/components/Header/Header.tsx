@@ -11,7 +11,7 @@ const navLinks = [
   { title: "Каталог", link: "/catalog" },
   { title: "Блог", link: "/blog" },
   { title: "Клієнтам", link: "/clients" },
-  { title: "Контакти", link: "#" },
+  { title: "Контакти", link: "/contacts" },
 ];
 
 const Header = () => {
