@@ -8,18 +8,18 @@ import Link from "next/link";
 
 const navLinks = [
   { title: "Головна", link: "/" },
-  { title: "Про нас", link: "#" },
   { title: "Каталог", link: "/catalog" },
-  { title: "Новини", link: "#" },
-  { title: "Клієнтам", link: "#" },
+  { title: "Блог", link: "/blog" },
+  { title: "Клієнтам", link: "/clients" },
   { title: "Контакти", link: "#" },
 ];
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const params = useParams();
-  const isCatalogPage = pathname.includes("/catalog")
-  
+  const isCatalogPage = pathname.includes("/catalog");
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {

@@ -1,0 +1,14 @@
+.section {
+  .topBlock {
+    margin-bottom: 3.13vw;
+    h2 {
+      font-size: 3.33vw;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -1.92px;
+
+      color: rgba(25, 27, 26, 1);
+    }
+  }
+}

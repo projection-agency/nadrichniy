@@ -1,0 +1,19 @@
+import s from "./ClientsHero.module.css";
+import Container from "@/components/Container/Container";
+import Image from "next/image";
+export default function ClientsHero() {
+  return (
+    <section className={s.section}>
+      <Image
+        src={"/images/bg_clients_hero.jpg"}
+        width={1920}
+        height={328}
+        alt="house"
+        className={s.bg}
+      />
+      <Container>
+        <h1>Умови придбання</h1>
+      </Container>
+    </section>
+  );
+}

@@ -1,0 +1,10 @@
+.container {
+  padding-top: 5.21vw;
+  padding-bottom: 8.33vw;
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.83vw;
+  }
+}
