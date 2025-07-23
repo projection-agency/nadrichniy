@@ -276,17 +276,16 @@ const MapSection = () => {
     if (value == "kindergarten") {
       return "Садочок";
     }
-
     if (value == "hospital") {
       return "Лікарня";
     }
-
     if (value == "shop") {
       return "Магазин";
     }
     if (value == "mall") {
       return "Торговий центр";
     }
+    return ""
   };
 
   return (
