@@ -13,15 +13,17 @@ export type FAQ = {
   id: number;
 };
 export default function CLientAccordion({ items }: { items: FAQ[] }) {
-  const providerValue = useAccordionProvider();
+  const providerValue = useAccordionProvider({
+    transition: true,
+    transitionTimeout: 300,
+  });
   return (
     <AccordionProvider value={providerValue}>
-      <Accordion className={s.accordion}>
+      <Accordion transition transitionTimeout={300} className={s.accordion}>
         {items.map((item, idx) => {
-            return <ClientAccordionItem key={idx} item={item}/>
+          return <ClientAccordionItem key={idx} item={item} />;
         })}
       </Accordion>
     </AccordionProvider>
   );
 }
-
