@@ -2,7 +2,7 @@
 import Container from "@/components/Container/Container";
 import s from "./FaqSection.module.css";
 import { useState, useEffect } from "react";
-// import ClientAccordion from "@/components/ClientAccordion/ClientAccordion";
+import ClientAccordion from "@/components/ClientAccordion/ClientAccordion";
 export default function FaqSection() {
   const [faqData, setFaqData] = useState([]);
 
@@ -28,7 +28,7 @@ export default function FaqSection() {
         <div className={s.topBlock}>
           <h2>Поширені питання</h2>
         </div>
-        {/* {faqData ? <ClientAccordion items={faqData} /> : <p>please wait</p>} */}
+        {faqData ? <ClientAccordion items={faqData} /> : <p>please wait</p>}
       </Container>
     </section>
   );
