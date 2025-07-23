@@ -1,4 +1,6 @@
 .section {
+  padding-bottom: 3.13vw;
+  
   .topBlock {
     margin-bottom: 3.13vw;
     h2 {
