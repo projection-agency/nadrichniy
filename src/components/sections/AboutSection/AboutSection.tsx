@@ -1,8 +1,11 @@
+"use client";
 import Container from "@/components/Container/Container";
 import Image from "next/image";
 import s from "./AboutSection.module.css";
+import { useState } from "react";
 
 const AboutSection = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   return (
     <section className={s.section}>
       <Container>
@@ -62,6 +65,28 @@ const AboutSection = () => {
             </div>
           </li>
 
+          {windowWidth <= 1024 ? (
+            <li>
+              <Image
+                src={"/images/bg_about1.jpg"}
+                width={820}
+                height={780}
+                alt="image"
+              />
+            </li>
+          ) : (
+            ""
+          )}
+
+          {/* <li>
+            <Image
+              src={"/images/bg_about1.jpg"}
+              width={820}
+              height={780}
+              alt="image"
+            />
+          </li> */}
+
           <li>
             <p className={s.cardTitle}>
               <span>Ми про комфорт, а не про ефекти</span> — тільки спокійна
@@ -81,14 +106,18 @@ const AboutSection = () => {
             </div>
           </li>
 
-          <li>
-            <Image
-              src={"/images/bg_about1.jpg"}
-              width={820}
-              height={780}
-              alt="image"
-            />
-          </li>
+          {windowWidth >= 1024 ? (
+            <li>
+              <Image
+                src={"/images/bg_about1.jpg"}
+                width={820}
+                height={780}
+                alt="image"
+              />
+            </li>
+          ) : (
+            ""
+          )}
         </ul>
       </Container>
     </section>
