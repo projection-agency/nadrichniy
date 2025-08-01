@@ -101,3 +101,61 @@
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .section {
+    height: 165.87vw;
+    padding-top: 19.2vw;
+    padding-bottom: 8.8vw;
+    border-bottom-left-radius: 8.53vw;
+    border-bottom-right-radius: 8.53vw;
+
+    .background {
+      width: 348.27vw !important;
+      height: 185.07vw;
+      left: -121.13vw;
+      top: -4.53vw;
+    }
+
+    .container {
+      padding-top: 4.27vw;
+    }
+
+    h1 {
+      width: 92vw;
+      margin-bottom: 10.67vw;
+
+      font-size: 12vw;
+      letter-spacing: -1.35px;
+    }
+
+    .catalogPageLink {
+      gap: 3.2vw;
+      padding: 2.13vw 2.13vw 2.13vw 5.33vw;
+      border-radius: 26.67vw;
+
+      font-size: 4.27vw;
+
+      span {
+        width: 10.67vw;
+        height: 10.67vw;
+
+        svg {
+          width: 6.4vw !important;
+          height: 6.4vw !important;
+        }
+      }
+    }
+
+    .anchorLinkCont {
+      padding: 6.4vw;
+      border-radius: 6.4vw;
+      gap: 4.27vw;
+
+      font-size: 3.73vw;
+
+      p {
+      }
+    }
+  }
+}
