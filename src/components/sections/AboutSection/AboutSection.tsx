@@ -2,10 +2,22 @@
 import Container from "@/components/Container/Container";
 import Image from "next/image";
 import s from "./AboutSection.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AboutSection = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  console.log(windowWidth);
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return window.removeEventListener("resize", () => {
+      console.log("removed");
+    });
+  }, []);
   return (
     <section className={s.section}>
       <Container>
