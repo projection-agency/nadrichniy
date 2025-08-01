@@ -122,6 +122,7 @@ const PlanningSection = () => {
                 </div>
               </div>
             </div>
+            
             <div className={s.apartmentPlanning}>
               <div className={s.topBlock}>
                 <div className={s.planningToggler}>
