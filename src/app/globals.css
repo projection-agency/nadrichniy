@@ -122,3 +122,15 @@ button {
 .rangeCont .range-slider .range-slider__thumb:hover {
   box-shadow: rgba(88, 88, 88, 0.3) 0px 2px 8px 0px;
 }
+
+@media screen and (max-width: 1024px) {
+  .rangeCont .range-slider .range-slider__thumb {
+    width: 6.4vw;
+    height: 2.67vw;
+    border-radius: 8vw;
+  }
+
+  .rangeCont .range-slider .range-slider__range {
+    height: 0.37vw;
+  }
+}

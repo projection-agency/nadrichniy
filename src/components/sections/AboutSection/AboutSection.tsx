@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 const AboutSection = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  console.log(windowWidth);
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -89,15 +88,6 @@ const AboutSection = () => {
           ) : (
             ""
           )}
-
-          {/* <li>
-            <Image
-              src={"/images/bg_about1.jpg"}
-              width={820}
-              height={780}
-              alt="image"
-            />
-          </li> */}
 
           <li>
             <p className={s.cardTitle}>

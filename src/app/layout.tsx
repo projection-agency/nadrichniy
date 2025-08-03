@@ -4,7 +4,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import StoreProvider from "@/components/StoreProvider/StoreProvider";
 import { Onest } from "next/font/google";
-
+import { ModalProvider } from "@/components/ModalContext";
 
 const onest = Onest({
   subsets: ["latin"],
@@ -21,13 +21,15 @@ export default function RootLayout({
 }>) {
   return (
     <StoreProvider>
-      <html lang="ua" className={onest.className}>
-        <body>
-          <Header />
-          {children}
-          <Footer />
-        </body>
-      </html>
+      <ModalProvider>
+        <html lang="ua" className={onest.className}>
+          <body>
+            <Header />
+            {children}
+            <Footer />
+          </body>
+        </html>
+      </ModalProvider>
     </StoreProvider>
   );
 }

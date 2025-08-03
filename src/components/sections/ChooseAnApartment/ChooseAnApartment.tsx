@@ -16,6 +16,7 @@ import {
   selectYear,
 } from "@/Redux/apartmentSlice/selectors";
 import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
+import { useModal } from "@/components/ModalContext";
 
 const ChooseAnApartment = () => {
   const [apartmentData, setApartmentData] = useState([]);
@@ -26,6 +27,8 @@ const ChooseAnApartment = () => {
   const selectDelivery = useSelector(selectYear);
   const pathname = usePathname();
   const endSliceNumber = pathname.includes("/catalog") ? 9 : 3;
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { openModal } = useModal();
 
   useEffect(() => {
     const selectedDeliveryParams = `delivery_min=${selectDelivery[0]}-01-01&delivery_max=${selectDelivery[1]}-12-31`;
@@ -65,6 +68,18 @@ const ChooseAnApartment = () => {
     selectDelivery,
   ]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    console.log(windowWidth)
+
+    return window.removeEventListener("resize", () => {});
+  }, []);
+
   return (
     <section className={s.section}>
       <Container>
@@ -99,8 +114,9 @@ const ChooseAnApartment = () => {
               Знижка при повній оплаті
             </li>
           </ul>
+          <button onClick={() => openModal("formA")}>Відкрити фільтр</button>
         </div>
-        <ApartmentFilter></ApartmentFilter>
+        {windowWidth >= 1024 ? <ApartmentFilter /> : ""}
         <ul className={`${s.apartmentsList} `}>
           {apartmentData.slice(0, endSliceNumber).map((item: Apartment) => {
             return <ApartmentItem item={item} key={item.id} />;

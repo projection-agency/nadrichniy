@@ -26,11 +26,73 @@
         line-height: 1;
       }
     }
+
+    button {
+      display: none;
+    }
   }
 
   .apartmentsList {
     display: flex;
     flex-wrap: wrap;
     gap: 0.83vw;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-top: 21.33vw;
+
+    .sectionHead {
+      margin-bottom: 4.27vw;
+      flex-direction: column;
+      gap: 8.53vw;
+
+      h2 {
+        font-size: 8.53vw;
+      }
+
+      .advantages {
+        flex-wrap: wrap;
+        column-gap: 5.33vw;
+        row-gap: 2.13vw;
+
+        li {
+          gap: 3.2vw;
+          font-size: 3.73vw;
+          img {
+            width: 8.53vw;
+            height: 8.53vw;
+          }
+        }
+      }
+
+      button {
+        height: 12.8vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0.4vw solid var(--brand-primary);
+        border-radius: 26.67vw;
+        transition: background-color 300ms ease-in-out;
+        background-color: transparent;
+
+        font-size: 4.27vw;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        color: var(--brand-primary);
+      }
+
+      button:hover {
+        background-color: var(--brand-primary);
+        color: var(--text-light);
+      }
+    }
+
+    .apartmentsList {
+      flex-direction: column;
+      gap: 3.2vw;
+    }
   }
 }
