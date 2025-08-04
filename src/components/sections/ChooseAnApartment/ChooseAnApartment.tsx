@@ -19,15 +19,17 @@ import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
 import { useModal } from "@/components/ModalContext";
 
 const ChooseAnApartment = () => {
+  const pathname = usePathname();
   const [apartmentData, setApartmentData] = useState([]);
+  const [endSliceNumber, setEndSliceNumber] = useState(
+    pathname.includes("/catalog") ? 9 : 3
+  );
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const selectedArea = useSelector(selectArea);
   const selectedFloor = useSelector(selectFloor);
   const selectedRoomTypes = useSelector(selectRoomTypes);
   const selectedHouses = useSelector(selectHouseNumbers);
   const selectDelivery = useSelector(selectYear);
-  const pathname = usePathname();
-  const endSliceNumber = pathname.includes("/catalog") ? 9 : 3;
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { openModal } = useModal();
 
   useEffect(() => {
@@ -75,7 +77,7 @@ const ChooseAnApartment = () => {
 
     window.addEventListener("resize", handleResize);
 
-    console.log(windowWidth)
+    console.log(windowWidth);
 
     return window.removeEventListener("resize", () => {});
   }, []);
@@ -122,9 +124,35 @@ const ChooseAnApartment = () => {
             return <ApartmentItem item={item} key={item.id} />;
           })}
         </ul>
+        {windowWidth <= 1024 ? (
+          endSliceNumber <= apartmentData.length ? (
+            <button
+              onClick={() => setEndSliceNumber((prev) => prev + 3)}
+              className={s.paginationBtn}
+            >
+              Дивитися ще {arrow}
+            </button>
+          ) : (
+            <button className={s.paginationBtn}>Наразі це все</button>
+          )
+        ) : (
+          ""
+        )}
       </Container>
     </section>
   );
 };
 
 export default ChooseAnApartment;
+
+const arrow = (
+  <svg
+    width="10"
+    height="9"
+    viewBox="0 0 10 9"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M0 4.5H9M9 4.5L4.76471 0.5M9 4.5L4.76471 8.5" />
+  </svg>
+);
