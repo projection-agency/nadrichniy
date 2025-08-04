@@ -1,0 +1,215 @@
+.filter {
+  position: fixed;
+  top: 24vw;
+  left: 4.265vw;
+  z-index: 9999999999;
+  width: 91.47vw;
+  margin: 0 auto;
+  padding: 8.53vw 5.33vw;
+  border-radius: 8.53vw;
+  background-color: var(--background-white);
+
+  .closeBtn {
+    position: absolute;
+    z-index: 2;
+    top: 4.27vw;
+    right: 4.27vw;
+    width: 10.67vw;
+    height: 10.67vw;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(246, 246, 246, 1);
+
+    svg {
+      width: 5.33vw;
+      height: 5.33vw;
+      stroke: rgba(101, 109, 122, 1);
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6.4vw;
+    margin-bottom: 6.4vw;
+
+    a {
+      height: max-content;
+      margin-left: auto;
+      padding: 1.25vw 1.67vw;
+      border-radius: 5.21vw;
+
+      color: #ffffff;
+      transition: background-color 300ms ease-in-out;
+      background-color: var(--brand-primary);
+
+      svg {
+        margin-left: 0.52vw;
+        transition: width 300ms ease-in-out;
+        width: 0.47vw;
+        stroke: var(--text-light);
+      }
+    }
+
+    a:hover {
+      background-color: var(--brand-primary-hover);
+
+      svg {
+        width: 0.63vw;
+      }
+    }
+
+    .filterGroup {
+      width: 100%;
+      .filterOption {
+        display: block;
+        margin-bottom: 4.27vw;
+
+        font-weight: 600;
+        font-size: 3.73vw;
+        text-transform: uppercase;
+        color: rgba(25, 27, 26, 1);
+        opacity: 0.6;
+      }
+
+      .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.13vw;
+
+        label {
+          width: 39.33vw;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          padding: 3.73vw 5.33vw;
+          border-radius: 26.67vw;
+          background-color: rgba(250, 248, 248, 1);
+          transition: color 300ms ease-in-out,
+            background-color 300ms ease-in-out;
+
+          font-size: 4.27vw;
+          input {
+            visibility: hidden;
+            width: 0;
+            height: 0;
+          }
+        }
+
+        label.selected {
+          background-color: var(--text-gray-dark);
+          color: var(--text-light);
+        }
+
+        label:hover {
+          background-color: var(--text-gray-dark);
+          color: var(--text-light);
+        }
+      }
+
+      .rangeValuesCont {
+        width: 100%;
+        display: flex;
+        background-color: rgba(250, 248, 248, 1);
+        border-radius: 26.67vw;
+
+        p {
+          width: 50%;
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+          gap: 3.2vw;
+          padding: 3.73vw 10.67vw 3.73vw 5.33vw;
+
+          font-size: 4.27vw;
+          font-weight: 600;
+          line-height: 1;
+          color: var(--text-gray-dark);
+
+          .min,
+          .max {
+            font-size: 3.2vw;
+            font-weight: 600;
+            color: var(--text-gray-dark);
+            text-transform: uppercase;
+            opacity: 0.6;
+          }
+
+          .area {
+            width: 13.33vw;
+          }
+
+          .floor {
+            width: 5.33vw;
+          }
+        }
+
+        p:first-child {
+          border-right: 1px solid rgba(131, 131, 131, 1);
+        }
+      }
+
+      .range {
+        position: relative;
+        bottom: 1.22vw;
+        padding: 0 5.33vw 0 5.33vw;
+      }
+    }
+  }
+
+  .form.onCatalogPage {
+    flex-wrap: wrap;
+
+    a {
+      margin-left: 0;
+    }
+
+    .roomFilter {
+      .options {
+        label:last-child {
+          display: flex;
+          justify-content: center;
+          flex-grow: 1;
+        }
+      }
+    }
+
+    .houseFilter {
+      .options {
+        label {
+          display: flex;
+          justify-content: center;
+          align-items: baseline;
+          width: 25.33vw;
+        }
+      }
+    }
+  }
+
+  .falseSubmitBtn {
+    width: 100%;
+    height: 12.8vw;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    border: 0.54vw solid var(--brand-primary);
+    border-radius: 8.53vw;
+
+    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+    background-color: transparent;
+    color: var(--brand-primary);
+    font-size: 4.27vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .falseSubmitBtn:hover {
+    background-color: var(--brand-primary);
+    color: var(--text-light);
+  }
+}

@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 const ApartmentItem = ({ item }: { item: Apartment }) => {
-  const router = useRouter();
   const pathname = usePathname();
   console.log(pathname);
   return (
@@ -22,6 +21,48 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
         <div>
           <p>Запланована здача</p>
           {item.Schedule}
+          {window.innerWidth <= 1024 ? (
+            <ul className={s.advantages}>
+              {item.Postponement == "1" ? (
+                <li>
+                  <Image
+                    src={"/icons/advantage1.svg"}
+                    width={38}
+                    height={38}
+                    alt="icon"
+                  />
+                </li>
+              ) : (
+                ""
+              )}
+              {item.Isoselya == "1" ? (
+                <li>
+                  <Image
+                    src={"/icons/advantage2.svg"}
+                    width={38}
+                    height={38}
+                    alt="icon"
+                  />
+                </li>
+              ) : (
+                ""
+              )}
+              {item.Discount == "1" ? (
+                <li>
+                  <Image
+                    src={"/icons/advantage3.svg"}
+                    width={38}
+                    height={38}
+                    alt="icon"
+                  />
+                </li>
+              ) : (
+                ""
+              )}
+            </ul>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className={s.bottomBlock}>
@@ -43,44 +84,48 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
             Дізнатись вартість
             {arrow}
           </Link>
-          <ul className={s.advantages}>
-            {item.Postponement == "1" ? (
-              <li>
-                <Image
-                  src={"/icons/advantage1.svg"}
-                  width={38}
-                  height={38}
-                  alt="icon"
-                />
-              </li>
-            ) : (
-              ""
-            )}
-            {item.Isoselya == "1" ? (
-              <li>
-                <Image
-                  src={"/icons/advantage2.svg"}
-                  width={38}
-                  height={38}
-                  alt="icon"
-                />
-              </li>
-            ) : (
-              ""
-            )}
-            {item.Discount == "1" ? (
-              <li>
-                <Image
-                  src={"/icons/advantage3.svg"}
-                  width={38}
-                  height={38}
-                  alt="icon"
-                />
-              </li>
-            ) : (
-              ""
-            )}
-          </ul>
+          {window.innerWidth >= 1024 ? (
+            <ul className={s.advantages}>
+              {item.Postponement == "1" ? (
+                <li>
+                  <Image
+                    src={"/icons/advantage1.svg"}
+                    width={38}
+                    height={38}
+                    alt="icon"
+                  />
+                </li>
+              ) : (
+                ""
+              )}
+              {item.Isoselya == "1" ? (
+                <li>
+                  <Image
+                    src={"/icons/advantage2.svg"}
+                    width={38}
+                    height={38}
+                    alt="icon"
+                  />
+                </li>
+              ) : (
+                ""
+              )}
+              {item.Discount == "1" ? (
+                <li>
+                  <Image
+                    src={"/icons/advantage3.svg"}
+                    width={38}
+                    height={38}
+                    alt="icon"
+                  />
+                </li>
+              ) : (
+                ""
+              )}
+            </ul>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </li>

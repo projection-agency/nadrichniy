@@ -190,8 +190,8 @@
         background-color: #ffffff;
 
         svg {
-          width: 6.4vw;
-          height: 6.4vw;
+          width: 6vw;
+          height: 6vw;
           transition: fill 30ms ease-in-out;
           fill: rgba(25, 27, 26, 1);
         }
@@ -213,6 +213,14 @@
           transition: fill 30ms ease-in-out;
           fill: var(--text-light);
         }
+      }
+    }
+  }
+
+  .header.scrolled {
+    .mobMenuBlock {
+      a {
+        background-color: rgba(246, 246, 246, 1);
       }
     }
   }

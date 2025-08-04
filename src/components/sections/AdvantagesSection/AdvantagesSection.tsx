@@ -15,6 +15,7 @@ const AdvantagesSection = () => {
                 height={92}
                 alt="icon"
               />
+              <h3 className={s.mobileAdvantage}>Місце для всіх поколінь</h3>
               <div className={s.content}>
                 <h3 className={s.advantage}>Місце для всіх поколінь</h3>
                 <p className={s.advantageDescr}>
@@ -31,6 +32,10 @@ const AdvantagesSection = () => {
                 height={92}
                 alt="icon"
               />
+              <h3 className={s.mobileAdvantage}>
+                Свіже повітря та зелене оточення
+              </h3>
+
               <div className={s.content}>
                 <h3 className={s.advantage}>
                   Свіже повітря та зелене оточення
@@ -49,6 +54,8 @@ const AdvantagesSection = () => {
                 height={92}
                 alt="icon"
               />
+              <h3 className={s.mobileAdvantage}>Просто й логічно</h3>
+
               <div className={s.content}>
                 <h3 className={s.advantage}>Просто й логічно</h3>
                 <p className={s.advantageDescr}>
@@ -75,6 +82,10 @@ const AdvantagesSection = () => {
                 height={92}
                 alt="icon"
               />
+              <h3 className={s.mobileAdvantage}>
+                Захопливі краєвиди - тут видно вовчинецькі гори{" "}
+              </h3>
+
               <div className={s.content}>
                 <h3 className={s.advantage}>
                   Захопливі краєвиди - тут видно вовчинецькі гори{" "}
@@ -100,6 +111,8 @@ const AdvantagesSection = () => {
                 height={92}
                 alt="icon"
               />
+              <h3 className={s.mobileAdvantage}>Все зроблено для життя</h3>
+
               <div className={s.content}>
                 <h3 className={s.advantage}>Все зроблено для життя</h3>
                 <p className={s.advantageDescr}>
@@ -116,6 +129,7 @@ const AdvantagesSection = () => {
                 height={92}
                 alt="icon"
               />
+              <h3 className={s.mobileAdvantage}>Якісна забудова</h3>
               <div className={s.content}>
                 <h3 className={s.advantage}>Якісна забудова</h3>
                 <p className={s.advantageDescr}>

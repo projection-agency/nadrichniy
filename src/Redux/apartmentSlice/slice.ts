@@ -52,7 +52,7 @@ const date = new Date();
 
 const year = date.getFullYear();
 
-const initialState: ApartmentState = {
+export const initialState: ApartmentState = {
     apartments: [],
     error: null,
     filters: {

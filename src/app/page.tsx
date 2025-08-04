@@ -1,6 +1,5 @@
 "use client";
 import HomeHero from "@/components/sections/HomeHero/HomeHero";
-import ChooseAnApartment from "@/components/sections/ChooseAnApartment/ChooseAnApartment";
 import AdvantagesSection from "@/components/sections/AdvantagesSection/AdvantagesSection";
 import GallerySection from "@/components/sections/GallerySection/GallerySection";
 import NewsSection from "@/components/sections/NewsSection/NewsSection";
@@ -21,6 +20,12 @@ const AboutSection = dynamic(
   () => import("@/components/sections/AboutSection/AboutSection"),
   { ssr: false }
 );
+
+const ChooseAnApartment = dynamic(
+  () => import("@/components/sections/ChooseAnApartment/ChooseAnApartment"),
+  { ssr: false }
+);
+
 export default function Home() {
   return (
     <div>
