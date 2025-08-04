@@ -29,6 +29,10 @@
           padding: 2.71vw;
           border-radius: 2.71vw;
 
+          .mobileAdvantage {
+            display: none;
+          }
+
           img {
             width: 4.79vw;
             height: 4.79vw;
@@ -57,6 +61,10 @@
             color: rgba(25, 27, 26, 1);
           }
 
+          .mobileAdvantage {
+            color: rgba(25, 27, 26, 1);
+          }
+
           .advantageDescr {
             color: var(--text-gray);
           }
@@ -66,6 +74,10 @@
           background-color: var(--brand-primary);
 
           .advantage {
+            color: #ffffff;
+          }
+
+          .mobileAdvantage {
             color: #ffffff;
           }
 
@@ -153,6 +165,81 @@
 
           img {
             margin-bottom: 4.17vw;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-top: 16vw;
+    padding-bottom: 16vw;
+
+    .container {
+      max-width: 91.47vw;
+
+      h2 {
+        margin-bottom: 8.53vw;
+        font-size: 8.53vw;
+        line-height: 1.1;
+        letter-spacing: -0.96px;
+        font-weight: 700;
+        text-align: left;
+      }
+
+      .advantagesCont {
+        flex-direction: column;
+        gap: 4.37vw;
+
+        .leftBlock,
+        .rightBlock {
+          flex-direction: column;
+          gap: 4.37vw;
+
+          .item:first-child,
+          .item:last-child,
+          .item:nth-child(2) {
+            width: 100%;
+            border-radius: 6.4vw;
+          }
+
+          .item {
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            row-gap: 3.2vw;
+            column-gap: 4.27vw;
+            padding: 6.4vw;
+            border-radius: 6.4vw;
+
+            img {
+              width: 11.73vw;
+              height: 11.73vw;
+            }
+
+            .mobileAdvantage {
+              display: inline-block;
+              width: 62.67vw;
+              font-size: 6.4vw;
+              font-style: normal;
+              font-weight: 600;
+              line-height: 1;
+              letter-spacing: -0.72px;
+            }
+
+            .content {
+              width: 100%;
+              .advantage {
+                display: none;
+              }
+
+              .advantageDescr {
+                font-size: 3.73vw;
+              }
+            }
           }
         }
       }
