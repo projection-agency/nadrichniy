@@ -163,3 +163,158 @@
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-top: 16vw;
+    padding-bottom: 16vw;
+
+    h2 {
+      margin-bottom: 8.53vw;
+      font-size: 8.53vw;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.96px;
+      text-align: left;
+    }
+
+    .mobileMapLegend {
+      width: 100%;
+      margin-bottom: 6.4vw;
+      padding: 5.33vw;
+      border-radius: 8.53vw;
+      background-color: #fff;
+
+      h3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32.53vw;
+        height: 8.53vw;
+        margin-bottom: 6.4vw;
+        border: 1px solid var(--brand-primary);
+        border-radius: 8.53vw;
+
+        font-size: 3.2vw;
+        font-style: normal;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.36px;
+        text-transform: uppercase;
+        color: var(--brand-primary);
+      }
+
+      .infoList {
+        margin-bottom: 5.33vw;
+        display: flex;
+        flex-direction: column;
+        gap: 5.33vw;
+        .item {
+          .title {
+            margin-bottom: 1.07vw;
+            display: flex;
+            align-items: center;
+            gap: 3.2vw;
+
+            font-size: 3.73vw;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 1;
+            color: rgba(25, 27, 26, 1);
+
+            .itemIcon {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 8.53vw;
+              height: 8.53vw;
+              border-radius: 50%;
+              background-color: rgba(64, 91, 231, 0.1);
+
+              img {
+                width: 4.27vw;
+                height: 4.27vw;
+              }
+            }
+          }
+
+          .itemDataList {
+            padding-left: 11.73vw;
+            .listItem {
+              a {
+                font-size: 4.27vw;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+                letter-spacing: -0.32px;
+                color: rgba(25, 27, 26, 1);
+              }
+            }
+          }
+        }
+      }
+
+      .orderVisisBtn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 14.93vw;
+        border-radius: 26.67vw;
+        transition: background-color 300ms ease-in-out;
+        background-color: var(--brand-primary);
+
+        font-size: 4.27vw;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        color: var(--text-light);
+      }
+
+      .orderVisisBtn:hover {
+        background-color: var(--brand-primary-hover);
+      }
+    }
+
+    .mapContainer {
+      height: 60.53vw;
+      border-radius: 9.44vw;
+
+      .mainMarker {
+        width: 8.53vw;
+        height: 8.53vw;
+      }
+    }
+
+    .googleMapsLinks {
+      width: 100%;
+      height: 19.2vw;
+      padding: 3.2vw;
+      background-color: #fff;
+      border-radius: 8.53vw;
+      .linkList {
+        display: flex;
+        justify-content: center;
+        gap: 3.2vw;
+
+        li {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 12.8vw;
+          height: 12.8vw;
+          background-color: rgba(250, 248, 248, 1);
+          border-radius: 50%;
+
+          .link {
+            height: 7.47vw;
+            img {
+              width: 7.47vw;
+              height: 7.47vw;
+            }
+          }
+        }
+      }
+    }
+  }
+}

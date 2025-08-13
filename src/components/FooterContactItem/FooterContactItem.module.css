@@ -50,3 +50,39 @@
     letter-spacing: -0.48px;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .item {
+    .title {
+      margin-bottom: 1.07vw;
+      gap: 3.2vw;
+
+      font-size: 3.73vw;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1;
+
+      .itemIcon {
+        width: 8.53vw;
+        height: 8.53vw;
+
+        img {
+          width: 4.27vw;
+          height: 4.27vw;
+        }
+      }
+    }
+
+    .itemDataList {
+      padding-left: 11.73vw;
+      gap: 3.2vw;
+
+      .listItem {
+        font-size: 4.27vw;
+        font-weight: 700;
+        line-height: normal;
+        letter-spacing: -0.32px;
+      }
+    }
+  }
+}
