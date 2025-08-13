@@ -91,6 +91,7 @@ a {
 }
 
 button {
+  font-family: "Gilroy", sans-serif;
   border: none;
   outline: none;
   padding-block: 0;
