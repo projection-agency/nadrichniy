@@ -15,7 +15,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        top: 0;
+        bottom: 0;
         left: 0;
         z-index: -1000;
       }
@@ -98,6 +98,109 @@
       color: rgba(25, 27, 26, 0.5);
 
       text-decoration: underline;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .footer {
+    padding-top: 16vw;
+
+    .mainContent {
+      flex-direction: column;
+
+      .leftBlock {
+        width: 100%;
+        height: 81.87vw;
+        border-radius: 8.53vw;
+        padding: 8.53vw 5.33vw;
+        background-color: var(--brand-primary);
+
+        a {
+          margin-bottom: 6.4vw;
+          img {
+            width: 26.67vw;
+            height: 6.4vw;
+          }
+        }
+
+        .bg {
+          height: 75%;
+          z-index: 0;
+        }
+
+        h2 {
+          position: relative;
+          z-index: 1;
+          max-width: none;
+          font-size: 5.33vw;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+          letter-spacing: -0.6px;
+        }
+      }
+
+      .rightBlock {
+        flex-direction: column-reverse;
+        gap: 6.4vw;
+        padding: 5.33vw;
+        border-radius: 8.53vw;
+
+        nav {
+          .navigationList {
+            display: flex;
+            flex-direction: column;
+            gap: 2.13vw;
+            .navigationItem {
+              padding: 2.13vw 5.33vw;
+              a {
+                color: rgba(101, 109, 122, 1);
+              }
+            }
+          }
+        }
+
+        .contacts {
+          gap: 5.33vw;
+        }
+
+        .socialsList {
+          padding-left: 11.73vw;
+          gap: 3.2vw;
+
+          a {
+            width: 10.67vw;
+            height: 10.67vw;
+
+            img {
+              width: 4vw;
+              height: 4vw;
+            }
+          }
+        }
+      }
+    }
+
+    .privacyPolicyCont {
+      padding-top: 6.4vw;
+      gap: 3.2vw;
+      flex-direction: column;
+      align-items: center;
+
+      a.link {
+        font-size: 3.2vw;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 1.2;
+      }
+
+      p {
+        font-size: 3.2vw;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 1.2;
+      }
     }
   }
 }

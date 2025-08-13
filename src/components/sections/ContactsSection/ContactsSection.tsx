@@ -6,13 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "leaflet";
 import L from "leaflet";
-import { MapContainer } from "react-leaflet/MapContainer";
-import { TileLayer } from "react-leaflet/TileLayer";
-import { Marker } from "react-leaflet/Marker";
-import { Popup } from "react-leaflet/Popup";
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
-import { useHasMounted } from "@/utils/useHasMounted";
 
 const mainMarker = new Icon({
   iconUrl: "/icons/nadrichnyi.svg",
@@ -78,10 +72,6 @@ const ContactsSection = () => {
       leafletMapRef.current = null;
     };
   }, []);
-  // const pathname = usePathname();
-  // const hasMounted = useHasMounted();
-  // const mapKey = pathname.includes("catalog") ? s.mapFour : s.mapTwo;
-  // console.log(mapKey);
 
   const getLinkUrl = (item: string) => {
     if (item.includes("+38")) {
@@ -97,8 +87,8 @@ const ContactsSection = () => {
     <section className={s.section}>
       <Container>
         <h2>Контакти</h2>
-        <div className={s.mapContainer}>
-          <div className={s.mapLegend}>
+        {window.innerWidth <= 1024 && (
+          <div className={s.mobileMapLegend}>
             <h3>Наші контакти</h3>
             <ul className={s.infoList}>
               {contactsData.map((item, idx) => {
@@ -129,83 +119,147 @@ const ContactsSection = () => {
               })}
             </ul>
             <button className={s.orderVisisBtn}>Записатися на візит</button>
-            <div className={s.googleMapsLinks}>
-              <p>відкрити карту</p>
-              <ul className={s.linkList}>
-                <li>
-                  <a
-                    className={s.link}
-                    href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Image
-                      src={`/icons/google_maps.svg`}
-                      width={24}
-                      height={24}
-                      alt={"icon"}
-                    />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={s.link}
-                    href="https://waze.com/ul?ll=48.9407815,24.7164726&navigate=yes"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Image
-                      src={`/icons/waze.svg`}
-                      width={24}
-                      height={24}
-                      alt={"icon"}
-                    />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={s.link}
-                    href="http://maps.apple.com/?ll=48.9407815,24.7164726"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Image
-                      src={`/icons/apple_maps.svg`}
-                      width={24}
-                      height={24}
-                      alt={"icon"}
-                    />
-                  </a>
-                </li>
-              </ul>
-            </div>
           </div>
+        )}
+        <div className={s.mapContainer}>
+          {window.innerWidth > 1024 && (
+            <div className={s.mapLegend}>
+              <h3>Наші контакти</h3>
+              <ul className={s.infoList}>
+                {contactsData.map((item, idx) => {
+                  return (
+                    <li key={idx} className={s.item}>
+                      <h4 className={s.title}>
+                        <span className={s.itemIcon}>
+                          <Image
+                            width={16}
+                            height={16}
+                            alt="icon"
+                            src={item.icon}
+                          />
+                        </span>
+                        {item.title}
+                      </h4>
+                      <div className={s.itemDataList}>
+                        {item.data.map((item, idx) => {
+                          return (
+                            <p className={s.listItem} key={idx}>
+                              <Link href={getLinkUrl(item)}>{item}</Link>
+                            </p>
+                          );
+                        })}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+              <button className={s.orderVisisBtn}>Записатися на візит</button>
+              <div className={s.googleMapsLinks}>
+                <p>відкрити карту</p>
+                <ul className={s.linkList}>
+                  <li>
+                    <a
+                      className={s.link}
+                      href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Image
+                        src={`/icons/google_maps.svg`}
+                        width={24}
+                        height={24}
+                        alt={"icon"}
+                      />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={s.link}
+                      href="https://waze.com/ul?ll=48.9407815,24.7164726&navigate=yes"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Image
+                        src={`/icons/waze.svg`}
+                        width={24}
+                        height={24}
+                        alt={"icon"}
+                      />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={s.link}
+                      href="http://maps.apple.com/?ll=48.9407815,24.7164726"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Image
+                        src={`/icons/apple_maps.svg`}
+                        width={24}
+                        height={24}
+                        alt={"icon"}
+                      />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
           <div
             ref={mapRef}
             className={s.map}
             style={{ width: "100%", zIndex: 0 }}
           ></div>
-          {/* {hasMounted && (
-            <MapContainer
-              key={pathname}
-              center={[48.9407815, 24.7164726]}
-              className={s.mapTwo}
-              zoom={13}
-              scrollWheelZoom={false}
-              style={{ height: "400px", width: "100%" }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution="&copy; OpenStreetMap contributors"
-              />
-
-              <Marker icon={mainMarker} position={[48.9407815, 24.7164726]}>
-                <Popup>
-                  <p>Надрічний</p>
-                </Popup>
-              </Marker>
-            </MapContainer>
-          )} */}
+        </div>
+        <div className={s.googleMapsLinks}>
+          <ul className={s.linkList}>
+            <li>
+              <a
+                className={s.link}
+                href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src={`/icons/google_maps.svg`}
+                  width={24}
+                  height={24}
+                  alt={"icon"}
+                />
+              </a>
+            </li>
+            <li>
+              <a
+                className={s.link}
+                href="https://waze.com/ul?ll=48.9407815,24.7164726&navigate=yes"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src={`/icons/waze.svg`}
+                  width={24}
+                  height={24}
+                  alt={"icon"}
+                />
+              </a>
+            </li>
+            <li>
+              <a
+                className={s.link}
+                href="http://maps.apple.com/?ll=48.9407815,24.7164726"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src={`/icons/apple_maps.svg`}
+                  width={24}
+                  height={24}
+                  alt={"icon"}
+                />
+              </a>
+            </li>
+          </ul>
         </div>
       </Container>
     </section>
