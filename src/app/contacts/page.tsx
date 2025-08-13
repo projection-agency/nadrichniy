@@ -2,7 +2,6 @@
 import dynamic from "next/dynamic";
 import s from "./page.module.css";
 import Container from "@/components/Container/Container";
-import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 import Image from "next/image";
 const ContactsSection = dynamic(
   () => import("@/components/sections/ContactsSection/ContactsSection"),
@@ -11,6 +10,12 @@ const ContactsSection = dynamic(
 
 const MapSection = dynamic(
   () => import("@/components/sections/MapSection/MapSection"),
+  { ssr: false }
+);
+
+const QuestionsFormSection = dynamic(
+  () =>
+    import("@/components/sections/QuestionsFormSection/QuestionsFormSection"),
   { ssr: false }
 );
 

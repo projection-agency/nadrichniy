@@ -43,7 +43,7 @@ const initialValues = {
 
 const QuestionsFormSection = () => {
   const handleSubmit = async (values: FormikValues) => {
-    console.log(values)
+    console.log(values);
     try {
       const response = await formInstance.post(
         "https://api.lcdoy.projection-learn.website/wp-json/applications/v1/call",
@@ -61,7 +61,9 @@ const QuestionsFormSection = () => {
         <div className={s.sectionTitle}>
           <Image
             className={s.bg}
-            src={"/images/formTitle_bg.jpg"}
+            src={`/images/${
+              window.innerWidth <= 1024 ? "formTitle_bg_mobile" : "formTitle_bg"
+            }.jpg`}
             height={702}
             width={820}
             alt="image"
@@ -159,7 +161,7 @@ const QuestionsFormSection = () => {
                   <p className={s.required}>
                     Зручний час для дзвінка (За Київським часом)
                   </p>
-                  <TimePicker></TimePicker>
+                  <TimePicker/>
                   <ErrorMessage name="time">
                     {(msg) => <div className={s.errorMessage}>{msg}</div>}
                   </ErrorMessage>

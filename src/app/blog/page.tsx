@@ -1,10 +1,14 @@
 "use client";
 import dynamic from "next/dynamic";
 import BlogHero from "@/components/sections/BlogHero/BlogHero";
-import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 
 const ContactsSection = dynamic(
   () => import("@/components/sections/ContactsSection/ContactsSection"),
+  { ssr: false }
+);
+
+const QuestionsFormSection = dynamic(
+  () => import("@/components/sections/QuestionsFormSection/QuestionsFormSection"),
   { ssr: false }
 );
 

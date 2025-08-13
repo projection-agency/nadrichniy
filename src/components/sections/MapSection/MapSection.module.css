@@ -7,7 +7,7 @@
     font-size: 3.33vw;
     line-height: 0.9;
     letter-spacing: -1.92px;
-    color: var(--text-gray-dark);
+    color: rgba(25, 27, 26, 1);
     text-align: center;
   }
 
@@ -160,8 +160,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: all 300ms ease-in-out;
+        width: 3.33vw;
+        height: 3.33vw;
+        border-radius: 5.21vw;
         background-color: var(--brand-primary);
         svg {
+          transition: all 30ms ease-in-out;
           stroke: white;
           width: 0.73vw;
           height: 0.83vw;
@@ -177,15 +182,140 @@
 
       .swiperPrev {
         transform: rotateZ(-180deg);
-        width: 3.33vw;
-        height: 3.33vw;
-        border-radius: 5.21vw;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-top: 16vw;
+    padding-bottom: 32vw;
+
+    h2 {
+      margin-bottom: 8.53vw;
+      font-size: 8.53vw;
+      letter-spacing: -0.96px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .mapContainer {
+      height: auto;
+      margin-bottom: 32vw;
+
+      .map {
+        height: 117.33vw !important;
+        border-radius: 6.4vw;
       }
 
-      .swiperNext {
-        width: 3.33vw;
-        height: 3.33vw;
-        border-radius: 5.21vw;
+      .mainMarker {
+        width: 8.53vw;
+        height: 8.53vw;
+      }
+
+      .iconContainer {
+        width: 8.53vw;
+        height: 8.53vw;
+
+        img {
+          width: 4.27vw !important;
+          height: 4.27vw !important;
+
+          use {
+            width: 4.27vw !important;
+            height: 4.27vw !important;
+          }
+        }
+      }
+
+      .mapLegend {
+        display: none;
+        z-index: -99999;
+        pointer-events: none;
+      }
+
+      .mapLegendMobile {
+        display: block;
+        width: 100%;
+        background-color: #fff;
+        padding: 3.2vw;
+        border-radius: 8.53vw;
+
+        .linkList {
+          display: flex;
+          justify-content: center;
+          gap: 3.2vw;
+
+          li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 12.8vw;
+            height: 12.8vw;
+            border-radius: 50%;
+            background-color: rgba(250, 248, 248, 1);
+
+            .link {
+              width: 6.4vw;
+              height: 6.4vw;
+
+              img {
+                width: 6.4vw;
+                height: 6.4vw;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .swiperCont {
+      .navCont {
+        width: 100%;
+        justify-content: center;
+        bottom: -16vw;
+        gap: 3.2vw;
+
+        .mobPagination {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 25.6vw;
+          height: 12.8vw;
+          background-color: transparent;
+          border: 0.27vw solid rgba(223, 223, 223, 1);
+          border-radius: 26.67vw;
+
+          .activeSlide {
+            font-size: 5.33vw;
+            color: rgba(49, 49, 49, 1);
+          }
+
+          p {
+            font-size: 4.27vw;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 1;
+            color: rgba(168, 168, 168, 1);
+          }
+        }
+
+        .swiperNext,
+        .swiperPrev {
+          width: 12.8vw;
+          height: 12.8vw;
+          border-radius: 50%;
+
+          svg {
+            width: 3.2vw;
+            height: 2.67vw;
+          }
+        }
+
+        .disabled {
+          background-color: #fff;
+        }
       }
     }
   }

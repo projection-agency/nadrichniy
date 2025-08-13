@@ -1,11 +1,21 @@
 "use client";
 import AdvantagesSection from "@/components/sections/AdvantagesSection/AdvantagesSection";
-import GallerySection from "@/components/sections/GallerySection/GallerySection";
-import NewsSection from "@/components/sections/NewsSection/NewsSection";
-import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 import CatalogHero from "@/components/sections/CatalogHero/CatalogHero";
 import ApartmentFilterPopup from "@/components/ApartmentFilterPopup/ApartmentFilterPopup";
 import dynamic from "next/dynamic";
+
+const NewsSection = dynamic(
+  () =>
+    import("@/components/sections/NewsSection/NewsSection"),
+  { ssr: false }
+);
+
+const GallerySection = dynamic(
+  () =>
+    import("@/components/sections/GallerySection/GallerySection"),
+  { ssr: false }
+);
+
 
 const ContactsSection = dynamic(
   () => import("@/components/sections/ContactsSection/ContactsSection"),
@@ -19,6 +29,12 @@ const MapSection = dynamic(
 
 const ChooseAnApartment = dynamic(
   () => import("@/components/sections/ChooseAnApartment/ChooseAnApartment"),
+  { ssr: false }
+);
+
+const QuestionsFormSection = dynamic(
+  () =>
+    import("@/components/sections/QuestionsFormSection/QuestionsFormSection"),
   { ssr: false }
 );
 

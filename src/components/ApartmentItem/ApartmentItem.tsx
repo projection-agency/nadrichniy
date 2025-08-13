@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 
 const ApartmentItem = ({ item }: { item: Apartment }) => {
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <li className={s.item}>
       <div className={s.topBlock}>

@@ -194,13 +194,137 @@
 
         .errorMessage {
           position: absolute;
-          bottom: -1.0vw;
+          bottom: -1vw;
           left: 0;
           margin-top: 0.63vw;
           font-size: 0.63vw;
           font-weight: 500;
           line-height: 1;
           color: rgba(255, 85, 30, 1);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-top: 16vw;
+    padding-bottom: 16vw;
+
+    .container {
+      display: flex;
+      flex-direction: column;
+
+      .sectionTitle {
+        padding: 8.53vw 5.33vw;
+        border-radius: 5.33vw;
+
+        .titleIcon {
+          width: 26.67vw;
+          height: 26.67vw;
+          margin-bottom: 6.4vw;
+        }
+
+        h2 {
+          margin-bottom: 5.33vw;
+          font-size: 8.53vw;
+          font-weight: 800;
+          line-height: 0.9;
+          letter-spacing: -0.96px;
+        }
+
+        p {
+          font-size: 4.8vw;
+          font-weight: 600;
+          line-height: 1.4;
+          letter-spacing: -0.54px;
+        }
+      }
+
+      .formContainer {
+        padding: 8.53vw 5.33vw;
+        border-radius: 8.53vw;
+        
+        .form {
+          .inputLine {
+            width: 100%;
+            margin-bottom: 4.27vw;
+            flex-direction: column;
+            gap: 4.27vw;
+
+            .label {
+              width: 100%;
+              height: auto;
+
+              .phone {
+                height: auto;
+              }
+            }
+          }
+
+          label {
+            .required {
+              margin-bottom: 3.2vw;
+              font-size: 3.73vw;
+            }
+
+            .required::after {
+              right: -2vw;
+              font-size: 3.73vw;
+            }
+
+            input {
+              height: auto;
+              padding: 5.33vw 6.4vw;
+              font-size: 4.27vw;
+            }
+
+            input::placeholder {
+              font-size: 4.27vw;
+            }
+
+            .errorMessage {
+              bottom: -4vw;
+              font-size: 3.2vw;
+            }
+          }
+
+          .emailLabel,
+          .dateLabel {
+            margin-bottom: 4.27vw;
+          }
+
+          .dateLabel {
+            .inputCont {
+              img {
+                width: 4.27vw;
+                height: 4.27vw;
+                top: 5.5vw;
+                left: 7.25vw;
+              }
+            }
+          }
+
+          .checkboxesCont {
+            margin-bottom: 6.4vw;
+            .required {
+              margin-bottom: 3.2vw;
+              font-size: 3.73vw;
+            }
+
+            .required::after {
+              right: -2vw;
+              font-size: 3.73vw;
+            }
+          }
+
+          .submitBtn {
+            height: 14.93vw;
+            border-radius: 26.67vw;
+
+            font-size: 4.27vw;
+          }
         }
       }
     }

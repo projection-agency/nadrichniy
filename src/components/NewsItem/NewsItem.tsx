@@ -27,7 +27,7 @@ export default function NewsItem({ item }: { item: NewItem }) {
 
   return (
     <div key={item.id} className={s.newsItem}>
-      <Link href={`/blog/${item.slug}`}>
+      <Link href={`/blog/${item.slug}`} className={s.link}>
         <p className={s.subtitle}>{togglePostType()}</p>
         <h3>{item.title.rendered}</h3>
         <p
@@ -55,10 +55,10 @@ export default function NewsItem({ item }: { item: NewItem }) {
           src={"/images/interier.jpg"}
           alt="image"
         />
-        <Link href={`/blog/${item.slug}`} className={s.articleLink}>
+        <span className={s.articleLink}>
           Читати статтю
           {swiperArrow}
-        </Link>
+        </span>
       </Link>
     </div>
   );

@@ -1,9 +1,6 @@
 "use client";
 import HomeHero from "@/components/sections/HomeHero/HomeHero";
 import AdvantagesSection from "@/components/sections/AdvantagesSection/AdvantagesSection";
-import GallerySection from "@/components/sections/GallerySection/GallerySection";
-import NewsSection from "@/components/sections/NewsSection/NewsSection";
-import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 import dynamic from "next/dynamic";
 
 const ContactsSection = dynamic(
@@ -26,15 +23,33 @@ const ChooseAnApartment = dynamic(
   { ssr: false }
 );
 
+const QuestionsFormSection = dynamic(
+  () =>
+    import("@/components/sections/QuestionsFormSection/QuestionsFormSection"),
+  { ssr: false }
+);
+
+const NewsSection = dynamic(
+  () =>
+    import("@/components/sections/NewsSection/NewsSection"),
+  { ssr: false }
+);
+
+const GallerySection = dynamic(
+  () =>
+    import("@/components/sections/GallerySection/GallerySection"),
+  { ssr: false }
+);
+
 export default function Home() {
   return (
     <div>
       <main>
         <HomeHero></HomeHero>
         <AboutSection />
-        <ChooseAnApartment></ChooseAnApartment>
-        <AdvantagesSection></AdvantagesSection>
-        <GallerySection></GallerySection>
+        <ChooseAnApartment />
+        <AdvantagesSection />
+        <GallerySection />
         <MapSection />
         <NewsSection />
         <QuestionsFormSection />

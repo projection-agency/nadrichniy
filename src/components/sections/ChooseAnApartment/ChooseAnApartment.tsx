@@ -17,6 +17,7 @@ import {
 } from "@/Redux/apartmentSlice/selectors";
 import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
 import { useModal } from "@/components/ModalContext";
+import Link from "next/link";
 
 const ChooseAnApartment = () => {
   const pathname = usePathname();
@@ -77,8 +78,6 @@ const ChooseAnApartment = () => {
 
     window.addEventListener("resize", handleResize);
 
-    console.log(windowWidth);
-
     return window.removeEventListener("resize", () => {});
   }, []);
 
@@ -125,16 +124,9 @@ const ChooseAnApartment = () => {
           })}
         </ul>
         {windowWidth <= 1024 ? (
-          endSliceNumber <= apartmentData.length ? (
-            <button
-              onClick={() => setEndSliceNumber((prev) => prev + 3)}
-              className={s.paginationBtn}
-            >
-              Дивитися ще {arrow}
-            </button>
-          ) : (
-            <button className={s.paginationBtn}>Наразі це все</button>
-          )
+          <Link href={"/catalog"} className={s.paginationBtn}>
+            Дивитися ще {arrow}
+          </Link>
         ) : (
           ""
         )}

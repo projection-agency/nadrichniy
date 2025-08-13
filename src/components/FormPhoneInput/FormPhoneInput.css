@@ -31,7 +31,7 @@
   border: 1px solid red;
 }
 
-.form-control.open .arrow.up{
+.form-control.open .arrow.up {
   background-color: red;
 }
 
@@ -97,7 +97,7 @@
   display: none;
 }
 
-.inputContainer{
+.inputContainer {
   border-radius: 8.65vw;
 }
 
@@ -107,7 +107,7 @@
     font-size: 4.2vw !important;
     padding: 5.3vw 6.4vw 5.3vw 11.2vw !important;
 
-    border-radius: 2.7vw !important;
+    border-radius: 44.27vw !important;
   }
 
   .react-tel-input .flag-dropdown {
@@ -118,11 +118,7 @@
     min-width: 40vw !important;
   }
 
-  .react-tel-input .selected-flag {
-    .arrow {
-      width: 2.2vw;
-      height: 1.6vw;
-      top: 0 !important;
-    }
+  .react-tel-input .selected-flag .flag {
+    width: 3.83vw !important;
   }
 }
