@@ -5,7 +5,7 @@ import Image from "next/image";
 import L, { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
-import { SwiperSlide, Swiper } from "swiper/react";
+import { SwiperSlide, Swiper, SwiperRef } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
@@ -144,7 +144,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-type  Location = {
+type Location = {
   title: string;
   coordinates: number[][] | number[];
 };
@@ -167,7 +167,10 @@ const iconMap: Record<string, JSX.Element> = {
 };
 
 const MapSection = () => {
+  const [activeSlide, setActiveSlide] = useState<number | null>(null);
+  const [swiperLength, setSwiperLength] = useState<number>(0);
   const [markersData, setMarkersData] = useState<[]>([]);
+  const swiperRef = useRef<SwiperRef | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMapRef = useRef<L.Map | null>(null);
   const pathname = usePathname();
@@ -285,7 +288,7 @@ const MapSection = () => {
     if (value == "mall") {
       return "Торговий центр";
     }
-    return ""
+    return "";
   };
 
   return (
@@ -367,51 +370,55 @@ const MapSection = () => {
             className={s.map}
             style={{ width: "100%", zIndex: 0 }}
           ></div>
-          {/* {
-            <MapContainer
-              center={[48.9407815, 24.7164726]}
-              className={s.map}
-              zoom={13}
-              scrollWheelZoom={false}
-              style={{ height: "400px", width: "100%" }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution="&copy; OpenStreetMap contributors"
-              />
-              {markersData?.map((item: Location, idx: number) => {
-                const title = item.title;
-                const coordsArray =
-                  Array.isArray(item.coordinates) && item.coordinates.length > 0
-                    ? Array.isArray(item.coordinates[0])
-                      ? (item.coordinates as number[][])
-                      : [item.coordinates as number[]]
-                    : [];
-                return coordsArray.map((coords, subIdx) => {
-                  if (coords.length !== 0) {
-                    return (
-                      <Marker
-                        key={idx - subIdx}
-                        icon={getCustomIcon(item.title)}
-                        position={[coords[0], coords[1]]}
-                      >
-                        <Popup>
-                          <p>{title}</p>
-                        </Popup>
-                      </Marker>
-                    );
-                  } else {
-                    return;
-                  }
-                });
-              })}
-              <Marker icon={mainMarker} position={[48.9407815, 24.7164726]}>
-                <Popup>
-                  <p>Надрічний</p>
-                </Popup>
-              </Marker>
-            </MapContainer>
-          } */}
+          <div className={s.mapLegendMobile}>
+            <ul className={s.linkList}>
+              <li>
+                <a
+                  className={s.link}
+                  href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src={`/icons/google_maps.svg`}
+                    width={24}
+                    height={24}
+                    alt={"icon"}
+                  />
+                </a>
+              </li>
+              <li>
+                <a
+                  className={s.link}
+                  href="https://waze.com/ul?ll=48.9407815,24.7164726&navigate=yes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src={`/icons/waze.svg`}
+                    width={24}
+                    height={24}
+                    alt={"icon"}
+                  />
+                </a>
+              </li>
+              <li>
+                <a
+                  className={s.link}
+                  href="http://maps.apple.com/?ll=48.9407815,24.7164726"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src={`/icons/apple_maps.svg`}
+                    width={24}
+                    height={24}
+                    alt={"icon"}
+                  />
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
         {pathname !== "/contacts" ? (
           <div className={s.swiperCont}>
@@ -423,19 +430,35 @@ const MapSection = () => {
                 prevEl: `.${s.swiperPrev}`,
                 disabledClass: s.disabled,
               }}
+              onActiveIndexChange={(s) => {
+                setActiveSlide(s.activeIndex);
+              }}
+              onSwiper={(s) => setSwiperLength(s.slides.length)}
+              ref={(el) => {
+                swiperRef.current = el;
+              }}
             >
               <SwiperSlide>
-                <MapSectionSwiperItem></MapSectionSwiperItem>
+                <MapSectionSwiperItem />
               </SwiperSlide>
               <SwiperSlide>
-                <MapSectionSwiperItem></MapSectionSwiperItem>
+                <MapSectionSwiperItem />
               </SwiperSlide>
               <SwiperSlide>
-                <MapSectionSwiperItem></MapSectionSwiperItem>
+                <MapSectionSwiperItem />
               </SwiperSlide>
             </Swiper>
             <div className={s.navCont}>
               <div className={s.swiperPrev}>{line}</div>
+              {window.innerWidth <= 1024 && (
+                <div className={s.mobPagination}>
+                  <p className={s.activeSlide}>
+                    {activeSlide ? activeSlide + 1 : 1}
+                  </p>
+                  <p>/{swiperLength}</p>
+                </div>
+              )}
+
               <div className={s.swiperNext}>{line}</div>
             </div>
           </div>

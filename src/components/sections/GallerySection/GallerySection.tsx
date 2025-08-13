@@ -15,7 +15,8 @@ const GallerySection = () => {
   const swiperRef = useRef<any>(null);
   const progressRefs = useRef<(HTMLDivElement | null)[]>([]);
   const paginationContRef = useRef<HTMLDivElement | null>(null);
-  
+  const [windowW, setWindowW] = useState(window.innerWidth);
+
   const onAutoplayTimeLeft = (s: any, time: number, progress: number) => {
     const index = s.activeIndex;
     const ref = progressRefs.current[index];
@@ -27,7 +28,7 @@ const GallerySection = () => {
 
   const handleSlideChange = (swiper: any) => {
     const activeItem = progressRefs.current[swiper.activeIndex];
-    if (activeItem && paginationContRef.current) {
+    if (activeItem && paginationContRef.current && windowW > 1024) {
       const itemTop = activeItem.offsetTop;
       const itemHeight = activeItem.offsetHeight;
       const container = paginationContRef.current;
@@ -35,6 +36,14 @@ const GallerySection = () => {
 
       const scrollToTop = itemTop - containerHeight / 2 + itemHeight / 2;
       container.scrollTo({ top: scrollToTop, behavior: "smooth" });
+    } else if (activeItem && paginationContRef.current && windowW <= 1024) {
+      const itemLeft = activeItem.offsetLeft;
+      const itemWidth = activeItem.offsetWidth;
+      const container = paginationContRef.current;
+      const containerWidth = container.offsetWidth;
+
+      const scrollToCenter = itemLeft - containerWidth / 2 + itemWidth / 2;
+      container.scrollTo({ left: scrollToCenter, behavior: "smooth" });
     }
   };
 
@@ -51,13 +60,53 @@ const GallerySection = () => {
       swiperRef.current.navigation.init();
       swiperRef.current.navigation.update();
     }
+
+    window.addEventListener("resize", () => setWindowW(window.innerWidth));
+
+    return window.removeEventListener("resize", () => {});
   }, []);
 
   return (
     <section className={s.section}>
       <Container>
-        <h2>Галерея ЖК “Надрічний”</h2>
+        <h2>
+          Галерея <br /> ЖК “Надрічний”
+        </h2>
         <div className={s.swiperCont}>
+          <div className={s.mobileNav}>
+            <div
+              ref={prevRef}
+              onClick={() => {
+                if (activeSlide) {
+                  swiperRef.current.slideTo(activeSlide - 1);
+                }
+              }}
+              className={`${s.swiperPrev} ${s.navBtn} ${
+                activeSlide === 0 ? s.disabled : ""
+              }`}
+            >
+              {arrow}
+            </div>
+            <div className={s.mobPagination}>
+              <p className={s.activeSlide}>
+                {activeSlide ? activeSlide + 1 : 1}
+              </p>
+              <p>/{array.length}</p>
+            </div>
+            <div
+              ref={nextRef}
+              onClick={() => {
+                if (activeSlide) {
+                  swiperRef.current.slideTo(activeSlide + 1);
+                }
+              }}
+              className={`${s.swiperNext} ${s.navBtn} ${
+                activeSlide === array.length - 1 ? s.disabled : ""
+              }`}
+            >
+              {arrow}
+            </div>
+          </div>
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             navigation={{
@@ -79,7 +128,7 @@ const GallerySection = () => {
             }}
           >
             {array.map((item, idx) => (
-              <SwiperSlide key={idx}>
+              <SwiperSlide key={idx} className={s.swiperSlide}>
                 <Image
                   src={
                     "https://api.lcdoy.projection-learn.website/wp-content/uploads/2025/06/telegram-cloud-photo-size-2-5431594601380179473-y-1.png"

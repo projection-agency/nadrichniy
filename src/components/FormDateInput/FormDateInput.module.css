@@ -7,3 +7,9 @@
   font-weight: 600;
   color: rgba(25, 27, 26, 1);
 }
+
+@media screen and (max-width:1024px) {
+  .dateInput{
+    padding-left: 14.93vw !important;
+  }
+}
