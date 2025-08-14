@@ -5,3 +5,13 @@
   background-color: var(--background-white);
   border-radius: 1.67vw;
 }
+
+@media screen and (max-width: 1024px) {
+  .list {
+    width: 91.47vw;
+    flex-wrap: wrap-reverse;
+    row-gap: 2.13vw;
+    padding: 4.27vw 3.2vw;
+    border-radius: 6.4vw;
+  }
+}
