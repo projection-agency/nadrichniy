@@ -1,6 +1,7 @@
 .section {
   position: relative;
   padding-bottom: 3.13vw;
+
   .background {
     display: none;
     position: absolute;
@@ -70,6 +71,52 @@
       width: 0.63vw;
       height: 0.83vw;
       fill: var(--background-light);
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-bottom: 16vw;
+
+    .container {
+      padding-top: 19.2vw;
+      padding-bottom: 0;
+
+      background: none;
+      .background {
+        display: block;
+        border-bottom-left-radius: 8.53vw;
+        border-bottom-right-radius: 8.53vw;
+      }
+
+      h1 {
+        width: 91vw;
+        margin-bottom: 10.67vw;
+        font-size: 12vw;
+        line-height: 1;
+        letter-spacing: -1.35px;
+      }
+
+      .link {
+        margin-bottom: 26.67vw;
+        padding: 2.13vw 3.73vw;
+        border-radius: 21.33vw;
+        gap: 4.27vw;
+
+        font-size: 4.27vw;
+        letter-spacing: -0.48px;
+
+        span {
+          width: 8.53vw;
+          height: 8.53vw;
+
+          svg {
+            width: 3.2vw;
+            height: 4.27vw;
+          }
+        }
+      }
     }
   }
 }

@@ -12,7 +12,8 @@ const CatalogHero = () => {
           alt="hero-bg"
           width={3840}
           height={2160}
-          src={"/images/home-hero.jpg"}
+          src={"/images/catalog_bg_mobile.jpg"}
+          sizes="(max-width:1024px) 376vw 178.13vw"
         />
         <h1>Житловий масив Надрічний</h1>
         <Link
