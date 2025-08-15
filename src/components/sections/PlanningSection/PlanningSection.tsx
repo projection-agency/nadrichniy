@@ -8,11 +8,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { API_URL } from "@/constants";
 import { Apartment } from "@/Redux/apartmentSlice/slice";
-import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
-
+import SimilarPlanningsSection from "../SimilarPlanningsSection/SimilarPlanningsSection";
 const PlanningSection = () => {
   const [active, setActive] = useState<"flat" | "floor">("flat");
-  const [apartmentData, setApartmentData] = useState([]);
 
   const router = useRouter();
   const [item, setItem] = useState<Apartment>();
@@ -35,19 +33,6 @@ const PlanningSection = () => {
     fetchApartment();
   }, [slug]);
 
-  useEffect(() => {
-    const fetchApartments = async () => {
-      try {
-        const response = await fetch(`${API_URL}/wp-json/wp/v2/apartments`);
-        const data = await response.json();
-        setApartmentData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchApartments();
-  }, []);
   return (
     <section className={s.section}>
       <Container>
@@ -83,7 +68,7 @@ const PlanningSection = () => {
                         height={38}
                         alt="icon"
                       />
-                      Розтермінування
+                      {window.innerWidth >= 1024 && "Розтермінування"}
                     </li>
                   ) : (
                     ""
@@ -96,7 +81,7 @@ const PlanningSection = () => {
                         height={38}
                         alt="icon"
                       />
-                      єОселя
+                      {window.innerWidth >= 1024 && "єОселя"}
                     </li>
                   ) : (
                     ""
@@ -109,7 +94,7 @@ const PlanningSection = () => {
                         height={38}
                         alt="icon"
                       />
-                      Знижка при повній оплаті
+                      {window.innerWidth >= 1024 && "Знижка при повній оплаті"}
                     </li>
                   ) : (
                     ""
@@ -122,10 +107,10 @@ const PlanningSection = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className={s.apartmentPlanning}>
               <div className={s.topBlock}>
-                <div className={s.planningToggler}>
+                <div className={`${s.planningToggler} ${s.hidden}`}>
                   <div
                     className={s.background}
                     style={{
@@ -171,18 +156,29 @@ const PlanningSection = () => {
                   alt="floor-image"
                 />
               )}
+              <div className={s.planningTogglerMobile}>
+                <div
+                  className={s.background}
+                  style={{
+                    transform:
+                      active === "flat" ? "translateX(0%)" : "translateX(100%)",
+                  }}
+                ></div>
+                <button
+                  className={active === "flat" ? s.active : ""}
+                  onClick={() => setActive("flat")}
+                >
+                  Квартира
+                </button>
+                <button
+                  className={active === "floor" ? s.active : ""}
+                  onClick={() => setActive("floor")}
+                >
+                  Поверх
+                </button>
+              </div>
             </div>
           </div>
-        ) : (
-          <p>please wait</p>
-        )}
-        <h2>Схожі планування</h2>
-        {apartmentData ? (
-          <ul className={`${s.apartmentsList}`}>
-            {apartmentData.slice(0, 3).map((item: Apartment) => {
-              return <ApartmentItem item={item} key={item.id} />;
-            })}
-          </ul>
         ) : (
           <p>please wait</p>
         )}
