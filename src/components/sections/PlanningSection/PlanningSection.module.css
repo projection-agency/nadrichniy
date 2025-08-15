@@ -1,6 +1,5 @@
 .section {
   padding-top: 9.17vw;
-  padding-bottom: 5.21vw;
 
   .apartment {
     margin-bottom: 8.96vw;
@@ -214,15 +213,189 @@
       }
     }
   }
+}
 
-  h2 {
-    font-size: 3.33vw;
-    margin-bottom: 3.13vw;
-  }
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-top: 19.2vw;
+    padding-bottom: 21.33vw;
 
-  .apartmentsList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.83vw;
+    .apartment {
+      flex-direction: column;
+      gap: 4.27vw;
+
+      .apartmentInfo {
+        width: auto;
+        gap: 4.27vw;
+        padding: 5.33vw;
+        border-radius: 8.53vw;
+
+        .backLink {
+          gap: 2.67vw;
+          margin-bottom: 5.33vw;
+          padding: 2.4vw 3.2vw;
+
+          font-size: 3.2vw;
+          font-style: normal;
+          font-weight: 500;
+
+          svg {
+            width: 2.4vw;
+            height: 1.6vw;
+          }
+        }
+
+        .topInfo {
+          margin-bottom: 4.27vw;
+          .rooms {
+            margin-bottom: 2.13vw;
+
+            font-size: 5.33vw;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: -0.6px;
+          }
+
+          .area {
+            font-size: 10.67vw;
+            font-weight: 600;
+            line-height: normal;
+            letter-spacing: -1.2px;
+          }
+
+          .delivery {
+            padding-bottom: 2.13vw;
+
+            font-size: 3.73vw;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: -0.42px;
+          }
+        }
+
+        .bottomInfo {
+          .houseNumber {
+            margin-bottom: 2.13vw;
+
+            font-size: 3.73vw;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: -0.42px;
+          }
+
+          .floor {
+            margin-bottom: 5.33vw;
+
+            font-size: 3.73vw;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: -0.42px;
+          }
+
+          .advantages {
+            background-color: transparent;
+            justify-content: start;
+            gap: 1.6vw;
+
+            li {
+              img {
+                width: 10.67vw;
+                height: 10.67vw;
+              }
+            }
+          }
+
+          .buttons {
+            gap: 3.2vw;
+
+            button {
+              width: 38.67vw;
+              height: 12.8vw;
+              border-radius: 26.67vw;
+              border-width: 0.27vw;
+
+              font-size: 3.73vw;
+              font-weight: 600;
+              line-height: normal;
+            }
+          }
+        }
+      }
+
+      .apartmentPlanning {
+        width: auto;
+        padding: 5.33vw;
+        border-radius: 8.53vw;
+
+        .topBlock {
+          .planningToggler.hidden {
+            visibility: hidden;
+            width: 0;
+            height: 0;
+            display: none;
+          }
+
+          .links {
+            width: 100%;
+            margin-bottom: 3.2vw;
+            justify-content: space-between;
+
+            li {
+              width: 12.8vw;
+              height: 12.8vw;
+              border-radius: 50%;
+              svg {
+                width: 5.6vw;
+                height: 5.6vw;
+              }
+            }
+          }
+        }
+
+        .layoutImg {
+          width: 100%;
+          height: 73.03vw;
+          margin-bottom: 3.2vw;
+        }
+
+        .planningTogglerMobile {
+          display: flex;
+          gap: 0.52vw;
+          position: relative;
+          overflow: hidden;
+          background-color: var(--background-light);
+          border-radius: 13.87vw;
+          border: 0.53vw solid var(--background-light);
+
+          .background {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            border-radius: 29.33vw;
+            background-color: var(--brand-primary);
+            transition: transform 300ms ease-in-out;
+          }
+
+          button {
+            position: relative;
+            width: 40.27vw;
+            height: 9.6vw;
+            background-color: transparent;
+
+            transition: color 300ms ease-in-out;
+
+            font-size: 3.73vw;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            color: rgba(25, 27, 26, 1);
+          }
+
+          .active {
+            color: var(--text-light);
+          }
+        }
+      }
+    }
   }
 }

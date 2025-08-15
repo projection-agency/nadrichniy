@@ -5,17 +5,14 @@ import ApartmentFilterPopup from "@/components/ApartmentFilterPopup/ApartmentFil
 import dynamic from "next/dynamic";
 
 const NewsSection = dynamic(
-  () =>
-    import("@/components/sections/NewsSection/NewsSection"),
+  () => import("@/components/sections/NewsSection/NewsSection"),
   { ssr: false }
 );
 
 const GallerySection = dynamic(
-  () =>
-    import("@/components/sections/GallerySection/GallerySection"),
+  () => import("@/components/sections/GallerySection/GallerySection"),
   { ssr: false }
 );
-
 
 const ContactsSection = dynamic(
   () => import("@/components/sections/ContactsSection/ContactsSection"),
@@ -37,6 +34,7 @@ const QuestionsFormSection = dynamic(
     import("@/components/sections/QuestionsFormSection/QuestionsFormSection"),
   { ssr: false }
 );
+
 
 export default function CatalogPage() {
   return (
