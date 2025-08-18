@@ -13,6 +13,7 @@ import Link from "next/link";
 import extractHeadingsWithIds from "@/utils/extractHeadingsWithIds";
 import extractImagesFromHtml from "@/utils/extractImagesFromHtml";
 
+
 const ContactsSection = dynamic(
   () => import("@/components/sections/ContactsSection/ContactsSection"),
   { ssr: false }
@@ -227,6 +228,26 @@ const BlogPostPage = () => {
               <p>please wait</p>
             )}
             <div className={s.articleCont}>
+              {window.innerWidth <= 1024 && (
+                <div className={s.articleNavigationMobile}>
+                  <div>
+                    <p>зміст статті</p>
+                    {nav}
+                  </div>
+                  <nav>
+                    <ul>
+                      {headingsWithId.map((item, idx) => {
+                        console.log(item);
+                        return (
+                          <li key={idx}>
+                            <a href={`#${item.id}`}>{item.text}</a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </nav>
+                </div>
+              )}
               <article
                 dangerouslySetInnerHTML={{ __html: contentWithHeadings }}
               ></article>

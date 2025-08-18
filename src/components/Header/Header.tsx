@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import s from "./Header.module.css";
 import Container from "../Container/Container";
 import Link from "next/link";
+import MobileMenu from "../MobileMenu/MobileMenu";
 
 const navLinks = [
   { title: "Головна", link: "/" },
@@ -16,6 +17,7 @@ const navLinks = [
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
   const pathname = usePathname();
   const params = useParams();
   const isCatalogPage = pathname.includes("/catalog");
@@ -35,47 +37,69 @@ const Header = () => {
     };
   }, []);
 
+  const openMenu = () => {
+    setMobileMenuIsOpen(true);
+  };
+
+  const closeMenu = () => {
+    setMobileMenuIsOpen(false);
+  };
+
   return (
-    <header
-      className={`${s.header} ${params.slug && isCatalogPage ? s.dark : ""} ${
-        isScrolled ? s.scrolled : ""
-      }`}
-    >
-      <Container className={s.container}>
-        <div className={s.topBlock}>
-          <Link href="/">{mainLogo}</Link>
-          <nav>
-            <ul className={s.navList}>
-              {navLinks.map((item, idx) => {
-                return (
-                  <li
-                    className={`${pathname === item.link ? s.active : ""}`}
-                    key={idx}
-                  >
-                    <Link href={item.link}>{item.title}</Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-        </div>
-        <div className={s.bottomBlock}>
-          <div className={s.numberAccordion}>
-            {phoneIcon}{" "}
-            <a href="" className={s.number}>
-              <span>Контакти:</span>+38 (044) 333 85 98
+    <>
+      <header
+        className={`${s.header}   
+        ${params.slug && isCatalogPage ? `${s.dark} ${s.planningPage}` : ""}
+        ${isScrolled && !mobileMenuIsOpen ? s.scrolled : ""}`}
+      >
+        <Container className={s.container}>
+          <div className={s.topBlock}>
+            <Link href="/">{mainLogo}</Link>
+            <nav>
+              <ul className={s.navList}>
+                {navLinks.map((item, idx) => {
+                  return (
+                    <li
+                      className={`${pathname === item.link ? s.active : ""}`}
+                      key={idx}
+                    >
+                      <Link href={item.link}>{item.title}</Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </div>
+          <div className={s.bottomBlock}>
+            <div className={s.numberAccordion}>
+              {phoneIcon}{" "}
+              <a href="" className={s.number}>
+                <span>Контакти:</span>+38 (044) 333 85 98
+              </a>
+            </div>
+            <a className={s.orderCallBtn} href="">
+              Замовити дзвінок
             </a>
           </div>
-          <a className={s.orderCallBtn} href="">
-            Замовити дзвінок
-          </a>
-        </div>
-        <div className={s.mobMenuBlock}>
-          <a href="">{phoneIcon}</a>
-          <button>{menuBurger}</button>
-        </div>
-      </Container>
-    </header>
+          <div className={s.mobMenuBlock}>
+            <a href="">{phoneIcon}</a>
+            <button
+              className={`${mobileMenuIsOpen ? s.white : ""}`}
+              onClick={() => {
+                if (mobileMenuIsOpen) {
+                  closeMenu();
+                } else if (!mobileMenuIsOpen) {
+                  openMenu();
+                }
+              }}
+            >
+              {mobileMenuIsOpen ? closeIcon : menuBurger}
+            </button>
+          </div>
+        </Container>
+      </header>
+      <MobileMenu isOpen={mobileMenuIsOpen} />
+    </>
   );
 };
 
@@ -133,6 +157,22 @@ const menuBurger = (
     <path
       d="M4 19C3.71667 19 3.47934 18.904 3.288 18.712C3.09667 18.52 3.00067 18.2827 3 18C2.99934 17.7173 3.09534 17.48 3.288 17.288C3.48067 17.096 3.718 17 4 17H20C20.2833 17 20.521 17.096 20.713 17.288C20.905 17.48 21.0007 17.7173 21 18C20.9993 18.2827 20.9033 18.5203 20.712 18.713C20.5207 18.9057 20.2833 19.0013 20 19H4ZM4 14C3.71667 14 3.47934 13.904 3.288 13.712C3.09667 13.52 3.00067 13.2827 3 13C2.99934 12.7173 3.09534 12.48 3.288 12.288C3.48067 12.096 3.718 12 4 12H20C20.2833 12 20.521 12.096 20.713 12.288C20.905 12.48 21.0007 12.7173 21 13C20.9993 13.2827 20.9033 13.5203 20.712 13.713C20.5207 13.9057 20.2833 14.0013 20 14H4ZM4 9C3.71667 9 3.47934 8.904 3.288 8.712C3.09667 8.52 3.00067 8.28267 3 8C2.99934 7.71733 3.09534 7.48 3.288 7.288C3.48067 7.096 3.718 7 4 7H20C20.2833 7 20.521 7.096 20.713 7.288C20.905 7.48 21.0007 7.71733 21 8C20.9993 8.28267 20.9033 8.52033 20.712 8.713C20.5207 8.90567 20.2833 9.00133 20 9H4Z"
       fill="white"
+    />
+  </svg>
+);
+
+const closeIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+  >
+    <path
+      d="M18 7L6 19M6 7L18 19"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
   </svg>
 );
