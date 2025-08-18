@@ -1,6 +1,6 @@
 .section {
   padding-bottom: 3.13vw;
-  
+
   .topBlock {
     margin-bottom: 3.13vw;
     h2 {
@@ -11,6 +11,25 @@
       letter-spacing: -1.92px;
 
       color: rgba(25, 27, 26, 1);
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-top: 16vw;
+    padding-bottom: 16vw;
+
+    .topBlock {
+      margin-bottom: 8.53vw;
+
+      h2 {
+        font-size: 8.53vw;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.96px;
+      }
     }
   }
 }

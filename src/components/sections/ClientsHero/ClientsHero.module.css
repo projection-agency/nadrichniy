@@ -26,3 +26,28 @@
     color: var(--text-light);
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .section {
+    padding-top: 21.87vw;
+    padding-bottom: 13.87vw;
+    border-bottom-left-radius: 5.33vw;
+    border-bottom-right-radius: 5.33vw;
+
+    .bg {
+      width: 88vw;
+      transform: rotateY(180deg);
+      top: 8.33vw;
+      right: -11vw;
+    }
+
+    h1 {
+      width: 80%;
+      font-size: 11.2vw;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -1.26px;
+    }
+  }
+}
