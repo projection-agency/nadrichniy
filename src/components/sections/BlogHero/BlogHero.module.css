@@ -38,7 +38,6 @@
     .planningToggler {
       width: 44.74vw;
       padding: 0.52vw;
-      margin-bottom: 3.13vw;
       display: flex;
       align-items: center;
       position: relative;
@@ -78,6 +77,72 @@
       display: flex;
       gap: 0.83vw;
       flex-wrap: wrap;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .section {
+    .topBlock {
+      height: 49.33vw;
+      padding-top: 21.87vw;
+      padding-left: 4.27vw;
+      border-bottom-left-radius: 5.33vw;
+      border-bottom-right-radius: 5.33vw;
+
+      h1 {
+        font-size: 11.2vw;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        letter-spacing: -1.26px;
+      }
+
+      img {
+        width: 151.73vw;
+        height: 75.73vw;
+        top: -7vw;
+        right: -58vw;
+      }
+    }
+
+    .content {
+      width: 91.47vw;
+      padding-top: 21.33vw;
+
+      .simplebarTrack {
+        height: 0.53vw;
+        background-color: #ffffff;
+      }
+
+      .scrollbar {
+        height: 2px;
+        background-color: red;
+      }
+
+      .planningToggler {
+        height: 12.8vw;
+        width: max-content;
+        padding: 0;
+        border: 0.54vw solid transparent;
+        border-radius: 13.87vw;
+        overflow: visible;
+
+        .background {
+          width: 56.53vw;
+          height: 100%;
+          border-radius: 25.57vw;
+        }
+
+        button {
+          height: 100%;
+          width: 56.53vw;
+          flex-shrink: 0;
+
+          font-size: 3.73vw;
+          font-weight: 700;
+        }
+      }
     }
   }
 }

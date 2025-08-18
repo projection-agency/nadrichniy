@@ -2,7 +2,7 @@
   display: flex;
   gap: 0.42vw;
   margin-bottom: 1.67vw;
-  
+
   .breadcrumbItem {
     display: flex;
     gap: 0.42vw;
@@ -16,5 +16,21 @@
 
   .breadcrumbItem:last-child {
     color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .breadcrumbs {
+    gap: 1.07vw;
+    margin-bottom: 6.4vw;
+
+    .breadcrumbItem {
+      gap: 1.07vw;
+
+      font-size: 3.73vw;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.5;
+    }
   }
 }

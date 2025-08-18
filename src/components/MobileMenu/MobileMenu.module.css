@@ -1,0 +1,63 @@
+.mobileMenuOverlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  top: 0;
+  left: 0;
+  z-index: -999;
+  transition: all 300ms ease-in-out;
+  opacity: 0;
+}
+
+.mobileMenu {
+  width: 100%;
+  padding-top: 27.73vw;
+  padding-bottom: 11.2vw;
+  background-color: var(--brand-primary);
+  border-bottom-left-radius: 8.53vw;
+  border-bottom-right-radius: 8.53vw;
+  transition: transform 500ms ease-in-out;
+  transform: translateY(-100%);
+
+  .nav {
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 5.33vw;
+
+      li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 12.8vw;
+        border-radius: 26.67vw;
+        background-color: transparent;
+
+        a {
+          font-family: "Gilroy";
+          font-size: 5.87vw;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 100%;
+
+          color: #fff;
+        }
+      }
+
+      li.active {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+.isOpen {
+  opacity: 1;
+  z-index: 9999;
+
+  .mobileMenu {
+    transform: translateY(0%);
+  }
+}
