@@ -8,3 +8,52 @@
     gap: 0.83vw;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .container {
+    padding-top: 10.67vw;
+    padding-bottom: 16vw;
+    .list {
+      margin-bottom: 3.2vw;
+      flex-direction: column;
+      align-items: center;
+      gap: 3.2vw;
+    }
+
+    .blogLink {
+      width: 100%;
+      height: 14.93vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2.67vw;
+      transition: all 300ms ease-in-out;
+      background-color: #fff;
+      border-radius: 26.67vw;
+
+      font-size: 4.27vw;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      color: rgba(25, 27, 26, 1);
+
+      svg {
+        transform: rotateZ(90deg);
+        transition: stroke 300ms ease-in-out;
+        width: 2.4vw;
+        height: 2.13vw;
+        stroke: rgba(25, 27, 26, 1);
+      }
+    }
+
+    .blogLink:hover {
+      background-color: var(--braand-primary);
+
+      color: rgba(246, 246, 246, 1);
+
+      svg {
+        stroke: rgba(246, 246, 246, 1);
+      }
+    }
+  }
+}

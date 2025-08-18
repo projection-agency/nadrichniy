@@ -3,3 +3,9 @@
   flex-direction: column;
   gap: 1.04vw;
 }
+
+@media screen and (max-width: 1024px) {
+  .accordion {
+    gap: 4.27vw;
+  }
+}

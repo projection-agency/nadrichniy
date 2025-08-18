@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import Container from "@/components/Container/Container";
 import NewsItem from "@/components/NewsItem/NewsItem";
-import s from "./ProposalsList.module.css"
+import s from "./ProposalsList.module.css";
+
 export default function ProposalsList() {
   const [postsData, setPostsData] = useState([]);
 
@@ -32,6 +33,19 @@ export default function ProposalsList() {
       ) : (
         <p>please wait</p>
       )}
+      {window.innerWidth <= 1024 ? <button className={s.blogLink}>Дивитися ще {arrow}</button> : ""}
     </Container>
   );
 }
+
+const arrow = (
+  <svg
+    width="16"
+    height="18"
+    viewBox="0 0 16 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M8 18L8 2M8 2L1 9.52941M8 2L15 9.52941" strokeWidth="2" />
+  </svg>
+);

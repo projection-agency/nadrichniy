@@ -92,3 +92,46 @@
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .accordionItem {
+    padding: 5.33vw;
+    border-radius: 5.33vw;
+
+    .itemPanel {
+      padding-top: 4.27vw;
+
+      font-size: 3.73vw;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .itemHeader {
+      .question {
+        width: 65.87vw;
+
+        font-size: 4.8vw;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: -0.54px;
+      }
+
+      span {
+        width: 10.67vw;
+        height: 10.67vw;
+
+        svg {
+          width: 5.33vw;
+          height: 5.33vw;
+        }
+      }
+    }
+  }
+
+  .accordionItemOpen {
+    background-size: cover;
+    background-position: left center;
+  }
+}
