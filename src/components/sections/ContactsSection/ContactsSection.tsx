@@ -1,12 +1,13 @@
 "use client";
 import Container from "@/components/Container/Container";
-import "leaflet/dist/leaflet.css";
 import s from "./ContactsSection.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { Icon } from "leaflet";
+import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useEffect, useRef, useState } from "react";
+import { Icon } from "leaflet";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 const mainMarker = new Icon({
   iconUrl: "/icons/nadrichnyi.svg",
@@ -36,6 +37,7 @@ const contactsData = [
 const ContactsSection = () => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMapRef = useRef<L.Map | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -84,9 +86,9 @@ const ContactsSection = () => {
     }
   };
   return (
-    <section className={s.section}>
+    <section className={`${s.section} ${pathname == "/contacts" && s.contactsPage}`}>
       <Container>
-        <h2>Контакти</h2>
+        {pathname !== "/contacts" && <h2>Контакти</h2>}
         {window.innerWidth <= 1024 && (
           <div className={s.mobileMapLegend}>
             <h3>Наші контакти</h3>

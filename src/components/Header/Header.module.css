@@ -225,7 +225,9 @@
         background-color: #fff;
 
         svg {
+          fill: var(--brand-primary);
           stroke: var(--brand-primary);
+          stroke-width: 0.35vw;
         }
       }
     }
