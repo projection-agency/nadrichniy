@@ -225,7 +225,9 @@
         background-color: #fff;
 
         svg {
+          fill: var(--brand-primary);
           stroke: var(--brand-primary);
+          stroke-width: 0.35vw;
         }
       }
     }
@@ -236,6 +238,15 @@
       a {
         background-color: rgba(246, 246, 246, 1);
       }
+/* 
+      button{
+        background-color: var(--brand-primary);
+
+        svg{
+          fill: #ffffff;
+          stroke: #ffffff;
+        }
+      } */
     }
   }
 }

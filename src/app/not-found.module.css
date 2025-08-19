@@ -1,0 +1,108 @@
+.heroSection {
+  padding-top: 9.17vw;
+  padding-bottom: 4.17vw;
+
+  .content {
+    width: 100%;
+    height: 35.36vw;
+    border-radius: 2.71vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url(../../public/images/not-found-bg.jpg);
+    background-size: contain;
+
+    h1 {
+      margin-bottom: 0.63vw;
+      font-size: 5.1vw;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -2.94px;
+      color: #ffffff;
+    }
+
+    .upperDescr {
+      margin-bottom: 1.25vw;
+
+      font-size: 1.67vw;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.96px;
+      color: #ffffff;
+    }
+
+    .instruction {
+      margin-bottom: 2.08vw;
+
+      font-size: 0.94vw;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.54px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    a {
+      width: 14.06vw;
+      height: 3.13vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      border-radius: 4.27vw;
+
+      font-family: "Onest";
+      font-size: 0.83vw;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 0.16px;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .heroSection {
+    padding-top: 23.47vw;
+    padding-bottom: 0;
+    .content {
+      height: 127.2vw;
+      padding: 0 5.33vw;
+      border-radius: 5.33vw;
+      background-image: url(../../public/images/not-found-bg-mobile.jpg);
+
+      h1 {
+        margin-bottom: 1.07vw;
+        font-size: 11.73vw;
+        font-weight: 700;
+        letter-spacing: -1.32px;
+      }
+
+      .upperDescr {
+        margin-bottom: 8.53vw;
+        font-size: 5.33vw;
+        letter-spacing: -0.6px;
+      }
+
+      .instruction {
+        text-align: center;
+        margin-bottom: 6.4vw;
+        font-size: 3.73vw;
+        letter-spacing: -0.42px;
+      }
+
+      a {
+        width: 69.6vw;
+        height: 12.8vw;
+        border-radius: 21.87vw;
+
+        font-size: 4.27vw;
+        letter-spacing: 0.16px;
+      }
+    }
+  }
+}
