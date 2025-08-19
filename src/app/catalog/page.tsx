@@ -1,8 +1,12 @@
 "use client";
-import AdvantagesSection from "@/components/sections/AdvantagesSection/AdvantagesSection";
 import CatalogHero from "@/components/sections/CatalogHero/CatalogHero";
-import ApartmentFilterPopup from "@/components/ApartmentFilterPopup/ApartmentFilterPopup";
 import dynamic from "next/dynamic";
+
+const AdvantagesSection = dynamic(
+  () => import("@/components/sections/AdvantagesSection/AdvantagesSection"),
+  { ssr: false }
+);
+
 
 const NewsSection = dynamic(
   () => import("@/components/sections/NewsSection/NewsSection"),
