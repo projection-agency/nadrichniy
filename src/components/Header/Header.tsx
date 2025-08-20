@@ -6,6 +6,7 @@ import s from "./Header.module.css";
 import Container from "../Container/Container";
 import Link from "next/link";
 import MobileMenu from "../MobileMenu/MobileMenu";
+import { useModal } from "../ModalContext";
 
 const navLinks = [
   { title: "Головна", link: "/" },
@@ -21,6 +22,7 @@ const Header = () => {
   const pathname = usePathname();
   const params = useParams();
   const isCatalogPage = pathname.includes("/catalog");
+  const { openModal } = useModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,8 +51,9 @@ const Header = () => {
     <>
       <header
         className={`${s.header}   
+        ${isScrolled && !mobileMenuIsOpen ? s.scrolled : ""}
         ${params.slug && isCatalogPage ? `${s.dark} ${s.planningPage}` : ""}
-        ${isScrolled && !mobileMenuIsOpen ? s.scrolled : ""}`}
+        `}
       >
         <Container className={s.container}>
           <div className={s.topBlock}>
@@ -73,7 +76,7 @@ const Header = () => {
           <div className={s.bottomBlock}>
             <div className={s.numberAccordion}>
               {phoneIcon}{" "}
-              <a href="" className={s.number}>
+              <a href="#" className={s.number}>
                 <span>Контакти:</span>+38 (044) 333 85 98
               </a>
             </div>
@@ -82,7 +85,7 @@ const Header = () => {
             </a>
           </div>
           <div className={s.mobMenuBlock}>
-            <a href="">{phoneIcon}</a>
+            <button onClick={() => openModal("formB")}>{phoneIcon}</button>
             <button
               className={`${mobileMenuIsOpen ? s.white : ""} ${
                 (pathname == "/clients" ||

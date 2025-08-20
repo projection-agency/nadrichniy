@@ -179,25 +179,3 @@ const QuestionsFormSection = () => {
 };
 
 export default QuestionsFormSection;
-
-// <ul className={s.list}>
-//   {timeWindows.map((item, idx) => {
-//     return (
-//       <li key={idx} className={s.item}>
-//         <Field
-//           type="checkbox"
-//           value={item}
-//           name={`time`}
-//           id={`${idx}`}
-//           onChange={(e) => {
-//             toggleTime(e.target.value);
-//           }}
-//           onClick={() => console.log(item)}
-//         />
-//         <label className={s.timeCheckbox} htmlFor={`${idx}`}>
-//           {item}
-//         </label>
-//       </li>
-//     );
-//   })}
-// </ul>

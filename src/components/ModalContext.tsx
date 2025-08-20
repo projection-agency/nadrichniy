@@ -1,8 +1,11 @@
 "use client";
 import ApartmentFilterPopup from "./ApartmentFilterPopup/ApartmentFilterPopup";
+import ContactPopup from "./ContactPopup/ContactPopup";
+import ReservationPopup from "./ReservationPopup/ReservationPopup";
+import SpecifyPopup from "./SpecifyPopup/SpecifyPopup";
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type ModalKey = "formA" | "formB" | "formC" | "subscribe" | null;
+type ModalKey = "formA" | "formB" | "formC" | "formD" | null;
 
 interface ModalContextType {
   openModal: (key: ModalKey, payload?: string) => void;
@@ -39,6 +42,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
       {currentModal === "formA" && (
         <ApartmentFilterPopup onClose={closeModal} />
       )}
+
+      {currentModal === "formB" && <ContactPopup onClose={closeModal} />}
+      {currentModal === "formC" && <ReservationPopup onClose={closeModal} />}
+      {currentModal === "formD" && <SpecifyPopup onClose={closeModal} />}
     </ModalContext.Provider>
   );
 };

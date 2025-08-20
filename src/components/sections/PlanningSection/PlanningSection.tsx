@@ -8,12 +8,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { API_URL } from "@/constants";
 import { Apartment } from "@/Redux/apartmentSlice/slice";
+import { useModal } from "@/components/ModalContext";
 const PlanningSection = () => {
   const [active, setActive] = useState<"flat" | "floor">("flat");
-
   const router = useRouter();
   const [item, setItem] = useState<Apartment>();
   const { slug } = useParams();
+  const { openModal } = useModal();
 
   useEffect(() => {
     const fetchApartment = async () => {
@@ -100,8 +101,22 @@ const PlanningSection = () => {
                 </ul>
 
                 <div className={s.buttons}>
-                  <button className={s.secondary}>Дізнатися ціну</button>
-                  <button className={s.primary}>Забронювати</button>
+                  <button
+                    onClick={() => {
+                      openModal("formD");
+                    }}
+                    className={s.secondary}
+                  >
+                    Дізнатися ціну
+                  </button>
+                  <button
+                    onClick={() => {
+                      openModal("formC");
+                    }}
+                    className={s.primary}
+                  >
+                    Забронювати
+                  </button>
                 </div>
               </div>
             </div>

@@ -113,6 +113,7 @@
     .itemImg {
       width: 100%;
       height: 51.73vw;
+      object-fit: cover;
       aspect-ratio: 291/193.95;
       border-radius: 5.33vw;
     }

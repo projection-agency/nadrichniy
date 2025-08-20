@@ -1,0 +1,340 @@
+.container {
+  position: fixed;
+  z-index: 9999999999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 42.29vw;
+  padding: 3.75vw 2.71vw;
+  border-radius: 2.71vw;
+  background-color: #fff;
+
+  .closeBtn {
+    position: absolute;
+    z-index: 2;
+    top: 1.67vw;
+    right: 1.67vw;
+    width: 3.33vw;
+    height: 3.33vw;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(246, 246, 246, 1);
+
+    svg {
+      width: 1.67vw;
+      height: 1.67vw;
+      stroke: rgba(101, 109, 122, 1);
+    }
+  }
+
+  h3 {
+    margin-bottom: 1.25vw;
+
+    text-align: center;
+    font-size: 3.33vw;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -1.92px;
+    color: rgba(25, 27, 26, 1);
+  }
+
+  .upperDescr {
+    margin-bottom: 2.71vw;
+    text-align: center;
+    font-size: 1.04vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.6px;
+    color: rgba(101, 109, 122, 1);
+  }
+
+  .formContainer {
+    grid-area: 1 / 2 / 2 / 3;
+    padding: 0 3.13vw;
+
+    .form {
+      width: 100%;
+
+      label {
+        position: relative;
+        font-family: "Gilroy" !important;
+        font-size: 0.73vw;
+        line-height: 1;
+        font-style: normal;
+        font-weight: 600;
+        color: rgba(25, 27, 26, 1);
+
+        .required {
+          width: max-content;
+          position: relative;
+          margin-bottom: 0.62vw;
+        }
+
+        .required::after {
+          content: "*";
+          position: absolute;
+          top: 0;
+          right: -0.5vw;
+          font-size: 0.73vw;
+          line-height: 1;
+          font-style: normal;
+          font-weight: 600;
+          color: rgba(255, 85, 30, 1);
+        }
+
+        input {
+          width: 100%;
+          padding: 1.25vw;
+          height: 3.33vw;
+          border: none;
+          outline: none;
+          background-color: var(--background-light);
+          border-radius: 8.65vw;
+        }
+
+        input::placeholder {
+          font-size: 0.83vw;
+          font-weight: 600;
+          line-height: 1;
+        }
+      }
+
+      .phone {
+        height: 3.33vw;
+        border-radius: 8vw;
+      }
+
+      .inputLine {
+        display: flex;
+        gap: 0.63vw;
+        margin-bottom: 1.25vw;
+
+        .label {
+          height: 4.69vw;
+          font-family: "Onest";
+
+          width: calc((100% - 0.63vw) / 2);
+        }
+      }
+
+      .emailLabel {
+        display: block;
+        margin-bottom: 1.25vw;
+      }
+
+      .dateLabel {
+        position: relative;
+        display: block;
+        margin-bottom: 1.25vw;
+
+        .inputCont {
+          position: relative;
+
+          img {
+            position: absolute;
+            width: 0.83vw;
+            height: 0.83vw;
+            top: 1.25vw;
+            left: 1.25vw;
+          }
+        }
+      }
+
+      .checkboxesCont {
+        margin-bottom: 1.67vw;
+
+        .required {
+          position: relative;
+          width: max-content;
+          margin-bottom: 0.63vw;
+
+          font-size: 0.73vw;
+          line-height: 1;
+          font-style: normal;
+          font-weight: 600;
+          color: rgba(25, 27, 26, 1);
+        }
+
+        .required::after {
+          content: "*";
+          position: absolute;
+          top: 0;
+          right: -0.5vw;
+          font-size: 0.73vw;
+          line-height: 1;
+          font-style: normal;
+          font-weight: 600;
+          color: rgba(255, 85, 30, 1);
+        }
+      }
+
+      .submitBtn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 3.33vw;
+
+        font-size: 0.83vw;
+        font-weight: 700;
+        line-height: normal;
+        color: #ffffff;
+        background-color: var(--brand-primary);
+        border-radius: 5.21vw;
+      }
+
+      .error {
+        border: 0.05vw solid rgba(255, 85, 30, 1);
+      }
+
+      .errorMessage {
+        position: absolute;
+        bottom: -1vw;
+        left: 0;
+        margin-top: 0.63vw;
+        font-size: 0.63vw;
+        font-weight: 500;
+        line-height: 1;
+        color: rgba(255, 85, 30, 1);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    padding-top: 16vw;
+    padding-bottom: 12.8vw;
+    padding-left: 5.33vw;
+    padding-right: 5.33vw;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+
+    .closeBtn {
+      position: absolute;
+      z-index: 2;
+      top: 4.27vw;
+      right: 4.27vw;
+      width: 10.67vw;
+      height: 10.67vw;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(246, 246, 246, 1);
+
+      svg {
+        width: 5.33vw;
+        height: 5.33vw;
+        stroke: rgba(101, 109, 122, 1);
+      }
+    }
+
+    h3 {
+      margin-bottom: 5.33vw;
+
+      font-size: 8.53vw;
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.96px;
+    }
+
+    .upperDescr {
+      margin-bottom: 8.53vw;
+
+      font-size: 4.27vw;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.48px;
+    }
+
+    .formContainer {
+
+      .form {
+        .inputLine {
+          width: 100%;
+          margin-bottom: 4.27vw;
+          flex-direction: column;
+          gap: 4.27vw;
+
+          .label {
+            width: 100%;
+            height: auto;
+
+            .phone {
+              height: auto;
+            }
+          }
+        }
+
+        label {
+          .required {
+            margin-bottom: 3.2vw;
+            font-size: 3.73vw;
+          }
+
+          .required::after {
+            right: -2vw;
+            font-size: 3.73vw;
+          }
+
+          input {
+            height: auto;
+            padding: 5.33vw 6.4vw;
+            font-size: 4.27vw;
+          }
+
+          input::placeholder {
+            font-size: 4.27vw;
+          }
+
+          .errorMessage {
+            bottom: -4vw;
+            font-size: 3.2vw;
+          }
+        }
+
+        .emailLabel,
+        .dateLabel {
+          margin-bottom: 4.27vw;
+        }
+
+        .dateLabel {
+          .inputCont {
+            img {
+              width: 4.27vw;
+              height: 4.27vw;
+              top: 5.5vw;
+              left: 7.25vw;
+            }
+          }
+        }
+
+        .checkboxesCont {
+          margin-bottom: 6.4vw;
+          .required {
+            margin-bottom: 3.2vw;
+            font-size: 3.73vw;
+          }
+
+          .required::after {
+            right: -2vw;
+            font-size: 3.73vw;
+          }
+        }
+
+        .submitBtn {
+          height: 14.93vw;
+          border-radius: 26.67vw;
+
+          font-size: 4.27vw;
+        }
+      }
+    }
+  }
+}
