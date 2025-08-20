@@ -1,3 +1,13 @@
+.popupOverlay {
+  position: fixed;
+  z-index: 9999999998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(25, 27, 26, 0.6);
+}
+
 .container {
   position: fixed;
   z-index: 9999999999;
@@ -254,7 +264,6 @@
     }
 
     .formContainer {
-
       .form {
         .inputLine {
           width: 100%;

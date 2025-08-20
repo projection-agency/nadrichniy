@@ -177,27 +177,31 @@ const PlanningSection = () => {
                   alt="floor-image"
                 />
               )}
-              <div className={s.planningTogglerMobile}>
-                <div
-                  className={s.background}
-                  style={{
-                    transform:
-                      active === "flat" ? "translateX(0%)" : "translateX(100%)",
-                  }}
-                ></div>
-                <button
-                  className={active === "flat" ? s.active : ""}
-                  onClick={() => setActive("flat")}
-                >
-                  Квартира
-                </button>
-                <button
-                  className={active === "floor" ? s.active : ""}
-                  onClick={() => setActive("floor")}
-                >
-                  Поверх
-                </button>
-              </div>
+              {window.innerWidth <= 1024 && (
+                <div className={s.planningTogglerMobile}>
+                  <div
+                    className={s.background}
+                    style={{
+                      transform:
+                        active === "flat"
+                          ? "translateX(0%)"
+                          : "translateX(100%)",
+                    }}
+                  ></div>
+                  <button
+                    className={active === "flat" ? s.active : ""}
+                    onClick={() => setActive("flat")}
+                  >
+                    Квартира
+                  </button>
+                  <button
+                    className={active === "floor" ? s.active : ""}
+                    onClick={() => setActive("floor")}
+                  >
+                    Поверх
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ) : (
