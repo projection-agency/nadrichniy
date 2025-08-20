@@ -8,7 +8,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { API_URL } from "@/constants";
 import { Apartment } from "@/Redux/apartmentSlice/slice";
-import SimilarPlanningsSection from "../SimilarPlanningsSection/SimilarPlanningsSection";
 const PlanningSection = () => {
   const [active, setActive] = useState<"flat" | "floor">("flat");
 
@@ -24,7 +23,6 @@ const PlanningSection = () => {
         );
         const data = await response.json();
         setItem(data[0]);
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -135,8 +133,16 @@ const PlanningSection = () => {
                 </div>
 
                 <ul className={s.links}>
-                  <li>{share}</li>
-                  <li>{download}</li>
+                  <li>
+                    <Link href={"#"}>{share}</Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`https://api.lcdoy.projection-learn.website/wp-json/download/v1/pdf?post_id=${item.id}`}
+                    >
+                      {download}
+                    </Link>
+                  </li>
                 </ul>
               </div>
               {active === "flat" ? (

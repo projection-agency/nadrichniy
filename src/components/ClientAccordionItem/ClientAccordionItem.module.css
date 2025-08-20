@@ -121,6 +121,7 @@
       span {
         width: 10.67vw;
         height: 10.67vw;
+        flex-shrink: 0;
 
         svg {
           width: 5.33vw;

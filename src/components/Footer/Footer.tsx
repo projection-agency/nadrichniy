@@ -98,7 +98,7 @@ const Footer = () => {
         </div>
         <div className={s.privacyPolicyCont}>
           <p>2025© :ЖК Надрічний. Всі права захищені</p>
-          <Link className={s.link} href={"#"}>
+          <Link className={s.link} href={"/privacy-policy"}>
             Політика конфіденційності
           </Link>
           <p>

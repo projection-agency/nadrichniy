@@ -1,7 +1,12 @@
 "use client";
 import HomeHero from "@/components/sections/HomeHero/HomeHero";
-import AdvantagesSection from "@/components/sections/AdvantagesSection/AdvantagesSection";
 import dynamic from "next/dynamic";
+
+const AdvantagesSection = dynamic(
+  () => import("@/components/sections/AdvantagesSection/AdvantagesSection"),
+  { ssr: false }
+);
+
 
 const ContactsSection = dynamic(
   () => import("@/components/sections/ContactsSection/ContactsSection"),

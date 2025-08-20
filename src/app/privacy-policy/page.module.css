@@ -1,0 +1,60 @@
+.heroSection {
+  padding-top: 8.75vw;
+  padding-bottom: 6.04vw;
+  border-bottom-left-radius: 4.17vw;
+  border-bottom-right-radius: 4.17vw;
+  background-image: url(../../../public/images/privacy-policy-bg.jpg);
+  background-size: cover;
+
+  .content {
+    h1 {
+      text-align: center;
+      font-size: 3.02vw;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -1.74px;
+      color: #ffffff;
+    }
+  }
+}
+
+.accrodionSection {
+  padding-top: 3.13vw;
+  padding-bottom: 6.25vw;
+
+  .container {
+    padding: 2.71vw 6.25vw;
+    border-radius: 2.71vw;
+    background-color: #fff;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .heroSection {
+    padding-top: 25.6vw;
+    padding-bottom: 16vw;
+    border-bottom-left-radius: 5.33vw;
+    border-bottom-right-radius: 5.33vw;
+    background-image: url(../../../public/images/privacy-policy-bg-mobile.jpg);
+
+    .content {
+      h1 {
+        width: auto;
+        font-size: 6.4vw;
+        line-height: normal;
+        letter-spacing: -0.72px;
+      }
+    }
+  }
+
+  .accrodionSection {
+    padding-top: 10.67vw;
+    padding-bottom: 16vw;
+
+    .container {
+      padding: 8.53vw 6.4vw;
+      border-radius: 8.53vw;
+    }
+  }
+}
