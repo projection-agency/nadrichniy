@@ -56,8 +56,6 @@ export default function ApartmentFilterPopup({
     houseNumbers === initialState.filters.house &&
     yearsFilter === initialState.filters.year;
 
-  console.log(isInitialFilter);
-
   const handleChangeArea = (e: number[]) => {
     dispatch(setAreaFilter([e[0], e[1]]));
   };

@@ -148,7 +148,7 @@
   }
 }
 
-.header.dark.planningPage {
+.header.planningPage {
   background-color: transparent;
 }
 
@@ -238,7 +238,7 @@
       a {
         background-color: rgba(246, 246, 246, 1);
       }
-/* 
+      /* 
       button{
         background-color: var(--brand-primary);
 

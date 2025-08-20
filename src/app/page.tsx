@@ -1,6 +1,7 @@
 "use client";
 import HomeHero from "@/components/sections/HomeHero/HomeHero";
 import dynamic from "next/dynamic";
+import ContactPopup from "@/components/ContactPopup/ContactPopup";
 
 const AdvantagesSection = dynamic(
   () => import("@/components/sections/AdvantagesSection/AdvantagesSection"),
@@ -50,7 +51,7 @@ export default function Home() {
   return (
     <div>
       <main>
-        <HomeHero></HomeHero>
+        <HomeHero/>
         <AboutSection />
         <ChooseAnApartment />
         <AdvantagesSection />

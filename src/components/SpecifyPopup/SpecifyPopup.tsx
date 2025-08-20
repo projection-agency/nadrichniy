@@ -1,13 +1,13 @@
 "use client";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { object, string } from "yup";
-import Container from "@/components/Container/Container";
-import s from "./QuestionsFormSection.module.css";
+import s from "./SpecifyPopup.module.css";
+import { Formik, Form, Field, ErrorMessage, FormikValues } from "formik";
+import FormPhoneInput from "../FormPhoneInput/FormPhoneInput";
+import FormDateInput from "../FormDateInput/FormDateInput";
+import TimePicker from "../TimePicker/TimePicker";
 import Image from "next/image";
-import FormPhoneInput from "../../FormPhoneInput/FormPhoneInput";
-import FormDateInput from "@/components/FormDateInput/FormDateInput";
-import TimePicker from "@/components/TimePicker/TimePicker";
-import { FormikValues } from "formik";
+import { object, string } from "yup";
+import { closeIco } from "../ModalContext";
+
 import { formInstance } from "@/axios/axios";
 
 const validationSchema = object({
@@ -41,46 +41,31 @@ const initialValues = {
   time: "",
 };
 
-const QuestionsFormSection = () => {
+export default function SpecifyPopup({ onClose }: { onClose: () => void }) {
   const handleSubmit = async (values: FormikValues) => {
     console.log(values);
-    try {
-      const response = await formInstance.post(
-        "https://api.lcdoy.projection-learn.website/wp-json/applications/v1/call",
-        values
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const response = await formInstance.post(
+    //     "https://api.lcdoy.projection-learn.website/wp-json/applications/v1/call",
+    //     values
+    //   );
+    //   console.log(response);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
-    <section className={s.section}>
-      <Container className={s.container}>
-        <div className={s.sectionTitle}>
-          <Image
-            className={s.bg}
-            src={`/images/${
-              window.innerWidth <= 1024 ? "formTitle_bg_mobile" : "formTitle_bg"
-            }.jpg`}
-            height={702}
-            width={820}
-            alt="image"
-          />
-          <Image
-            className={s.titleIcon}
-            src={"/icons/customer-service.svg"}
-            height={140}
-            width={140}
-            alt="icon"
-          />
-          <h2>Зв&apos;яжіться з нами</h2>
-          <p>
-            Маєте запитання або хочете записатись на консультацію? Залиште свої
-            контакти і ми вам зателефонуємо
-          </p>
-        </div>
+    <div className={s.popupOverlay}>
+      <div className={s.container}>
+        <button onClick={() => onClose()} className={s.closeBtn}>
+          {closeIco}
+        </button>
+
+        <h3>Дізнатися ціну</h3>
+        <p className={s.upperDescr}>
+          Залиште свої контакти — ми зателефонуємо і підкажемо точну вартість.
+        </p>
         <div className={s.formContainer}>
           <Formik
             initialValues={initialValues}
@@ -121,23 +106,6 @@ const QuestionsFormSection = () => {
                   </label>
                 </div>
 
-                <label className={s.emailLabel} htmlFor="forEmail">
-                  <p className={s.required}>Email</p>
-                  <Field
-                    className={errors.email && touched.email ? s.error : ""}
-                    as="input"
-                    type="email"
-                    id="forEmail"
-                    name="email"
-                    autoComplete="off"
-                    placeholder="Введіть email"
-                    required={true}
-                  />
-                  <ErrorMessage name="email">
-                    {(msg) => <div className={s.errorMessage}>{msg}</div>}
-                  </ErrorMessage>
-                </label>
-
                 <label className={s.dateLabel} htmlFor="forDate">
                   <p className={s.required}>Оберіть дату для дзвінка</p>
 
@@ -161,21 +129,19 @@ const QuestionsFormSection = () => {
                   <p className={s.required}>
                     Зручний час для дзвінка (За Київським часом)
                   </p>
-                  <TimePicker/>
+                  <TimePicker />
                   <ErrorMessage name="time">
                     {(msg) => <div className={s.errorMessage}>{msg}</div>}
                   </ErrorMessage>
                 </div>
                 <button type="submit" className={s.submitBtn}>
-                  Замовити дзвінок
+                  Залишити заявку
                 </button>
               </Form>
             )}
           </Formik>
         </div>
-      </Container>
-    </section>
+      </div>
+    </div>
   );
-};
-
-export default QuestionsFormSection;
+}

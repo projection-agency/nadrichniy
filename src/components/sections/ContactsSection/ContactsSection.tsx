@@ -86,7 +86,9 @@ const ContactsSection = () => {
     }
   };
   return (
-    <section className={`${s.section} ${pathname == "/contacts" && s.contactsPage}`}>
+    <section
+      className={`${s.section} ${pathname == "/contacts" && s.contactsPage}`}
+    >
       <Container>
         {pathname !== "/contacts" && <h2>Контакти</h2>}
         {window.innerWidth <= 1024 && (
@@ -214,55 +216,57 @@ const ContactsSection = () => {
             style={{ width: "100%", zIndex: 0 }}
           ></div>
         </div>
-        <div className={s.googleMapsLinks}>
-          <ul className={s.linkList}>
-            <li>
-              <a
-                className={s.link}
-                href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src={`/icons/google_maps.svg`}
-                  width={24}
-                  height={24}
-                  alt={"icon"}
-                />
-              </a>
-            </li>
-            <li>
-              <a
-                className={s.link}
-                href="https://waze.com/ul?ll=48.9407815,24.7164726&navigate=yes"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src={`/icons/waze.svg`}
-                  width={24}
-                  height={24}
-                  alt={"icon"}
-                />
-              </a>
-            </li>
-            <li>
-              <a
-                className={s.link}
-                href="http://maps.apple.com/?ll=48.9407815,24.7164726"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src={`/icons/apple_maps.svg`}
-                  width={24}
-                  height={24}
-                  alt={"icon"}
-                />
-              </a>
-            </li>
-          </ul>
-        </div>
+        {window.innerWidth <= 1024 && (
+          <div className={s.googleMapsLinks}>
+            <ul className={s.linkList}>
+              <li>
+                <a
+                  className={s.link}
+                  href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src={`/icons/google_maps.svg`}
+                    width={24}
+                    height={24}
+                    alt={"icon"}
+                  />
+                </a>
+              </li>
+              <li>
+                <a
+                  className={s.link}
+                  href="https://waze.com/ul?ll=48.9407815,24.7164726&navigate=yes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src={`/icons/waze.svg`}
+                    width={24}
+                    height={24}
+                    alt={"icon"}
+                  />
+                </a>
+              </li>
+              <li>
+                <a
+                  className={s.link}
+                  href="http://maps.apple.com/?ll=48.9407815,24.7164726"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src={`/icons/apple_maps.svg`}
+                    width={24}
+                    height={24}
+                    alt={"icon"}
+                  />
+                </a>
+              </li>
+            </ul>
+          </div>
+        )}
       </Container>
     </section>
   );
