@@ -6,9 +6,10 @@ import s from "./ProposalsList.module.css";
 import { getWindowWidth } from "@/utils/getWindowWidth";
 import { API_URL } from "@/constants";
 import { getBlogCategoryQuery } from "@/lib/blogCategories";
+import { NewItem } from "../NewsSection/NewsSection";
 
 export default function ProposalsList() {
-  const [postsData, setPostsData] = useState([]);
+  const [postsData, setPostsData] = useState<NewItem[]>([]);
 
   useEffect(() => {
     const fetchPosts = async () => {

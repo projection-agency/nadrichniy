@@ -10,7 +10,7 @@ import { getBlogCategoryQuery } from "@/lib/blogCategories";
 const categories = ["all", "news", "special", "workSchedule"] as const;
 type Category = (typeof categories)[number];
 export default function BlogHero() {
-  const [postsData, setPostsData] = useState([]);
+  const [postsData, setPostsData] = useState<NewItem[]>([]);
   const togglerContRef = useRef<HTMLDivElement | null>(null);
   const togglersRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [active, setActive] = useState<Category>("all");

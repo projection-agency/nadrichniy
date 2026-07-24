@@ -7,7 +7,11 @@ import { useThemeSettings } from "@/lib/useThemeSettings";
 import { getAdvantages } from "@/lib/themeSettings";
 import { useMemo } from "react";
 
-const DEFAULT_ADVANTAGES = [
+const DEFAULT_ADVANTAGES: {
+  title: string;
+  description: string;
+  icon?: string;
+}[] = [
   {
     title: "Місце для всіх поколінь",
     description:
