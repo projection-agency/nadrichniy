@@ -1,27 +1,9 @@
 "use client";
-import dynamic from "next/dynamic";
 import ClientsHero from "@/components/sections/ClientsHero/ClientsHero";
-
-const ContactsSection = dynamic(
-  () => import("@/components/sections/ContactsSection/ContactsSection"),
-  { ssr: false }
-);
-
-const QuestionsFormSection = dynamic(
-  () =>
-    import("@/components/sections/QuestionsFormSection/QuestionsFormSection"),
-  { ssr: false }
-);
-
-const FaqSection = dynamic(
-  () => import("@/components/sections/FaqSection/FaqSection"),
-  { ssr: false }
-);
-
-const ProposalsList = dynamic(
-  () => import("@/components/sections/ProposalsList/ProposalsList"),
-  { ssr: false }
-);
+import ContactsSection from "@/components/sections/ContactsSection/ContactsSection";
+import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
+import FaqSection from "@/components/sections/FaqSection/FaqSection";
+import ProposalsList from "@/components/sections/ProposalsList/ProposalsList";
 
 export default function ClientsPage() {
   return (

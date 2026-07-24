@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from "react";
 import { NewItem } from "../NewsSection/NewsSection";
 import NewsItem from "@/components/NewsItem/NewsItem";
 import SimpleBar from "simplebar-react";
+import { API_URL } from "@/constants";
+import { getBlogCategoryQuery } from "@/lib/blogCategories";
 const categories = ["all", "news", "special", "workSchedule"] as const;
 type Category = (typeof categories)[number];
 export default function BlogHero() {
@@ -33,30 +35,12 @@ export default function BlogHero() {
   }, [active]);
 
   useEffect(() => {
-    const toggleCategoires = () => {
-      switch (active) {
-        case "all": {
-          return "";
-        }
-        case "news": {
-          return "?categories=8";
-        }
-        case "special": {
-          return "?categories=11";
-        }
-        case "workSchedule": {
-          return "?categories=10";
-        }
-      }
-    };
-
     const fetchPosts = async () => {
       try {
-        const response = await fetch(
-          `https://api.lcdoy.projection-learn.website/wp-json/wp/v2/posts${toggleCategoires()}`
-        );
+        const query = await getBlogCategoryQuery(active);
+        const response = await fetch(`${API_URL}/wp-json/wp/v2/posts${query}`);
         const data = await response.json();
-        setPostsData(data);
+        setPostsData(Array.isArray(data) ? data : []);
       } catch (error) {
         console.log(error);
       }

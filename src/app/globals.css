@@ -5,11 +5,11 @@
   --text-gray-dark: rgba(49, 49, 49, 1);
   --background-light: rgb(246, 246, 246);
   --background-white: rgba(255, 255, 255, 1);
-  --brand-primary: rgba(64, 91, 231, 1);
-  --brand-primary-hover: rgba(44, 71, 211, 1);
-  --brand-primary-transparent: rgba(64, 91, 231, 0.2);
+  --brand-primary: rgba(67, 91, 186, 1);
+  --brand-primary-hover: rgba(47, 71, 166, 1);
+  --brand-primary-transparent: rgba(67, 91, 186, 0.2);
   --background-semi-transparent: rgba(246, 246, 246, 0.2);
-  --background-semi-transparent-blue: rgba(64, 91, 231, 0.1);
+  --background-semi-transparent-blue: rgba(67, 91, 186, 0.1);
   --text-semi-transparent: rgba(255, 255, 255, 0.5);
   --button-hover-primary: rgba(26, 189, 64, 1);
 }

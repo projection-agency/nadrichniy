@@ -3,11 +3,14 @@ import s from "./ApartmentItem.module.css";
 import { Apartment } from "@/Redux/apartmentSlice/slice";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { getWindowWidth } from "@/utils/getWindowWidth";
+import { resolveMediaUrl } from "@/utils/resolveMediaUrl";
 
 const ApartmentItem = ({ item }: { item: Apartment }) => {
   const pathname = usePathname();
+  const windowWidth = getWindowWidth();
+  const layoutSrc = resolveMediaUrl(item.Flour_layout);
   return (
     <li className={s.item}>
       <div className={s.topBlock}>
@@ -20,7 +23,7 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
         <div>
           <p>Запланована здача</p>
           {item.Schedule}
-          {window.innerWidth <= 1024 ? (
+          {windowWidth <= 1024 ? (
             <ul className={s.advantages}>
               {item.Postponement == "1" ? (
                 <li>
@@ -67,7 +70,7 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
       <div className={s.bottomBlock}>
         <Image
           className={s.layoutImg}
-          src={`${item.Flour_layout}`}
+          src={layoutSrc}
           width={372}
           height={289}
           alt="floor-image"
@@ -83,7 +86,7 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
             Дізнатись вартість
             {arrow}
           </Link>
-          {window.innerWidth >= 1024 ? (
+          {windowWidth >= 1024 ? (
             <ul className={s.advantages}>
               {item.Postponement == "1" ? (
                 <li>

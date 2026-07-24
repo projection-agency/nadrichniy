@@ -1,10 +1,78 @@
 "use client";
-import { useEffect } from "react";
 import Container from "@/components/Container/Container";
 import s from "./AdvantagesSection.module.css";
 import Image from "next/image";
+import { getWindowWidth } from "@/utils/getWindowWidth";
+import { useThemeSettings } from "@/lib/useThemeSettings";
+import { getAdvantages } from "@/lib/themeSettings";
+import { useMemo } from "react";
+
+const DEFAULT_ADVANTAGES = [
+  {
+    title: "Місце для всіх поколінь",
+    description:
+      "Комплекс однаково зручний для родин з дітьми, людей поважного віку та тих, хто працює вдома. Кожен почувається тут на своєму місці",
+  },
+  {
+    title: "Свіже повітря та зелене оточення",
+    description:
+      "Житло поруч із природою, без необхідності залишати межі міста. Чисте повітря та зелена зона навколо. Тут легко дихається і завжди є де пройтись у тиші біля річки",
+  },
+  {
+    title: "Захопливі краєвиди - тут видно вовчинецькі гори",
+    description:
+      "Панорамні вікна відкривають краєвиди на річку, вовчинецькі гори та зелені простори навколо. Візуальна тиша, яка добре впливає і на настрій, і на самопочуття",
+  },
+  {
+    title: "Просто й логічно",
+    description:
+      "Із самого початку комплекс проєктувався як середовище для життя, а не як набір будівель. Тут усе зроблено з розумом — і на плані, і в реальності",
+  },
+  {
+    title: "Все зроблено для життя",
+    description:
+      "Планування території продумане так, щоб важливі речі були під рукою. Нічого зайвого, нічого складного — просто житло, в якому комфортно жити щодня",
+  },
+  {
+    title: "Якісна забудова",
+    description:
+      "Проєкт збудовано з дотриманням чітких будівельних принципів. Ніяких компромісів у фундаменті чи оздобленні, лише рішення, які витримують час",
+  },
+];
 
 const AdvantagesSection = () => {
+  const isMobile = getWindowWidth() <= 1024;
+  const { settings } = useThemeSettings();
+  const fromAdmin = useMemo(() => getAdvantages(settings), [settings]);
+  const items = useMemo(() => {
+    return DEFAULT_ADVANTAGES.map((fallback, index) => {
+      const admin = fromAdmin[index];
+      if (!admin) return fallback;
+      return {
+        title: admin.title?.trim() || fallback.title,
+        description: admin.description?.trim() || fallback.description,
+        icon: admin.icon?.trim() || undefined,
+      };
+    });
+  }, [fromAdmin]);
+
+  const [a1, a2, a3, a4, a5, a6] = items;
+
+  const renderIcon = (
+    item: { icon?: string },
+    fallback: React.ReactNode
+  ) => {
+    if (item.icon?.trim()) {
+      return (
+        <span
+          className={s.icon}
+          dangerouslySetInnerHTML={{ __html: item.icon }}
+        />
+      );
+    }
+    return fallback;
+  };
+
   return (
     <section className={s.section}>
       <Container className={s.container}>
@@ -12,49 +80,27 @@ const AdvantagesSection = () => {
         <div className={s.advantagesCont}>
           <div className={s.leftBlock}>
             <div className={`${s.item} ${s.white}`}>
-              {advantage1}
-              <h3 className={s.mobileAdvantage}>Місце для всіх поколінь</h3>
+              {renderIcon(a1, advantage1)}
+              <h3 className={s.mobileAdvantage}>{a1.title}</h3>
               <div className={s.content}>
-                <h3 className={s.advantage}>Місце для всіх поколінь</h3>
-                <p className={s.advantageDescr}>
-                  Комплекс однаково зручний для родин з дітьми, людей поважного
-                  віку та тих, хто працює вдома. Кожен почувається тут на своєму
-                  місці
-                </p>
+                <h3 className={s.advantage}>{a1.title}</h3>
+                <p className={s.advantageDescr}>{a1.description}</p>
               </div>
             </div>
-            <div
-              className={`${s.item} ${
-                window?.innerWidth <= 1024 ? s.white : s.dark
-              }`}
-            >
-              {advantage2}
-              <h3 className={s.mobileAdvantage}>
-                Свіже повітря та зелене оточення
-              </h3>
-
+            <div className={`${s.item} ${isMobile ? s.white : s.dark}`}>
+              {renderIcon(a2, advantage2)}
+              <h3 className={s.mobileAdvantage}>{a2.title}</h3>
               <div className={s.content}>
-                <h3 className={s.advantage}>
-                  Свіже повітря та зелене оточення
-                </h3>
-                <p className={s.advantageDescr}>
-                  Житло поруч із природою, без необхідності залишати межі міста.
-                  Чисте повітря та зелена зона навколо. Тут легко дихається і
-                  завжди є де пройтись у тиші біля річки
-                </p>
+                <h3 className={s.advantage}>{a2.title}</h3>
+                <p className={s.advantageDescr}>{a2.description}</p>
               </div>
             </div>
             <div className={`${s.item} ${s.dark}`}>
-              {advantage4}
-              <h3 className={s.mobileAdvantage}>Просто й логічно</h3>
-
+              {renderIcon(a4, advantage4)}
+              <h3 className={s.mobileAdvantage}>{a4.title}</h3>
               <div className={s.content}>
-                <h3 className={s.advantage}>Просто й логічно</h3>
-                <p className={s.advantageDescr}>
-                  Із самого початку комплекс проєктувався як середовище для
-                  життя, а не як набір будівель. Тут усе зроблено з розумом — і
-                  на плані, і в реальності
-                </p>
+                <h3 className={s.advantage}>{a4.title}</h3>
+                <p className={s.advantageDescr}>{a4.description}</p>
               </div>
               <Image
                 className={s.background}
@@ -67,25 +113,12 @@ const AdvantagesSection = () => {
           </div>
 
           <div className={s.rightBlock}>
-            <div
-              className={`${s.item} ${
-                window?.innerWidth <= 1024 ? s.white : s.dark
-              }`}
-            >
-              {advantage3}
-              <h3 className={s.mobileAdvantage}>
-                Захопливі краєвиди - тут видно вовчинецькі гори{" "}
-              </h3>
-
+            <div className={`${s.item} ${isMobile ? s.white : s.dark}`}>
+              {renderIcon(a3, advantage3)}
+              <h3 className={s.mobileAdvantage}>{a3.title}</h3>
               <div className={s.content}>
-                <h3 className={s.advantage}>
-                  Захопливі краєвиди - тут видно вовчинецькі гори{" "}
-                </h3>
-                <p className={s.advantageDescr}>
-                  Панорамні вікна відкривають краєвиди на річку, вовчинецькі
-                  гори та зелені простори навколо. Візуальна тиша, яка добре
-                  впливає і на настрій, і на самопочуття
-                </p>
+                <h3 className={s.advantage}>{a3.title}</h3>
+                <p className={s.advantageDescr}>{a3.description}</p>
               </div>
               <Image
                 className={s.background}
@@ -95,37 +128,20 @@ const AdvantagesSection = () => {
                 alt="bg"
               />
             </div>
-            <div
-              className={`${s.item} ${
-                window?.innerWidth <= 1024 ? s.dark : s.white
-              }`}
-            >
-              {advantage5}
-              <h3 className={s.mobileAdvantage}>Все зроблено для життя</h3>
-
+            <div className={`${s.item} ${isMobile ? s.dark : s.white}`}>
+              {renderIcon(a5, advantage5)}
+              <h3 className={s.mobileAdvantage}>{a5.title}</h3>
               <div className={s.content}>
-                <h3 className={s.advantage}>Все зроблено для життя</h3>
-                <p className={s.advantageDescr}>
-                  Планування території продумане так, щоб важливі речі були під
-                  рукою. Нічого зайвого, нічого складного — просто житло, в
-                  якому комфортно жити щодня
-                </p>
+                <h3 className={s.advantage}>{a5.title}</h3>
+                <p className={s.advantageDescr}>{a5.description}</p>
               </div>
             </div>
-            <div
-              className={`${s.item} ${
-                window?.innerWidth <= 1024 ? s.dark : s.white
-              }`}
-            >
-              {advantage6}
-              <h3 className={s.mobileAdvantage}>Якісна забудова</h3>
+            <div className={`${s.item} ${isMobile ? s.dark : s.white}`}>
+              {renderIcon(a6, advantage6)}
+              <h3 className={s.mobileAdvantage}>{a6.title}</h3>
               <div className={s.content}>
-                <h3 className={s.advantage}>Якісна забудова</h3>
-                <p className={s.advantageDescr}>
-                  Проєкт збудовано з дотриманням чітких будівельних принципів.
-                  Ніяких компромісів у фундаменті чи оздобленні, лише рішення,
-                  які витримують час
-                </p>
+                <h3 className={s.advantage}>{a6.title}</h3>
+                <p className={s.advantageDescr}>{a6.description}</p>
               </div>
             </div>
           </div>
@@ -145,7 +161,7 @@ const advantage1 = (
     viewBox="0 0 44 45"
     fill="none"
   >
-    <g clip-path="url(#clip0_2324_15589)">
+    <g clipPath="url(#clip0_2324_15589)">
       <path d="M21.9951 12.108L17.4404 7.55334C15.9365 6.04943 15.9365 3.59162 17.4404 2.08771C18.6693 0.850212 20.5342 0.626774 21.9951 1.40881C23.4561 0.626774 25.3209 0.850212 26.5498 2.08771C28.0537 3.59162 28.0537 6.04943 26.5498 7.55334L21.9951 12.108Z" />
       <path d="M5.15625 19.1719C2.31172 19.1719 0 16.8602 0 14.0156C0 11.1711 2.31172 8.85938 5.15625 8.85938C8.00078 8.85938 10.3125 11.1711 10.3125 14.0156C10.3125 16.8602 8.00078 19.1719 5.15625 19.1719Z" />
       <path d="M38.8438 19.1719C35.9992 19.1719 33.6875 16.8602 33.6875 14.0156C33.6875 11.1711 35.9992 8.85938 38.8438 8.85938C41.6883 8.85938 44 11.1711 44 14.0156C44 16.8602 41.6883 19.1719 38.8438 19.1719Z" />
@@ -170,7 +186,7 @@ const advantage2 = (
     viewBox="0 0 44 45"
     fill="none"
   >
-    <g clip-path="url(#clip0_2324_15610)">
+    <g clipPath="url(#clip0_2324_15610)">
       <path d="M2.88268 10.5798C4.48322 14.3025 7.18524 17.9845 10.9663 19.5716C11.3979 19.7515 11.8879 19.8864 12.3915 19.9987C13.3986 18.4971 14.554 17.2787 15.9073 16.2807C17.0716 15.4264 18.2901 14.7565 19.5444 14.2305C19.1847 13.9787 18.8071 13.7494 18.4114 13.5426C16.8379 12.7199 15.134 11.996 13.4749 11.2182C15.035 11.6409 16.8244 11.7982 18.317 12.3422C19.2477 12.6839 20.1064 13.156 20.9066 13.718C23.294 12.9042 25.7892 12.5131 28.2799 12.2164C26.2613 8.86244 21.9542 6.16941 18.7081 4.95103C15.3183 3.67865 11.4788 3.52129 7.70672 3.13019C5.39584 2.89187 2.88264 2.0287 1.04382 1.02162C0.625703 0.792333 0.18061 1.17448 0.324478 1.63756C1.2282 4.52837 1.68678 7.80137 2.88268 10.5798Z" />
       <path d="M42.7391 10.1386C38.4859 12.4494 33.6079 12.7327 28.8288 13.2812C26.4955 13.5509 24.1846 13.8836 21.986 14.549C21.5095 14.6928 21.0329 14.8547 20.5653 15.0346C19.1761 15.5651 17.8363 16.262 16.573 17.1926C15.3861 18.0648 14.415 19.0989 13.5967 20.2363C12.2929 22.0526 11.3847 24.1432 10.6384 26.3148C9.27616 30.2576 8.65124 34.4478 8.77263 38.6155C8.82208 40.3059 8.84906 42.0638 9.26717 43.7138C9.36159 44.078 9.4515 44.541 9.73474 44.8108C10.1034 45.1659 10.7643 44.8018 10.6159 44.2848C9.54592 40.6386 10.2113 36.3765 11.6905 32.8922C13.3899 28.8864 16.6719 26.5035 20.6822 25.0514C21.7477 24.6648 22.8358 24.3276 23.9417 24.0084C23.9642 23.9994 23.9867 23.9994 24.0092 23.9994C24.2295 23.9994 24.3239 24.3231 24.0946 24.4265C22.7908 25.0155 21.496 25.6089 20.2641 26.2519C14.2306 29.399 11.596 36.7273 13.8574 36.7273C14.0418 36.7273 14.2576 36.6778 14.5048 36.5744C17.9936 35.1312 22.1388 35.1178 25.9738 34.4074C27.3226 34.1602 28.6354 33.823 29.8673 33.3104C34.7588 31.2693 38.2566 27.277 40.3382 22.4754C41.8893 18.8921 42.4917 14.6615 43.6651 10.9389C43.818 10.4623 43.4808 10.0532 43.0672 10.0532C42.9639 10.0486 42.8515 10.0757 42.7391 10.1386Z" />
     </g>
@@ -205,7 +221,7 @@ const advantage3 = (
     viewBox="0 0 44 45"
     fill="none"
   >
-    <g clip-path="url(#clip0_2324_15642)">
+    <g clipPath="url(#clip0_2324_15642)">
       <path d="M5.24219 34.4357V38.4219H7.82031V34.4357C10.1539 34.0565 12.9766 32.4529 12.9766 26.8203C12.9766 21.4374 10.5243 13.9297 6.53125 13.9297C2.53816 13.9297 0 21.4374 0 26.8203C0 32.4529 2.90855 34.0565 5.24219 34.4357Z" />
       <path d="M37.4688 19.5068V16.279C39.6865 15.5585 41.3359 13.0567 41.3359 10.0625C41.3359 6.99969 39.5156 0.953125 36.1797 0.953125C32.8438 0.953125 31.0234 6.99969 31.0234 10.0625C31.0234 13.0566 32.6728 15.5585 34.8906 16.279V19.086H22V16.2791C24.2178 15.5586 25.8672 13.0568 25.8672 10.0626C25.8672 6.99977 24.0469 0.953211 20.7109 0.953211C17.375 0.953211 15.5547 6.99977 15.5547 10.0626C15.5547 13.0567 17.2041 15.5585 19.4219 16.2791V19.086H14.2872C14.8448 20.7663 15.2145 22.546 15.4034 24.2423H28.4453C29.8665 24.2423 31.0234 25.3992 31.0234 26.8204C31.0234 28.2416 29.8665 29.3985 28.4453 29.3985H25.8672C18.7597 29.3985 12.9766 35.2676 12.9766 42.3751V44.9532H28.4453V42.3751C28.4453 39.5313 30.7578 37.1329 33.6016 37.1329H34.8906C39.8656 37.1329 44 33.0845 44 28.1095C44 24.0363 41.1828 20.6245 37.4688 19.5068Z" />
     </g>
@@ -242,7 +258,7 @@ const advantage6 = (
     viewBox="0 0 44 45"
     fill="none"
   >
-    <g clip-path="url(#clip0_2324_15619)">
+    <g clipPath="url(#clip0_2324_15619)">
       <path d="M17.5705 0.955078H7.57812V7.04839L17.5705 5.38301V0.955078Z" />
       <path d="M39.5667 42.4593V13.6112H23.2891V42.4593H20.7109V11.033V7.55859L4.43334 10.2715V42.4593H0V45.0374H44V42.4593H39.5667ZM33.2013 17.3183H35.9397V19.8964H33.2013V17.3183ZM33.2013 23.6036H35.9397V26.1817H33.2013V23.6036ZM33.2013 29.8888H35.9397V32.4669H33.2013V29.8888ZM33.2013 36.1741H35.9397V38.7522H33.2013V36.1741ZM26.9161 17.3183H29.6545V19.8964H26.9161V17.3183ZM26.9161 23.6036H29.6545V26.1817H26.9161V23.6036ZM26.9161 29.8888H29.6545V32.4669H26.9161V29.8888ZM26.9161 36.1741H29.6545V38.7522H26.9161V36.1741ZM14.3455 11.033H17.0839V13.6112H14.3455V11.033ZM14.3455 17.3183H17.0839V19.8964H14.3455V17.3183ZM14.3455 23.6036H17.0839V26.1817H14.3455V23.6036ZM14.3455 29.8888H17.0839V32.4669H14.3455V29.8888ZM8.06034 17.3183H10.7987V19.8964H8.06034V17.3183ZM8.06034 23.6036H10.7987V26.1817H8.06034V23.6036ZM8.06034 29.8888H10.7987V32.4669H8.06034V29.8888ZM8.14043 36.1741H17.0039V42.4593H14.4257V38.7522H10.7186V42.4593H8.14043V36.1741Z" />
     </g>

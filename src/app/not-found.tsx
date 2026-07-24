@@ -1,5 +1,4 @@
 "use client";
-import dynamic from "next/dynamic";
 import s from "./not-found.module.css";
 import Container from "@/components/Container/Container";
 import Link from "next/link";

@@ -2,14 +2,19 @@
 import Container from "@/components/Container/Container";
 import s from "./MapSection.module.css";
 import Image from "next/image";
-import L, { Icon } from "leaflet";
-import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
+import type { Map as LeafletMap } from "leaflet";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SwiperSlide, Swiper, SwiperRef } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { useRef } from "react";
 import { usePathname } from "next/navigation";
 import MapSectionSwiperItem from "@/components/MapSectionSwiperItem/MapSectionSwiperItem";
+import { getWindowWidth } from "@/utils/getWindowWidth";
+import { useThemeSettings } from "@/lib/useThemeSettings";
+import {
+  getMapCenter,
+  getMapLogoUrl,
+  getMapsPlaceUrl,
+} from "@/lib/themeSettings";
 
 const line = (
   <svg
@@ -137,24 +142,10 @@ const gym = (
   </svg>
 );
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-});
-
 type Location = {
   title: string;
   coordinates: number[][] | number[];
 };
-
-const mainMarker = new Icon({
-  iconUrl: "/icons/nadrichnyi.svg",
-  className: s.mainMarker,
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32],
-});
 
 const iconMap: Record<string, JSX.Element> = {
   mall,
@@ -169,108 +160,144 @@ const iconMap: Record<string, JSX.Element> = {
 const MapSection = () => {
   const [activeSlide, setActiveSlide] = useState<number | null>(null);
   const [swiperLength, setSwiperLength] = useState<number>(0);
-  const [markersData, setMarkersData] = useState<[]>([]);
+  const [markersData, setMarkersData] = useState<Location[]>([]);
   const swiperRef = useRef<SwiperRef | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
-  const leafletMapRef = useRef<L.Map | null>(null);
+  const leafletMapRef = useRef<LeafletMap | null>(null);
   const pathname = usePathname();
+  const { settings } = useThemeSettings();
+  const mapLogoUrl = getMapLogoUrl(settings);
+  const mapCenter = useMemo(() => getMapCenter(settings), [settings]);
+  const mapsPlaceUrl = useMemo(() => getMapsPlaceUrl(settings), [settings]);
+  const [lat, lng] = mapCenter;
+  const googleMapsHref =
+    mapsPlaceUrl && mapsPlaceUrl !== "#"
+      ? mapsPlaceUrl
+      : `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  const wazeHref = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+  const appleMapsHref = `http://maps.apple.com/?ll=${lat},${lng}`;
 
   useEffect(() => {
+    const fromSettings = settings.map_markers;
+    if (Array.isArray(fromSettings)) {
+      setMarkersData(fromSettings as Location[]);
+      return;
+    }
+
     const fetchdata = async () => {
       try {
         const response = await fetch(
           "https://api.lcdoy.projection-learn.website/wp-json/wp/v2/theme_settings"
         );
         const data = await response.json();
-        setMarkersData(data.map_markers);
+        setMarkersData(data.map_markers || []);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchdata();
-  }, []);
+  }, [settings.map_markers]);
 
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // Очищаємо попередній вміст перед ініціалізацією
-    mapRef.current.innerHTML = "";
+    let cancelled = false;
 
-    if (leafletMapRef.current) {
-      leafletMapRef.current.remove();
-      leafletMapRef.current = null;
-    }
+    const initMap = async () => {
+      await import("leaflet/dist/leaflet.css");
+      const leaflet = await import("leaflet");
+      if (cancelled || !mapRef.current) return;
 
-    leafletMapRef.current = L.map(mapRef.current, {
-      scrollWheelZoom: false,
-    }).setView([48.9407815, 24.7164726], 14);
+      const L = leaflet.default;
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors",
-    }).addTo(leafletMapRef.current);
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+      });
 
-    const markerIcon = L.icon({
-      iconUrl: "/icons/nadrichnyi.svg",
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32],
-      className: s.mainMarker,
-    });
+      mapRef.current.innerHTML = "";
 
-    const getCustomIcon = (type: string) => {
-      return new L.DivIcon({
-        className: `${s.markerIcon}`,
-        iconUrl: `/icons/${type}.svg`,
-        iconSize: [32, 32],
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+      }
+
+      leafletMapRef.current = L.map(mapRef.current, {
+        scrollWheelZoom: false,
+      }).setView(mapCenter, 14);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(leafletMapRef.current);
+
+      const markerIcon = L.icon({
+        iconUrl: mapLogoUrl,
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
-        shadowUrl: undefined,
-        shadowSize: undefined,
-        shadowAnchor: undefined,
+        className: s.mainMarker,
+      });
 
-        html: `
+      const getCustomIcon = (type: string) => {
+        return new L.DivIcon({
+          className: `${s.markerIcon}`,
+          iconUrl: `/icons/${type}.svg`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32],
+          shadowUrl: undefined,
+          shadowSize: undefined,
+          shadowAnchor: undefined,
+
+          html: `
       <div class=${s.iconContainer}>
         <img src="/icons/white-${type}.svg" alt="${type}" />
       </div>
     `,
-      });
+        });
+      };
+
+      L.marker(mapCenter, { icon: markerIcon })
+        .addTo(leafletMapRef.current)
+        .bindPopup("Надрічний");
+
+      const markers = L.layerGroup().addTo(leafletMapRef.current);
+
+      if (markersData.length !== 0) {
+        markersData.forEach((item: Location) => {
+          const title = item.title;
+          const coordsArray =
+            Array.isArray(item.coordinates) && item.coordinates.length > 0
+              ? Array.isArray(item.coordinates[0])
+                ? (item.coordinates as number[][])
+                : [item.coordinates as number[]]
+              : [];
+
+          coordsArray.forEach((coords) => {
+            if (coords.length !== 0) {
+              L.marker([coords[0], coords[1]], {
+                icon: getCustomIcon(item.title),
+              })
+                .addTo(markers)
+                .bindPopup(checkLocationTitle(title));
+            }
+          });
+        });
+      }
     };
 
-    L.marker([48.9407815, 24.7164726], { icon: markerIcon })
-      .addTo(leafletMapRef.current)
-      .bindPopup("Надрічний");
-
-    const markers = L.layerGroup().addTo(leafletMapRef.current);
-
-    if (markersData.length !== 0) {
-      markersData.forEach((item: Location, idx) => {
-        const title = item.title;
-        const coordsArray =
-          Array.isArray(item.coordinates) && item.coordinates.length > 0
-            ? Array.isArray(item.coordinates[0])
-              ? (item.coordinates as number[][])
-              : [item.coordinates as number[]]
-            : [];
-
-        return coordsArray.forEach((coords, subIdx) => {
-          if (coords.length !== 0) {
-            return L.marker([coords[0], coords[1]], {
-              icon: getCustomIcon(item.title),
-            })
-              .addTo(markers)
-              .bindPopup(checkLocationTitle(title));
-          } else {
-            return;
-          }
-        });
-      });
-    }
+    initMap();
 
     return () => {
+      cancelled = true;
       leafletMapRef.current?.remove();
       leafletMapRef.current = null;
     };
-  }, [markersData]);
+  }, [markersData, mapLogoUrl, mapCenter]);
 
   const checkLocationTitle = (value: string) => {
     if (value == "school") {
@@ -320,7 +347,7 @@ const MapSection = () => {
                 <li>
                   <a
                     className={s.link}
-                    href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
+                    href={googleMapsHref}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -335,7 +362,7 @@ const MapSection = () => {
                 <li>
                   <a
                     className={s.link}
-                    href="https://waze.com/ul?ll=48.9407815,24.7164726&navigate=yes"
+                    href={wazeHref}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -350,7 +377,7 @@ const MapSection = () => {
                 <li>
                   <a
                     className={s.link}
-                    href="http://maps.apple.com/?ll=48.9407815,24.7164726"
+                    href={appleMapsHref}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -375,7 +402,7 @@ const MapSection = () => {
               <li>
                 <a
                   className={s.link}
-                  href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
+                  href={googleMapsHref}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -390,7 +417,7 @@ const MapSection = () => {
               <li>
                 <a
                   className={s.link}
-                  href="https://waze.com/ul?ll=48.9407815,24.7164726&navigate=yes"
+                  href={wazeHref}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -405,7 +432,7 @@ const MapSection = () => {
               <li>
                 <a
                   className={s.link}
-                  href="http://maps.apple.com/?ll=48.9407815,24.7164726"
+                  href={appleMapsHref}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -450,7 +477,7 @@ const MapSection = () => {
             </Swiper>
             <div className={s.navCont}>
               <div className={s.swiperPrev}>{line}</div>
-              {window.innerWidth <= 1024 && (
+              {getWindowWidth() <= 1024 && (
                 <div className={s.mobPagination}>
                   <p className={s.activeSlide}>
                     {activeSlide ? activeSlide + 1 : 1}

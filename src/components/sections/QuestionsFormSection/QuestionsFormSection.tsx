@@ -9,6 +9,7 @@ import FormDateInput from "@/components/FormDateInput/FormDateInput";
 import TimePicker from "@/components/TimePicker/TimePicker";
 import { FormikValues } from "formik";
 import { formInstance } from "@/axios/axios";
+import { getWindowWidth } from "@/utils/getWindowWidth";
 
 const validationSchema = object({
   name: string().required("Введіть Ім'я"),
@@ -62,7 +63,7 @@ const QuestionsFormSection = () => {
           <Image
             className={s.bg}
             src={`/images/${
-              window.innerWidth <= 1024 ? "formTitle_bg_mobile" : "formTitle_bg"
+              getWindowWidth() <= 1024 ? "formTitle_bg_mobile" : "formTitle_bg"
             }.jpg`}
             height={702}
             width={820}

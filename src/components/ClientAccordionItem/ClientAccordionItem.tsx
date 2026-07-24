@@ -41,9 +41,9 @@ const accordionPlus = (
     <path
       d="M14 5.25V22.75M22.75 14H5.25"
       stroke="white"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -58,10 +58,10 @@ const accordionMinus = (
   >
     <path
       d="M22.75 14H5.25"
-      stroke="#405BE7"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      stroke="#435BBA"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
