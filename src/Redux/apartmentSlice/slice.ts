@@ -6,10 +6,10 @@ export interface Apartment {
     Corps: string,
     Discount: string,
     Flour: string,
-    Flour_layout: string,
-    Isoselya: string,
-    Postponement: string,
-    Room_layout: string,
+    Flour_layout: string | string[];
+    Isoselya: string;
+    Postponement: string;
+    Room_layout: string | string[];
     Schedule: string,
     Scheduled_delivery: string,
     apartments_category: {

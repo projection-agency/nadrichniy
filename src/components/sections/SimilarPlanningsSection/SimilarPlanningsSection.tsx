@@ -7,10 +7,12 @@ import { API_URL } from "@/constants";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Container from "@/components/Container/Container";
+import { getWindowWidth } from "@/utils/getWindowWidth";
 
 export default function SimilarPlanningsSection() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [apartmentData, setApartmentData] = useState([]);
+  const windowWidth = getWindowWidth();
 
   useEffect(() => {
     const fetchApartments = async () => {
@@ -30,14 +32,14 @@ export default function SimilarPlanningsSection() {
     <section className={s.section}>
       <Container>
         <h2>Схожі планування</h2>
-        {apartmentData && window.innerWidth >= 1024 && (
+        {apartmentData && windowWidth >= 1024 && (
           <ul className={`${s.apartmentsList}`}>
             {apartmentData.slice(0, 3).map((item: Apartment) => {
               return <ApartmentItem item={item} key={item.id} />;
             })}
           </ul>
         )}
-        {apartmentData && window.innerWidth <= 1024 && (
+        {apartmentData && windowWidth <= 1024 && (
           <>
             <Swiper
               modules={[Navigation]}

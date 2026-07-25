@@ -59,9 +59,9 @@ export const closeIco = (
   >
     <path
       d="M5.83203 5.83301L14.1654 14.1663M5.83203 14.1663L14.1654 5.83301"
-      stroke-width="1.25"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

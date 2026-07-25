@@ -1,12 +1,14 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import Container from "@/components/Container/Container";
 import s from "./GallerySection.module.css";
 import Image from "next/image";
 import "swiper/css";
-const array = [1, 2, 3, 4, 5, 6, 7];
+import { useWindowWidth } from "@/utils/useWindowWidth";
+import { useThemeSettings } from "@/lib/useThemeSettings";
+import { getGalleryUrls } from "@/lib/themeSettings";
 
 const GallerySection = () => {
   const [activeSlide, setActiveSlide] = useState<number | null>(null);
@@ -15,7 +17,9 @@ const GallerySection = () => {
   const swiperRef = useRef<any>(null);
   const progressRefs = useRef<(HTMLDivElement | null)[]>([]);
   const paginationContRef = useRef<HTMLDivElement | null>(null);
-  const [windowW, setWindowW] = useState(window.innerWidth);
+  const windowW = useWindowWidth();
+  const { settings } = useThemeSettings();
+  const images = useMemo(() => getGalleryUrls(settings), [settings]);
 
   const onAutoplayTimeLeft = (s: any, time: number, progress: number) => {
     const index = s.activeIndex;
@@ -60,10 +64,6 @@ const GallerySection = () => {
       swiperRef.current.navigation.init();
       swiperRef.current.navigation.update();
     }
-
-    window.addEventListener("resize", () => setWindowW(window.innerWidth));
-
-    return window.removeEventListener("resize", () => {});
   }, []);
 
   return (
@@ -91,17 +91,17 @@ const GallerySection = () => {
               <p className={s.activeSlide}>
                 {activeSlide ? activeSlide + 1 : 1}
               </p>
-              <p>/{array.length}</p>
+              <p>/{images.length || 1}</p>
             </div>
             <div
               ref={nextRef}
               onClick={() => {
-                if (activeSlide) {
+                if (activeSlide !== null && activeSlide < images.length - 1) {
                   swiperRef.current.slideTo(activeSlide + 1);
                 }
               }}
               className={`${s.swiperNext} ${s.navBtn} ${
-                activeSlide === array.length - 1 ? s.disabled : ""
+                activeSlide === images.length - 1 ? s.disabled : ""
               }`}
             >
               {arrow}
@@ -127,12 +127,10 @@ const GallerySection = () => {
               handleSlideChange(swiper);
             }}
           >
-            {array.map((item, idx) => (
-              <SwiperSlide key={idx} className={s.swiperSlide}>
+            {images.map((src, idx) => (
+              <SwiperSlide key={`${src}-${idx}`} className={s.swiperSlide}>
                 <Image
-                  src={
-                    "https://api.lcdoy.projection-learn.website/wp-content/uploads/2025/06/telegram-cloud-photo-size-2-5431594601380179473-y-1.png"
-                  }
+                  src={src}
                   width={1480}
                   height={800}
                   alt="img"
@@ -142,17 +140,17 @@ const GallerySection = () => {
           </Swiper>
           <div className={s.controls}>
             <div className={s.paginationCont} ref={paginationContRef}>
-              {array.map((item, idx) => {
+              {images.map((src, idx) => {
                 return (
                   <div
-                    key={item}
+                    key={`${src}-thumb-${idx}`}
                     className={`${s.paginationItem} ${
                       idx === activeSlide ? s.active : s.unactive
                     }`}
                     ref={(el) => {
                       progressRefs.current[idx] = el;
                     }}
-                    onClick={(e) => {
+                    onClick={() => {
                       setActiveSlide(idx);
                       swiperRef.current?.slideTo(idx);
                     }}
@@ -160,9 +158,7 @@ const GallerySection = () => {
                     <div className={s.imageContainer}>
                       <Image
                         className={s.image}
-                        src={
-                          "https://api.lcdoy.projection-learn.website/wp-content/uploads/2025/06/telegram-cloud-photo-size-2-5431594601380179473-y-1.png"
-                        }
+                        src={src}
                         width={1480}
                         height={800}
                         alt="img"

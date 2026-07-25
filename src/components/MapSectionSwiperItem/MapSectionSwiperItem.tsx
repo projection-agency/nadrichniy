@@ -2,6 +2,7 @@
 import Image from "next/image";
 import s from "./MapSectionSwiperItem.module.css";
 import { useModal } from "../ModalContext";
+import { getWindowWidth } from "@/utils/getWindowWidth";
 const MapSectionSwiperItem = () => {
   const { openModal } = useModal();
   return (
@@ -20,7 +21,7 @@ const MapSectionSwiperItem = () => {
         </div>
         <div className={s.info}>
           <h4>
-            {window.innerWidth <= 1024 && <span>{family}</span>} Для родин із
+            {getWindowWidth() <= 1024 && <span>{family}</span>} Для родин із
             дітьми
           </h4>
           <article>
@@ -68,7 +69,7 @@ const family = (
     viewBox="0 0 20 21"
     fill="none"
   >
-    <g clip-path="url(#clip0_4196_10282)">
+    <g clipPath="url(#clip0_4196_10282)">
       <path d="M14.9102 6.16211C16.3491 6.16211 17.5156 4.9956 17.5156 3.55664C17.5156 2.11768 16.3491 0.951172 14.9102 0.951172C13.4712 0.951172 12.3047 2.11768 12.3047 3.55664C12.3047 4.9956 13.4712 6.16211 14.9102 6.16211Z" />
       <path d="M13.7314 16.082L12.6337 11.7773C12.4384 11.0117 11.747 10.4727 10.954 10.4727H9.04779C8.25482 10.4727 7.56341 11.0117 7.3681 11.7773L6.27044 16.082C6.10638 16.7227 6.59076 17.3438 7.25091 17.3438H8.07513V20.0859C8.07513 20.5625 8.46185 20.9531 8.94232 20.9531H11.0634C11.54 20.9531 11.9306 20.5664 11.9306 20.0859V17.3438H12.7548C13.4111 17.3438 13.8954 16.7227 13.7314 16.082Z" />
       <path d="M10 10.0176C11.0636 10.0176 11.9258 9.15538 11.9258 8.0918C11.9258 7.02822 11.0636 6.16602 10 6.16602C8.93642 6.16602 8.07422 7.02822 8.07422 8.0918C8.07422 9.15538 8.93642 10.0176 10 10.0176Z" />

@@ -38,6 +38,16 @@
             height: 4.79vw;
           }
 
+          .icon {
+            display: inline-flex;
+            line-height: 0;
+          }
+
+          .icon svg {
+            width: 4.79vw;
+            height: 4.79vw;
+          }
+
           .advantage {
             margin-bottom: 0.83vw;
             font-size: 1.66vw;

@@ -7,6 +7,7 @@ import Link from "next/link";
 import NewsItem from "@/components/NewsItem/NewsItem";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import { getWindowWidth } from "@/utils/getWindowWidth";
 export interface NewItem {
   id: number;
   author: number;
@@ -52,7 +53,7 @@ const NewsSection = () => {
     <section className={s.section}>
       <Container className={s.container}>
         <h2>Новини</h2>
-        {window.innerWidth <= 1024 ? (
+        {getWindowWidth() <= 1024 ? (
           <>
             {" "}
             <Swiper

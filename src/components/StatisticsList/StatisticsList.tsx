@@ -7,6 +7,8 @@ import StatisticsListItem from "../StatisticsListItem/StatisticsListItem";
 export type StatsItem = {
   id: number;
   Numbers: string;
+  Text?: string;
+  Icon?: string;
   title: {
     rendered: string;
   };

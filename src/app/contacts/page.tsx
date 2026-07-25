@@ -1,23 +1,10 @@
 "use client";
-import dynamic from "next/dynamic";
 import s from "./page.module.css";
 import Container from "@/components/Container/Container";
 import Image from "next/image";
-const ContactsSection = dynamic(
-  () => import("@/components/sections/ContactsSection/ContactsSection"),
-  { ssr: false }
-);
-
-const MapSection = dynamic(
-  () => import("@/components/sections/MapSection/MapSection"),
-  { ssr: false }
-);
-
-const QuestionsFormSection = dynamic(
-  () =>
-    import("@/components/sections/QuestionsFormSection/QuestionsFormSection"),
-  { ssr: false }
-);
+import ContactsSection from "@/components/sections/ContactsSection/ContactsSection";
+import MapSection from "@/components/sections/MapSection/MapSection";
+import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 
 export default function ContactsPage() {
   return (

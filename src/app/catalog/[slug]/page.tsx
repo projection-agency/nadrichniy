@@ -5,23 +5,10 @@ import MapSection from "@/components/sections/MapSection/MapSection";
 import NewsSection from "@/components/sections/NewsSection/NewsSection";
 import QuestionsFormSection from "@/components/sections/QuestionsFormSection/QuestionsFormSection";
 import ContactsSection from "@/components/sections/ContactsSection/ContactsSection";
-import dynamic from "next/dynamic";
+import AdvantagesSection from "@/components/sections/AdvantagesSection/AdvantagesSection";
+import SimilarPlanningsSection from "@/components/sections/SimilarPlanningsSection/SimilarPlanningsSection";
 
-const AdvantagesSection = dynamic(
-  () => import("@/components/sections/AdvantagesSection/AdvantagesSection"),
-  { ssr: false }
-);
-
-
-const SimilarPlanningsSection = dynamic(
-  () =>
-    import(
-      "@/components/sections/SimilarPlanningsSection/SimilarPlanningsSection"
-    ),
-  { ssr: false }
-);
-
-const Page = () => {
+export default function CatalogSlugPage() {
   return (
     <div>
       <main>
@@ -36,6 +23,4 @@ const Page = () => {
       </main>
     </div>
   );
-};
-
-export default Page;
+}

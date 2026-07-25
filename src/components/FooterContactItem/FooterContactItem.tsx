@@ -1,19 +1,21 @@
 import s from "./FooterContactItem.module.css";
 import Image from "next/image";
 import Link from "next/link";
+
 type Props = {
   item: { title: string; icon: string; data: string[] };
+  mapsPlaceUrl?: string;
 };
-const FooterContactItem = ({ item }: Props) => {
-  const getLinkUrl = (item: string) => {
-    if (item.includes("+38")) {
-      return `tel:${item}`;
+
+const FooterContactItem = ({ item, mapsPlaceUrl = "#" }: Props) => {
+  const getLinkUrl = (value: string) => {
+    if (value.includes("+") || value.startsWith("0")) {
+      return `tel:${value.replace(/\s/g, "")}`;
     }
-    if (item.includes("@")) {
-      return `mailto:${item}`;
-    } else {
-      return `https://g.co/kgs/7w4BSLH`;
+    if (value.includes("@")) {
+      return `mailto:${value}`;
     }
+    return mapsPlaceUrl;
   };
 
   return (
@@ -25,10 +27,10 @@ const FooterContactItem = ({ item }: Props) => {
         {item.title}
       </h3>
       <div className={s.itemDataList}>
-        {item.data.map((item, idx) => {
+        {item.data.map((value, idx) => {
           return (
             <p className={s.listItem} key={idx}>
-              <Link href={getLinkUrl(item)}>{item}</Link>
+              <Link href={getLinkUrl(value)}>{value}</Link>
             </p>
           );
         })}

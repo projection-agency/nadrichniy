@@ -9,12 +9,15 @@ import Image from "next/image";
 import { API_URL } from "@/constants";
 import { Apartment } from "@/Redux/apartmentSlice/slice";
 import { useModal } from "@/components/ModalContext";
+import { getWindowWidth } from "@/utils/getWindowWidth";
+import { resolveMediaUrl } from "@/utils/resolveMediaUrl";
 const PlanningSection = () => {
   const [active, setActive] = useState<"flat" | "floor">("flat");
   const router = useRouter();
   const [item, setItem] = useState<Apartment>();
   const { slug } = useParams();
   const { openModal } = useModal();
+  const windowWidth = getWindowWidth();
 
   useEffect(() => {
     const fetchApartment = async () => {
@@ -67,7 +70,7 @@ const PlanningSection = () => {
                         height={38}
                         alt="icon"
                       />
-                      {window.innerWidth >= 1024 && "Розтермінування"}
+                      {windowWidth >= 1024 && "Розтермінування"}
                     </li>
                   ) : (
                     ""
@@ -80,7 +83,7 @@ const PlanningSection = () => {
                         height={38}
                         alt="icon"
                       />
-                      {window.innerWidth >= 1024 && "єОселя"}
+                      {windowWidth >= 1024 && "єОселя"}
                     </li>
                   ) : (
                     ""
@@ -93,7 +96,7 @@ const PlanningSection = () => {
                         height={38}
                         alt="icon"
                       />
-                      {window.innerWidth >= 1024 && "Знижка при повній оплаті"}
+                      {windowWidth >= 1024 && "Знижка при повній оплаті"}
                     </li>
                   ) : (
                     ""
@@ -163,7 +166,7 @@ const PlanningSection = () => {
               {active === "flat" ? (
                 <Image
                   className={s.layoutImg}
-                  src={`/images/bg_about.jpg`}
+                  src={resolveMediaUrl(item.Room_layout)}
                   width={372}
                   height={289}
                   alt="room-image"
@@ -171,13 +174,13 @@ const PlanningSection = () => {
               ) : (
                 <Image
                   className={s.layoutImg}
-                  src={`${item.Flour_layout}`}
+                  src={resolveMediaUrl(item.Flour_layout)}
                   width={372}
                   height={289}
                   alt="floor-image"
                 />
               )}
-              {window.innerWidth <= 1024 && (
+              {windowWidth <= 1024 && (
                 <div className={s.planningTogglerMobile}>
                   <div
                     className={s.background}

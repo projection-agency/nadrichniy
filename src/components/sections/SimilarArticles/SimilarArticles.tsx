@@ -7,10 +7,12 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import s from "./SimilarArticles.module.css";
+import { getWindowWidth } from "@/utils/getWindowWidth";
 
 export default function SimilarArticles({ category }: { category?: number }) {
   const [postsData, setPostsData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const windowWidth = getWindowWidth();
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -36,7 +38,7 @@ export default function SimilarArticles({ category }: { category?: number }) {
           <h2>Схожі статті</h2>
           <Link href={"/blog"}>До всіх статтей {arrow}</Link>
         </div>
-        {postsData && window.innerWidth >= 1024 ? (
+        {postsData && windowWidth >= 1024 ? (
           <ul className={`${s.newsList}`}>
             {postsData.slice(0, 3).map((item: NewItem) => {
               return <NewsItem item={item} key={item.id} />;
@@ -45,7 +47,7 @@ export default function SimilarArticles({ category }: { category?: number }) {
         ) : (
           ""
         )}
-        {window.innerWidth <= 1024 && postsData ? (
+        {windowWidth <= 1024 && postsData ? (
           <>
             <Swiper
               modules={[Navigation]}

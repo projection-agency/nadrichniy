@@ -3,18 +3,21 @@ import { useEffect, useState } from "react";
 import Container from "@/components/Container/Container";
 import NewsItem from "@/components/NewsItem/NewsItem";
 import s from "./ProposalsList.module.css";
+import { getWindowWidth } from "@/utils/getWindowWidth";
+import { API_URL } from "@/constants";
+import { getBlogCategoryQuery } from "@/lib/blogCategories";
+import { NewItem } from "../NewsSection/NewsSection";
 
 export default function ProposalsList() {
-  const [postsData, setPostsData] = useState([]);
+  const [postsData, setPostsData] = useState<NewItem[]>([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(
-          `https://api.lcdoy.projection-learn.website/wp-json/wp/v2/posts?categories=11`
-        );
+        const query = await getBlogCategoryQuery("special");
+        const response = await fetch(`${API_URL}/wp-json/wp/v2/posts${query}`);
         const data = await response.json();
-        setPostsData(data);
+        setPostsData(Array.isArray(data) ? data : []);
       } catch (error) {
         console.log(error);
       }
@@ -33,7 +36,11 @@ export default function ProposalsList() {
       ) : (
         <p>please wait</p>
       )}
-      {window.innerWidth <= 1024 ? <button className={s.blogLink}>Дивитися ще {arrow}</button> : ""}
+      {getWindowWidth() <= 1024 ? (
+        <button className={s.blogLink}>Дивитися ще {arrow}</button>
+      ) : (
+        ""
+      )}
     </Container>
   );
 }

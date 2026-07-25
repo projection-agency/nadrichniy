@@ -18,6 +18,7 @@ import {
 import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
 import { useModal } from "@/components/ModalContext";
 import Link from "next/link";
+import { useWindowWidth } from "@/utils/useWindowWidth";
 
 const ChooseAnApartment = () => {
   const pathname = usePathname();
@@ -25,7 +26,7 @@ const ChooseAnApartment = () => {
   const [endSliceNumber, setEndSliceNumber] = useState(
     pathname.includes("/catalog") ? 9 : 3
   );
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const windowWidth = useWindowWidth();
   const selectedArea = useSelector(selectArea);
   const selectedFloor = useSelector(selectFloor);
   const selectedRoomTypes = useSelector(selectRoomTypes);
@@ -70,16 +71,6 @@ const ChooseAnApartment = () => {
     selectedHouses,
     selectDelivery,
   ]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return window.removeEventListener("resize", () => {});
-  }, []);
 
   return (
     <section className={s.section}>

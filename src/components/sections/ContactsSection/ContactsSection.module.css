@@ -81,7 +81,7 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              background-color: rgba(64, 91, 231, 0.1);
+              background-color: rgba(67, 91, 186, 0.1);
               border-radius: 50%;
 
               img {
@@ -230,7 +230,7 @@
               width: 8.53vw;
               height: 8.53vw;
               border-radius: 50%;
-              background-color: rgba(64, 91, 231, 0.1);
+              background-color: rgba(67, 91, 186, 0.1);
 
               img {
                 width: 4.27vw;

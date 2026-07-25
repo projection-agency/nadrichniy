@@ -1,9 +1,26 @@
+"use client";
 import s from "./CatalogHero.module.css";
 import Container from "@/components/Container/Container";
 import Image from "next/image";
 import Link from "next/link";
 import StatisticsList from "@/components/StatisticsList/StatisticsList";
+import { useThemeSettings } from "@/lib/useThemeSettings";
+import { getMapCenter, getMapsPlaceUrl } from "@/lib/themeSettings";
+import { useMemo } from "react";
+
 const CatalogHero = () => {
+  const { settings } = useThemeSettings();
+  const title = settings.home_hero_title?.trim() || "Житловий масив Надрічний";
+  const address =
+    settings.input_text_address?.trim() ||
+    "Івано-Франківськ, вул. Надрічна, 12";
+  const mapsUrl = useMemo(() => getMapsPlaceUrl(settings), [settings]);
+  const [lat, lng] = useMemo(() => getMapCenter(settings), [settings]);
+  const href =
+    mapsUrl !== "#"
+      ? mapsUrl
+      : `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+
   return (
     <section className={s.section}>
       <Container className={s.container}>
@@ -15,14 +32,14 @@ const CatalogHero = () => {
           src={"/images/catalog_bg_mobile.jpg"}
           sizes="(max-width:1024px) 376vw 178.13vw"
         />
-        <h1>Житловий масив Надрічний</h1>
+        <h1>{title}</h1>
         <Link
           className={s.link}
-          href="https://www.google.com/maps/search/?api=1&query=48.9407815,24.7164726"
+          href={href}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>{iconMarker}</span> Івано-Франківськ, вул. Надрічна, 12
+          <span>{iconMarker}</span> {address}
         </Link>
         <StatisticsList />
       </Container>
