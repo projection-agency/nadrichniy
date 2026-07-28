@@ -90,12 +90,37 @@ a {
   text-decoration: none;
 }
 
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer;
+}
+
+button:disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled {
+  cursor: not-allowed;
+}
+
 button {
   font-family: "Gilroy", sans-serif;
   border: none;
   outline: none;
   padding-block: 0;
   padding-inline: 0;
+}
+
+[class*="navBtn"],
+[class*="swiperPrev"],
+[class*="swiperNext"],
+[class*="paginationItem"] {
+  cursor: pointer;
+}
+
+[class*="navBtn"][class*="disabled"] {
+  cursor: default;
 }
 
 .rangeCont .range-slider {

@@ -14,6 +14,7 @@ import {
   getMapCenter,
   getMapLogoUrl,
   getMapsPlaceUrl,
+  getAudienceContent,
 } from "@/lib/themeSettings";
 
 const line = (
@@ -169,6 +170,7 @@ const MapSection = () => {
   const mapLogoUrl = getMapLogoUrl(settings);
   const mapCenter = useMemo(() => getMapCenter(settings), [settings]);
   const mapsPlaceUrl = useMemo(() => getMapsPlaceUrl(settings), [settings]);
+  const audience = useMemo(() => getAudienceContent(settings), [settings]);
   const [lat, lng] = mapCenter;
   const googleMapsHref =
     mapsPlaceUrl && mapsPlaceUrl !== "#"
@@ -203,6 +205,9 @@ const MapSection = () => {
     if (!mapRef.current) return;
 
     let cancelled = false;
+    let enableWheelZoom: (() => void) | null = null;
+    let disableWheelZoom: (() => void) | null = null;
+    let mapElementForCleanup: HTMLDivElement | null = null;
 
     const initMap = async () => {
       await import("leaflet/dist/leaflet.css");
@@ -220,20 +225,45 @@ const MapSection = () => {
           "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
       });
 
-      mapRef.current.innerHTML = "";
-
       if (leafletMapRef.current) {
-        leafletMapRef.current.remove();
+        try {
+          leafletMapRef.current.remove();
+        } catch {
+          // Container may already be detached during React teardown.
+        }
         leafletMapRef.current = null;
       }
 
-      leafletMapRef.current = L.map(mapRef.current, {
+      if (cancelled || !mapRef.current) return;
+
+      const mapElement = mapRef.current;
+      mapElementForCleanup = mapElement;
+      const map = L.map(mapElement, {
         scrollWheelZoom: false,
+        zoomControl: false,
       }).setView(mapCenter, 14);
+
+      leafletMapRef.current = map;
+
+      L.control
+        .zoom({
+          position: "topright",
+        })
+        .addTo(map);
+
+      enableWheelZoom = () => {
+        map.scrollWheelZoom.enable();
+      };
+      disableWheelZoom = () => {
+        map.scrollWheelZoom.disable();
+      };
+
+      mapElement.addEventListener("mouseenter", enableWheelZoom);
+      mapElement.addEventListener("mouseleave", disableWheelZoom);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
-      }).addTo(leafletMapRef.current);
+      }).addTo(map);
 
       const markerIcon = L.icon({
         iconUrl: mapLogoUrl,
@@ -262,10 +292,10 @@ const MapSection = () => {
       };
 
       L.marker(mapCenter, { icon: markerIcon })
-        .addTo(leafletMapRef.current)
+        .addTo(map)
         .bindPopup("Надрічний");
 
-      const markers = L.layerGroup().addTo(leafletMapRef.current);
+      const markers = L.layerGroup().addTo(map);
 
       if (markersData.length !== 0) {
         markersData.forEach((item: Location) => {
@@ -294,8 +324,18 @@ const MapSection = () => {
 
     return () => {
       cancelled = true;
-      leafletMapRef.current?.remove();
-      leafletMapRef.current = null;
+      if (mapElementForCleanup && enableWheelZoom && disableWheelZoom) {
+        mapElementForCleanup.removeEventListener("mouseenter", enableWheelZoom);
+        mapElementForCleanup.removeEventListener("mouseleave", disableWheelZoom);
+      }
+      if (leafletMapRef.current) {
+        try {
+          leafletMapRef.current.remove();
+        } catch {
+          // Container may already be detached during React teardown.
+        }
+        leafletMapRef.current = null;
+      }
     };
   }, [markersData, mapLogoUrl, mapCenter]);
 
@@ -465,15 +505,16 @@ const MapSection = () => {
                 swiperRef.current = el;
               }}
             >
-              <SwiperSlide>
-                <MapSectionSwiperItem />
-              </SwiperSlide>
-              <SwiperSlide>
-                <MapSectionSwiperItem />
-              </SwiperSlide>
-              <SwiperSlide>
-                <MapSectionSwiperItem />
-              </SwiperSlide>
+              {audience.slides.map((slide, index) => (
+                <SwiperSlide key={`${slide.image}-${index}`}>
+                  <MapSectionSwiperItem
+                    slide={slide}
+                    sectionBadge={audience.sectionBadge}
+                    sectionTitle={audience.sectionTitle}
+                    ctaText={audience.ctaText}
+                  />
+                </SwiperSlide>
+              ))}
             </Swiper>
             <div className={s.navCont}>
               <div className={s.swiperPrev}>{line}</div>

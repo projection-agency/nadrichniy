@@ -11,7 +11,7 @@ import { useThemeSettings } from "@/lib/useThemeSettings";
 import { getGalleryUrls } from "@/lib/themeSettings";
 
 const GallerySection = () => {
-  const [activeSlide, setActiveSlide] = useState<number | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
   const prevRef = useRef<HTMLDivElement | null>(null);
   const nextRef = useRef<HTMLDivElement | null>(null);
   const swiperRef = useRef<any>(null);
@@ -52,6 +52,18 @@ const GallerySection = () => {
   };
 
   useEffect(() => {
+    if (!images.length) {
+      setActiveSlide(0);
+      return;
+    }
+
+    if (activeSlide > images.length - 1) {
+      setActiveSlide(0);
+      swiperRef.current?.slideTo(0, 0);
+    }
+  }, [images, activeSlide]);
+
+  useEffect(() => {
     if (
       swiperRef.current &&
       swiperRef.current.params &&
@@ -77,8 +89,8 @@ const GallerySection = () => {
             <div
               ref={prevRef}
               onClick={() => {
-                if (activeSlide) {
-                  swiperRef.current.slideTo(activeSlide - 1);
+                if (activeSlide > 0) {
+                  swiperRef.current?.slideTo(activeSlide - 1);
                 }
               }}
               className={`${s.swiperPrev} ${s.navBtn} ${
@@ -88,16 +100,14 @@ const GallerySection = () => {
               {arrow}
             </div>
             <div className={s.mobPagination}>
-              <p className={s.activeSlide}>
-                {activeSlide ? activeSlide + 1 : 1}
-              </p>
+              <p className={s.activeSlide}>{activeSlide + 1}</p>
               <p>/{images.length || 1}</p>
             </div>
             <div
               ref={nextRef}
               onClick={() => {
-                if (activeSlide !== null && activeSlide < images.length - 1) {
-                  swiperRef.current.slideTo(activeSlide + 1);
+                if (activeSlide < images.length - 1) {
+                  swiperRef.current?.slideTo(activeSlide + 1);
                 }
               }}
               className={`${s.swiperNext} ${s.navBtn} ${
@@ -108,15 +118,20 @@ const GallerySection = () => {
             </div>
           </div>
           <Swiper
+            key={images.length ? images.join("|") : "empty"}
             modules={[Navigation, Pagination, Autoplay]}
             navigation={{
               nextEl: `.${s.swiperNext}`,
               prevEl: `.${s.swiperPrev}`,
               disabledClass: s.disabled,
             }}
-            autoplay={{
-              delay: 3000,
-            }}
+            autoplay={
+              images.length > 1
+                ? {
+                    delay: 3000,
+                  }
+                : false
+            }
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
             }}
@@ -127,46 +142,46 @@ const GallerySection = () => {
               handleSlideChange(swiper);
             }}
           >
-            {images.map((src, idx) => (
-              <SwiperSlide key={`${src}-${idx}`} className={s.swiperSlide}>
-                <Image
-                  src={src}
-                  width={1480}
-                  height={800}
-                  alt="img"
-                />
-              </SwiperSlide>
-            ))}
+            {images.length > 0 ? (
+              images.map((src, idx) => (
+                <SwiperSlide key={`${src}-${idx}`} className={s.swiperSlide}>
+                  <Image
+                    src={src}
+                    width={1480}
+                    height={800}
+                    alt="img"
+                  />
+                </SwiperSlide>
+              ))
+            ) : null}
           </Swiper>
           <div className={s.controls}>
             <div className={s.paginationCont} ref={paginationContRef}>
-              {images.map((src, idx) => {
-                return (
-                  <div
-                    key={`${src}-thumb-${idx}`}
-                    className={`${s.paginationItem} ${
-                      idx === activeSlide ? s.active : s.unactive
-                    }`}
-                    ref={(el) => {
-                      progressRefs.current[idx] = el;
-                    }}
-                    onClick={() => {
-                      setActiveSlide(idx);
-                      swiperRef.current?.slideTo(idx);
-                    }}
-                  >
-                    <div className={s.imageContainer}>
-                      <Image
-                        className={s.image}
-                        src={src}
-                        width={1480}
-                        height={800}
-                        alt="img"
-                      />
-                    </div>
+              {images.map((src, idx) => (
+                <div
+                  key={`${src}-thumb-${idx}`}
+                  className={`${s.paginationItem} ${
+                    idx === activeSlide ? s.active : s.unactive
+                  }`}
+                  ref={(el) => {
+                    progressRefs.current[idx] = el;
+                  }}
+                  onClick={() => {
+                    setActiveSlide(idx);
+                    swiperRef.current?.slideTo(idx);
+                  }}
+                >
+                  <div className={s.imageContainer}>
+                    <Image
+                      className={s.image}
+                      src={src}
+                      width={120}
+                      height={120}
+                      alt={`Галерея ${idx + 1}`}
+                    />
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
             <div className={s.swiperController}>
               <div ref={prevRef} className={s.swiperPrev}>

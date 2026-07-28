@@ -26,6 +26,49 @@ export type AdvantageItem = {
   variant?: "white" | "dark";
 };
 
+function decodeSvgTransportClient(svg: string): string {
+  const value = (svg || "").trim();
+  if (!value || !value.startsWith("svgb64:")) return value;
+  try {
+    return decodeURIComponent(
+      Array.from(atob(value.slice(7)), (c) =>
+        "%" + c.charCodeAt(0).toString(16).padStart(2, "0")
+      ).join("")
+    );
+  } catch {
+    return "";
+  }
+}
+
+export const DEFAULT_AUDIENCE_SLIDE_IMAGE = "/images/swiperImageMap.jpg";
+
+export type AudienceHlItem = {
+  hl_img_link_slide_photo?: string[];
+  hl_img_link_photo?: string[];
+  hl_input_text_tag?: string;
+  hl_input_text_subtitle?: string;
+  hl_img_svg_slide_icon?: string;
+  hl_img_svg_icon?: string;
+  hl_textarea_desc_left?: string;
+  hl_textarea_desc_right?: string;
+};
+
+export type AudienceSlide = {
+  image: string;
+  tag: string;
+  subtitle: string;
+  iconSvg: string;
+  descriptionLeft: string;
+  descriptionRight: string;
+};
+
+export type AudienceContent = {
+  sectionBadge: string;
+  sectionTitle: string;
+  ctaText: string;
+  slides: AudienceSlide[];
+};
+
 export type ThemeSettings = {
   input_text_phone_1?: string;
   input_text_phone_2?: string;
@@ -41,12 +84,20 @@ export type ThemeSettings = {
   site_logo?: string;
   site_logo_id?: string | number;
   site_logo_svg?: string;
+  site_logo_scroll?: string;
+  site_logo_scroll_id?: string | number;
+  site_favicon?: string;
+  site_favicon_id?: string | number;
   map_logo?: string;
   map_logo_id?: string | number;
   hl_data_gallery?: GalleryHlItem[] | string;
   hl_data_contact?: ContactHlItem[] | string;
   hl_data_about?: AboutContent | string;
   hl_data_advantages?: AdvantageItem[] | string;
+  hl_data_audience?: AudienceHlItem[] | string;
+  audience_section_badge?: string;
+  audience_section_title?: string;
+  audience_cta_text?: string;
   blog_categories?: Partial<Record<"news" | "special" | "workSchedule", number>>;
   map_markers?: unknown;
 };
@@ -57,7 +108,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   workSchedule: "Хід робіт",
 };
 
-let cached: ThemeSettings | null = null;
 let pending: Promise<ThemeSettings> | null = null;
 
 function parseMaybeJson<T>(value: unknown, fallback: T): T {
@@ -73,18 +123,16 @@ function parseMaybeJson<T>(value: unknown, fallback: T): T {
 }
 
 export async function fetchThemeSettings(): Promise<ThemeSettings> {
-  if (cached) return cached;
   if (pending) return pending;
 
   pending = (async () => {
     try {
       const res = await fetch(`${API_URL}/wp-json/wp/v2/theme_settings`, {
         headers: { Accept: "application/json" },
+        cache: "no-store",
       });
       if (!res.ok) return {};
-      const data = (await res.json()) as ThemeSettings;
-      cached = data;
-      return data;
+      return (await res.json()) as ThemeSettings;
     } catch {
       return {};
     } finally {
@@ -96,10 +144,25 @@ export async function fetchThemeSettings(): Promise<ThemeSettings> {
 }
 
 export function getGalleryUrls(settings: ThemeSettings): string[] {
-  const items = parseMaybeJson<GalleryHlItem[]>(settings.hl_data_gallery, []);
-  return items.flatMap((item) =>
-    Array.isArray(item?.hl_img_link_photo) ? item.hl_img_link_photo : []
-  );
+  const raw = settings.hl_data_gallery;
+  let items: GalleryHlItem[] = [];
+
+  if (Array.isArray(raw)) {
+    items = raw;
+  } else if (raw && typeof raw === "object") {
+    items = Object.values(raw as Record<string, GalleryHlItem>);
+  } else {
+    items = parseMaybeJson<GalleryHlItem[]>(raw, []);
+  }
+
+  return items.flatMap((item) => {
+    const photos = item?.hl_img_link_photo;
+    if (!Array.isArray(photos)) return [];
+
+    return photos.filter(
+      (url): url is string => typeof url === "string" && url.trim() !== ""
+    );
+  });
 }
 
 export function getSocialLinks(settings: ThemeSettings): ContactHlItem[] {
@@ -114,6 +177,65 @@ export function getAboutContent(settings: ThemeSettings): AboutContent {
 
 export function getAdvantages(settings: ThemeSettings): AdvantageItem[] {
   return parseMaybeJson<AdvantageItem[]>(settings.hl_data_advantages, []);
+}
+
+const DEFAULT_AUDIENCE_SLIDES: AudienceSlide[] = [
+  {
+    image: DEFAULT_AUDIENCE_SLIDE_IMAGE,
+    tag: "",
+    subtitle: "Для родин із дітьми",
+    iconSvg: "",
+    descriptionLeft:
+      "Коли поруч садок, а школу не доводиться шукати далеко — це знімає зайві клопоти. Внутрішній двір без машин і з дитячим майданчиком — простір, де безпечно й спокійно",
+    descriptionRight:
+      "Можна не поспішати, не шукати, не хвилюватися. Усе зроблено так, щоб щоденне життя з дитиною було трохи простішим — і вдома, і надворі",
+  },
+];
+
+export function getAudienceContent(settings: ThemeSettings): AudienceContent {
+  const sectionBadge =
+    (settings.audience_section_badge || "").trim() || "Для кого";
+  const sectionTitle =
+    (settings.audience_section_title || "").trim() || "Тут буде зручно";
+  const ctaText =
+    (settings.audience_cta_text || "").trim() || "Замовити дзвінок";
+
+  const items = parseMaybeJson<AudienceHlItem[]>(settings.hl_data_audience, []);
+  const slides = items
+    .map((item) => {
+      const photos =
+        item?.hl_img_link_slide_photo ?? item?.hl_img_link_photo;
+      const image =
+        Array.isArray(photos) && typeof photos[0] === "string" && photos[0].trim()
+          ? photos[0].trim()
+          : DEFAULT_AUDIENCE_SLIDE_IMAGE;
+
+      const iconRaw =
+        item?.hl_img_svg_slide_icon ?? item?.hl_img_svg_icon ?? "";
+
+      return {
+        image,
+        tag: (item?.hl_input_text_tag || "").trim(),
+        subtitle: (item?.hl_input_text_subtitle || "").trim(),
+        iconSvg: decodeSvgTransportClient(iconRaw.trim()),
+        descriptionLeft: (item?.hl_textarea_desc_left || "").trim(),
+        descriptionRight: (item?.hl_textarea_desc_right || "").trim(),
+      };
+    })
+    .filter(
+      (slide) =>
+        slide.subtitle ||
+        slide.descriptionLeft ||
+        slide.descriptionRight ||
+        slide.iconSvg
+    );
+
+  return {
+    sectionBadge,
+    sectionTitle,
+    ctaText,
+    slides: slides.length ? slides : DEFAULT_AUDIENCE_SLIDES,
+  };
 }
 
 export function buildContactsList(settings: ThemeSettings) {
@@ -155,12 +277,21 @@ export function getSiteLogoUrl(settings: ThemeSettings): string {
   return (settings.site_logo || "").trim();
 }
 
+export function getSiteLogoScrollUrl(settings: ThemeSettings): string {
+  return (settings.site_logo_scroll || "").trim();
+}
+
 export function getSiteLogoSvg(settings: ThemeSettings): string {
   return (settings.site_logo_svg || "").trim();
 }
 
 export function getMapLogoUrl(settings: ThemeSettings): string {
   return (settings.map_logo || "").trim() || "/icons/nadrichnyi.svg";
+}
+
+export function getSiteFaviconUrl(settings: ThemeSettings): string | undefined {
+  const url = (settings.site_favicon || "").trim();
+  return url || undefined;
 }
 
 export function getMapCenter(settings: ThemeSettings): [number, number] {

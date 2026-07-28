@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
-import { API_URL, SITE_URL } from "@/constants";
+import { SITE_URL } from "@/constants";
 import type { YoastHeadJson, YoastMeta } from "./types";
+import {
+  frontendAbsoluteUrl,
+  rewriteBackendToFrontend,
+  rewriteBackendUrlsDeep,
+} from "./rewriteDomains";
 
 const stripTags = (html?: string | null) =>
   (html ?? "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 
+/** @deprecated Prefer frontendAbsoluteUrl — kept for callers. */
 export function rewriteToFrontend(
-  wpUrl: string | undefined,
+  _wpUrl: string | undefined,
   frontPath: string
 ): string {
-  const path = frontPath.startsWith("/") ? frontPath : `/${frontPath}`;
-  return `${SITE_URL}${path}`;
+  return frontendAbsoluteUrl(frontPath);
 }
 
 export function rewriteSchemaUrls(
@@ -20,24 +25,27 @@ export function rewriteSchemaUrls(
 ): Record<string, unknown> | undefined {
   if (!schema) return undefined;
 
-  const frontCanonical = rewriteToFrontend(wpCanonical, frontPath);
-  let raw = JSON.stringify(schema);
-  raw = raw.split(API_URL).join(SITE_URL);
-  raw = raw.split("/apartments/").join("/catalog/");
+  const frontCanonical = frontendAbsoluteUrl(frontPath);
+  let rewritten = rewriteBackendUrlsDeep(schema);
 
-  if (wpCanonical) {
-    const wpOnFrontHost = wpCanonical.split(API_URL).join(SITE_URL);
-    for (const from of [wpCanonical, wpOnFrontHost]) {
-      raw = raw.split(from).join(frontCanonical);
-      raw = raw.split(from.replace(/\/$/, "")).join(frontCanonical.replace(/\/$/, ""));
-    }
-  }
-
+  // Force page/@id / url / canonical-like values onto the exact front path.
   try {
-    return JSON.parse(raw) as Record<string, unknown>;
+    let raw = JSON.stringify(rewritten);
+    if (wpCanonical) {
+      const wpOnFront = rewriteBackendToFrontend(wpCanonical);
+      for (const from of [wpCanonical, wpOnFront]) {
+        raw = raw.split(from).join(frontCanonical);
+        raw = raw
+          .split(from.replace(/\/$/, ""))
+          .join(frontCanonical.replace(/\/$/, ""));
+      }
+    }
+    rewritten = JSON.parse(raw) as Record<string, unknown>;
   } catch {
-    return schema;
+    // keep deep-rewritten schema
   }
+
+  return rewritten;
 }
 
 function robotsFromYoast(
@@ -45,7 +53,8 @@ function robotsFromYoast(
 ): Metadata["robots"] | undefined {
   if (!robots) return undefined;
 
-  const index = robots.index === "noindex" ? false : robots.index === "index" ? true : undefined;
+  const index =
+    robots.index === "noindex" ? false : robots.index === "index" ? true : undefined;
   const follow =
     robots.follow === "nofollow" ? false : robots.follow === "follow" ? true : undefined;
 
@@ -68,6 +77,48 @@ function robotsFromYoast(
   };
 }
 
+/**
+ * Collect keywords from Yoast focus keyphrase, synonyms and legacy metakeywords.
+ */
+export function collectYoastKeywords(yoastMeta?: YoastMeta | null): string[] | undefined {
+  if (!yoastMeta) return undefined;
+
+  const parts: string[] = [];
+
+  const pushSplit = (raw?: string | null) => {
+    if (!raw || !String(raw).trim()) return;
+    String(raw)
+      .split(/[,;]+/)
+      .map((k) => k.trim())
+      .filter(Boolean)
+      .forEach((k) => {
+        if (!parts.includes(k)) parts.push(k);
+      });
+  };
+
+  pushSplit(yoastMeta.focuskw);
+  pushSplit(yoastMeta.keywords);
+  pushSplit(yoastMeta.metakeywords);
+
+  if (yoastMeta.keywordsynonyms) {
+    try {
+      const parsed = JSON.parse(yoastMeta.keywordsynonyms);
+      if (Array.isArray(parsed)) {
+        parsed.forEach((item) => {
+          const k = String(item || "").trim();
+          if (k && !parts.includes(k)) parts.push(k);
+        });
+      } else {
+        pushSplit(yoastMeta.keywordsynonyms);
+      }
+    } catch {
+      pushSplit(yoastMeta.keywordsynonyms);
+    }
+  }
+
+  return parts.length ? parts : undefined;
+}
+
 export function yoastToMetadata(
   yoast: YoastHeadJson | null | undefined,
   options: {
@@ -78,7 +129,7 @@ export function yoastToMetadata(
   }
 ): Metadata {
   const { frontPath, fallbackTitle, fallbackDescription, yoastMeta } = options;
-  const canonical = rewriteToFrontend(yoast?.canonical ?? yoast?.og_url, frontPath);
+  const canonical = frontendAbsoluteUrl(frontPath);
   const title =
     yoast?.title ||
     yoast?.og_title ||
@@ -91,10 +142,10 @@ export function yoastToMetadata(
     undefined;
 
   const ogImage = yoast?.og_image?.[0];
-  const keywordsRaw = yoastMeta?.keywords || yoastMeta?.focuskw;
-  const keywords = keywordsRaw
-    ? keywordsRaw.split(/[,;]+/).map((k) => k.trim()).filter(Boolean)
-    : undefined;
+  const keywords = collectYoastKeywords(yoastMeta);
+
+  const ogImageUrl = ogImage?.url || undefined;
+  const twitterImage = yoast?.twitter_image || undefined;
 
   const metadata: Metadata = {
     title,
@@ -110,13 +161,13 @@ export function yoastToMetadata(
       siteName: yoast?.og_site_name,
       locale: yoast?.og_locale,
       type: yoast?.og_type === "article" ? "article" : "website",
-      images: ogImage?.url
+      images: ogImageUrl
         ? [
             {
-              url: ogImage.url,
-              width: ogImage.width,
-              height: ogImage.height,
-              alt: ogImage.alt,
+              url: ogImageUrl,
+              width: ogImage?.width,
+              height: ogImage?.height,
+              alt: ogImage?.alt,
             },
           ]
         : undefined,
@@ -128,15 +179,25 @@ export function yoastToMetadata(
         : {}),
     },
     twitter: {
-      card: (yoast?.twitter_card as "summary" | "summary_large_image") || "summary_large_image",
+      card:
+        (yoast?.twitter_card as "summary" | "summary_large_image") ||
+        "summary_large_image",
       title: yoast?.twitter_title || yoast?.og_title || title,
       description: yoast?.twitter_description || description,
-      images: yoast?.twitter_image
-        ? [yoast.twitter_image]
-        : ogImage?.url
-          ? [ogImage.url]
+      images: twitterImage
+        ? [twitterImage]
+        : ogImageUrl
+          ? [ogImageUrl]
           : undefined,
     },
+    // Explicit keywords meta for crawlers that still read it.
+    ...(keywords?.length
+      ? {
+          other: {
+            keywords: keywords.join(", "),
+          },
+        }
+      : {}),
   };
 
   return metadata;

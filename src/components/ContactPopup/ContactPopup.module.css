@@ -198,6 +198,7 @@
         height: 3.33vw;
         border: none;
         cursor: pointer;
+        transition: background-color 300ms ease-in-out;
 
         font-size: 0.83vw;
         font-weight: 700;
@@ -205,6 +206,10 @@
         color: #ffffff;
         background-color: var(--brand-primary);
         border-radius: 5.21vw;
+      }
+
+      .submitBtn:hover:not(:disabled) {
+        background-color: var(--brand-primary-hover);
       }
 
       .submitBtn:disabled {
@@ -250,11 +255,16 @@
       margin-top: 1.67vw;
       border: none;
       cursor: pointer;
+      transition: background-color 300ms ease-in-out;
       font-size: 0.83vw;
       font-weight: 700;
       color: #ffffff;
       background-color: var(--brand-primary);
       border-radius: 5.21vw;
+    }
+
+    .submitBtn:hover {
+      background-color: var(--brand-primary-hover);
     }
   }
 }

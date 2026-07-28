@@ -22,9 +22,13 @@ import { useWindowWidth } from "@/utils/useWindowWidth";
 
 const ChooseAnApartment = () => {
   const pathname = usePathname();
-  const [apartmentData, setApartmentData] = useState([]);
+  const isCatalogPage = pathname.includes("/catalog");
+  const [apartmentData, setApartmentData] = useState<Apartment[]>([]);
+  const [hasAnyApartments, setHasAnyApartments] = useState<boolean | null>(
+    null
+  );
   const [endSliceNumber, setEndSliceNumber] = useState(
-    pathname.includes("/catalog") ? 9 : 3
+    isCatalogPage ? 9 : 3
   );
   const windowWidth = useWindowWidth();
   const selectedArea = useSelector(selectArea);
@@ -33,6 +37,37 @@ const ChooseAnApartment = () => {
   const selectedHouses = useSelector(selectHouseNumbers);
   const selectDelivery = useSelector(selectYear);
   const { openModal } = useModal();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const checkApartmentsExist = async () => {
+      try {
+        const response = await fetch(
+          `${API_URL}/wp-json/wp/v2/apartments?per_page=1`
+        );
+        const total = Number(response.headers.get("X-WP-Total") || "0");
+        const data = await response.json();
+
+        if (cancelled) return;
+
+        setHasAnyApartments(
+          total > 0 || (Array.isArray(data) && data.length > 0)
+        );
+      } catch (error) {
+        console.log(error);
+        if (!cancelled) {
+          setHasAnyApartments(false);
+        }
+      }
+    };
+
+    checkApartmentsExist();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const selectedDeliveryParams = `delivery_min=${selectDelivery[0]}-01-01&delivery_max=${selectDelivery[1]}-12-31`;
@@ -71,6 +106,10 @@ const ChooseAnApartment = () => {
     selectedHouses,
     selectDelivery,
   ]);
+
+  if (hasAnyApartments !== true) {
+    return null;
+  }
 
   return (
     <section className={s.section}>

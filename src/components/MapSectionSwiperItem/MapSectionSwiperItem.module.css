@@ -39,10 +39,30 @@
 
     .info {
       h4 {
+        display: flex;
+        align-items: center;
+        gap: 0.83vw;
         margin-bottom: 1.67vw;
         font-size: 1.67vw;
         line-height: 1.2;
         color: var(--text-gray-dark);
+      }
+
+      .featureIcon {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        width: 2.5vw;
+        height: 2.5vw;
+        border-radius: 50%;
+        background-color: var(--background-semi-transparent-blue);
+
+        svg {
+          width: 1.25vw;
+          height: 1.25vw;
+          fill: var(--brand-primary);
+        }
       }
 
       article {
@@ -138,10 +158,7 @@
           gap: 4.27vw;
           font-size: 6.4vw;
 
-          span {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
+          .featureIcon {
             width: 10.67vw;
             height: 10.67vw;
             border-radius: 50%;

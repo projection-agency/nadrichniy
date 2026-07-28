@@ -14,8 +14,10 @@ import {
   getMapLogoUrl,
   getMapsPlaceUrl,
 } from "@/lib/themeSettings";
+import { useModal } from "@/components/ModalContext";
 
 const ContactsSection = () => {
+  const { openModal } = useModal();
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMapRef = useRef<LeafletMap | null>(null);
   const pathname = usePathname();
@@ -38,20 +40,26 @@ const ContactsSection = () => {
 
       const L = leaflet.default;
 
-      mapRef.current.innerHTML = "";
-
       if (leafletMapRef.current) {
-        leafletMapRef.current.remove();
+        try {
+          leafletMapRef.current.remove();
+        } catch {
+          // Container may already be detached during React teardown.
+        }
         leafletMapRef.current = null;
       }
 
-      leafletMapRef.current = L.map(mapRef.current, {
+      if (cancelled || !mapRef.current) return;
+
+      const map = L.map(mapRef.current, {
         scrollWheelZoom: false,
       }).setView(mapCenter, 14);
 
+      leafletMapRef.current = map;
+
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
-      }).addTo(leafletMapRef.current);
+      }).addTo(map);
 
       const markerIcon = L.icon({
         iconUrl: mapLogoUrl,
@@ -61,7 +69,7 @@ const ContactsSection = () => {
       });
 
       L.marker(mapCenter, { icon: markerIcon })
-        .addTo(leafletMapRef.current)
+        .addTo(map)
         .bindPopup("Надрічний");
     };
 
@@ -69,8 +77,14 @@ const ContactsSection = () => {
 
     return () => {
       cancelled = true;
-      leafletMapRef.current?.remove();
-      leafletMapRef.current = null;
+      if (leafletMapRef.current) {
+        try {
+          leafletMapRef.current.remove();
+        } catch {
+          // Container may already be detached during React teardown.
+        }
+        leafletMapRef.current = null;
+      }
     };
   }, [mapCenter, mapLogoUrl]);
 
@@ -118,7 +132,13 @@ const ContactsSection = () => {
           <div className={s.mobileMapLegend}>
             <h3>Наші контакти</h3>
             <ul className={s.infoList}>{renderContactsList()}</ul>
-            <button className={s.orderVisisBtn}>Записатися на візит</button>
+            <button
+              type="button"
+              className={s.orderVisisBtn}
+              onClick={() => openModal("formB")}
+            >
+              Записатися на візит
+            </button>
           </div>
         )}
         <div className={s.mapContainer}>
@@ -126,7 +146,13 @@ const ContactsSection = () => {
             <div className={s.mapLegend}>
               <h3>Наші контакти</h3>
               <ul className={s.infoList}>{renderContactsList()}</ul>
-              <button className={s.orderVisisBtn}>Записатися на візит</button>
+              <button
+                type="button"
+                className={s.orderVisisBtn}
+                onClick={() => openModal("formB")}
+              >
+                Записатися на візит
+              </button>
               <div className={s.googleMapsLinks}>
                 <p>відкрити карту</p>
                 <ul className={s.linkList}>
@@ -179,11 +205,7 @@ const ContactsSection = () => {
               </div>
             </div>
           )}
-          <div
-            ref={mapRef}
-            className={s.map}
-            style={{ width: "100%", zIndex: 0 }}
-          ></div>
+          <div ref={mapRef} className={s.map}></div>
         </div>
         {windowWidth <= 1024 && (
           <div className={s.googleMapsLinks}>

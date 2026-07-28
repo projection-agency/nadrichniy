@@ -78,6 +78,15 @@
       gap: 0.83vw;
       flex-wrap: wrap;
     }
+
+    .emptyState {
+      margin: 2.08vw 0 0;
+      font-size: 1.04vw;
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--text-secondary, #6b7280);
+      text-align: center;
+    }
   }
 }
 
@@ -142,6 +151,11 @@
           font-size: 3.73vw;
           font-weight: 700;
         }
+      }
+
+      .emptyState {
+        margin-top: 10.67vw;
+        font-size: 4.27vw;
       }
     }
   }

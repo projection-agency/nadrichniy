@@ -44,7 +44,7 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="Projection LCDoy">
+      <paths name="Projection LCDOY">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

@@ -1,5 +1,17 @@
 export type { YoastHeadJson, YoastMeta, WpSeoEntity } from "./types";
-export { yoastToMetadata, getSchemaForPath, rewriteToFrontend } from "./mapYoastToMetadata";
+export {
+  yoastToMetadata,
+  getSchemaForPath,
+  rewriteToFrontend,
+  collectYoastKeywords,
+} from "./mapYoastToMetadata";
+export {
+  rewriteBackendToFrontend,
+  rewriteBackendUrlsDeep,
+  frontendAbsoluteUrl,
+  getBackendOrigin,
+  getFrontendOrigin,
+} from "./rewriteDomains";
 export {
   fetchHomeYoast,
   fetchPageBySlug,

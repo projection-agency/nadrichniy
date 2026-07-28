@@ -12,6 +12,8 @@ import {
   getSocialLinks,
 } from "@/lib/themeSettings";
 import { useMemo } from "react";
+import { useWindowWidth } from "@/utils/useWindowWidth";
+import { FooterIcon } from "./footerIcon";
 
 const navLinks = [
   { title: "Головна", href: "/" },
@@ -27,29 +29,47 @@ const SOCIAL_FALLBACK_ICONS: Record<string, string> = {
   instagram: "/icons/instagram.svg",
 };
 
+const DEFAULT_TAGLINE_DESKTOP =
+  "Житло біля річки, у районі, де легко дихати і просто жити";
+
+const DEFAULT_TAGLINE_MOBILE = (
+  <>
+    Житло біля річки,
+    <br />
+    у районі, де легко дихати і
+    <br />
+    просто жити
+  </>
+);
+
 const Footer = () => {
   const { settings } = useThemeSettings();
+  const isMobile = useWindowWidth() <= 1024;
   const contactsData = useMemo(() => buildContactsList(settings), [settings]);
   const mapsPlaceUrl = useMemo(() => getMapsPlaceUrl(settings), [settings]);
   const socials = useMemo(() => getSocialLinks(settings), [settings]);
+  const customTagline = settings.footer_tagline?.trim();
   const tagline =
-    settings.footer_tagline?.trim() ||
-    "Житло біля річки, у районі, де легко дихати і просто жити";
+    customTagline ||
+    (isMobile ? DEFAULT_TAGLINE_MOBILE : DEFAULT_TAGLINE_DESKTOP);
 
   return (
     <footer className={s.footer}>
       <Container>
         <div className={s.mainContent}>
           <div className={s.leftBlock}>
-            <Link href="/" aria-label="Надрічний">
-              <SiteLogo mode="footer" width={200} height={46} />
+            <Link href="/" className={s.logoLink} aria-label="Надрічний">
+              <SiteLogo
+                mode="footer"
+                className={s.logoImg}
+                width={100}
+                height={100}
+              />
             </Link>
-            <Image
+            <span
               className={s.bg}
-              src={"/images/footer_bg.jpg"}
-              width={820}
-              height={596}
-              alt="bg"
+              aria-hidden
+              dangerouslySetInnerHTML={{ __html: FooterIcon }}
             />
             <h2>{tagline}</h2>
           </div>
