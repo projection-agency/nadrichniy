@@ -10,7 +10,15 @@ const nextConfig = {
     ],
   },
 
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: "/favicon.ico",
+        destination: "/icon",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

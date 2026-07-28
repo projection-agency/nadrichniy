@@ -8,28 +8,34 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import s from "./SimilarArticles.module.css";
 import { getWindowWidth } from "@/utils/getWindowWidth";
+import { API_URL } from "@/constants";
 
 export default function SimilarArticles({ category }: { category?: number }) {
-  const [postsData, setPostsData] = useState([]);
+  const [postsData, setPostsData] = useState<NewItem[] | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const windowWidth = getWindowWidth();
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          `https://api.lcdoy.projection-learn.website/wp-json/wp/v2/posts${
+          `${API_URL}/wp-json/wp/v2/posts${
             category ? `?categories=${category}` : ""
           }`
         );
         const data = await response.json();
-        setPostsData(data);
+        setPostsData(Array.isArray(data) ? data : []);
       } catch (error) {
         console.log(error);
+        setPostsData([]);
       }
     };
 
     fetchPosts();
   }, [category]);
+
+  if (postsData === null || postsData.length === 0) {
+    return null;
+  }
 
   return (
     <section className={s.section}>

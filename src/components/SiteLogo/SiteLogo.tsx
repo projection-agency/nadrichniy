@@ -2,43 +2,42 @@
 
 import Image from "next/image";
 import { useThemeSettings } from "@/lib/useThemeSettings";
-import { getSiteLogoSvg, getSiteLogoUrl } from "@/lib/themeSettings";
+import {
+  getSiteLogoScrollUrl,
+  getSiteLogoSvg,
+  getSiteLogoUrl,
+} from "@/lib/themeSettings";
 
 type SiteLogoProps = {
   className?: string;
-  /** Prefer inline SVG so header CSS can recolor fills. */
+  /**
+   * header — switches between static (light bg) and scroll/hero (dark bg) logos.
+   * footer — always uses the static brand logo.
+   */
   mode?: "header" | "footer";
+  /** When true, header shows the light-bg (static) logo; when false — dark-bg logo. */
+  inverted?: boolean;
+  /** Force a specific logo asset regardless of scroll/inverted state. */
+  logoVariant?: "static" | "scroll" | "auto";
   width?: number;
   height?: number;
 };
 
 const FALLBACK_SRC = "/icons/main-logo.svg";
 
-const SiteLogo = ({
+function LogoImage({
+  src,
   className,
-  mode = "header",
-  width = 202,
-  height = 48,
-}: SiteLogoProps) => {
-  const { settings } = useThemeSettings();
-  const logoUrl = getSiteLogoUrl(settings);
-  const logoSvg = getSiteLogoSvg(settings);
-
-  if (mode === "header" && logoSvg) {
-    return (
-      <span
-        className={className}
-        aria-label="Надрічний"
-        dangerouslySetInnerHTML={{ __html: logoSvg }}
-      />
-    );
-  }
-
-  if (mode === "header" && !logoUrl && !logoSvg) {
-    return <span className={className}>{fallbackInlineLogo}</span>;
-  }
-
-  const src = logoUrl || FALLBACK_SRC;
+  width,
+  height,
+  priority,
+}: {
+  src: string;
+  className?: string;
+  width: number;
+  height: number;
+  priority?: boolean;
+}) {
   const isRemote = /^https?:\/\//i.test(src);
 
   if (isRemote) {
@@ -50,7 +49,11 @@ const SiteLogo = ({
         alt="Надрічний"
         width={width}
         height={height}
-        style={{ width, height, objectFit: "contain" }}
+        style={
+          className
+            ? { width: "100%", height: "100%", objectFit: "contain" }
+            : { width, height, objectFit: "contain" }
+        }
       />
     );
   }
@@ -60,6 +63,66 @@ const SiteLogo = ({
       className={className}
       src={src}
       alt="Надрічний"
+      width={width}
+      height={height}
+      priority={priority}
+      style={
+        className
+          ? { width: "100%", height: "100%", objectFit: "contain" }
+          : undefined
+      }
+    />
+  );
+}
+
+const SiteLogo = ({
+  className,
+  mode = "header",
+  inverted = false,
+  logoVariant = "auto",
+  width = 202,
+  height = 48,
+}: SiteLogoProps) => {
+  const { settings } = useThemeSettings();
+  const staticUrl = getSiteLogoUrl(settings);
+  const scrollUrl = getSiteLogoScrollUrl(settings);
+  const logoSvg = getSiteLogoSvg(settings);
+
+  // Footer sits on dark blue — prefer scroll/light logo.
+  // Header: inverted (scrolled / light page) → static; over hero → scroll.
+  const preferStatic = !inverted;
+  const logoUrl =
+    mode === "footer"
+      ? staticUrl || scrollUrl
+      : logoVariant === "scroll"
+        ? scrollUrl || staticUrl
+        : logoVariant === "static"
+          ? staticUrl || scrollUrl
+          : preferStatic
+            ? staticUrl || scrollUrl
+            : scrollUrl || staticUrl;
+
+  // Legacy: single SVG with CSS fill — only when no dedicated image pair.
+  if (mode === "header" && !staticUrl && !scrollUrl && logoSvg) {
+    return (
+      <span
+        className={className}
+        aria-label="Надрічний"
+        dangerouslySetInnerHTML={{ __html: logoSvg }}
+      />
+    );
+  }
+
+  if (!logoUrl && mode === "header") {
+    return <span className={className}>{fallbackInlineLogo}</span>;
+  }
+
+  const src = logoUrl || FALLBACK_SRC;
+
+  return (
+    <LogoImage
+      className={className}
+      src={src}
       width={width}
       height={height}
       priority={mode === "header"}

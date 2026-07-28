@@ -40,6 +40,8 @@ export type YoastMeta = {
   description?: string;
   focuskw?: string;
   keywords?: string;
+  keywordsynonyms?: string;
+  metakeywords?: string;
 };
 
 export type WpSeoEntity = {

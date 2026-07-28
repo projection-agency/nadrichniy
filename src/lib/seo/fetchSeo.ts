@@ -7,6 +7,7 @@ import type {
 } from "./types";
 import { getSchemaForPath, yoastToMetadata } from "./mapYoastToMetadata";
 import type { Metadata } from "next";
+import { withSiteIcons } from "@/lib/siteIcons";
 
 const REVALIDATE = 300;
 
@@ -66,11 +67,17 @@ export const fetchApartmentBySlug = cache(
 );
 
 export async function metadataForHome(): Promise<Metadata> {
-  const yoast = await fetchHomeYoast();
-  return yoastToMetadata(yoast, {
-    frontPath: "/",
-    fallbackTitle: "ЖК Надрічний",
-  });
+  const [yoast, homePage] = await Promise.all([
+    fetchHomeYoast(),
+    fetchPageBySlug("home"),
+  ]);
+  return withSiteIcons(
+    yoastToMetadata(yoast, {
+      frontPath: "/",
+      fallbackTitle: homePage?.title?.rendered || "ЖК Надрічний",
+      yoastMeta: homePage?.yoast_meta,
+    })
+  );
 }
 
 export async function metadataForPageSlug(
@@ -79,41 +86,49 @@ export async function metadataForPageSlug(
   fallbackTitle: string
 ): Promise<Metadata> {
   const page = await fetchPageBySlug(slug);
-  return yoastToMetadata(page?.yoast_head_json, {
-    frontPath,
-    fallbackTitle: page?.title?.rendered || fallbackTitle,
-    yoastMeta: page?.yoast_meta,
-  });
+  return withSiteIcons(
+    yoastToMetadata(page?.yoast_head_json, {
+      frontPath,
+      fallbackTitle: page?.title?.rendered || fallbackTitle,
+      yoastMeta: page?.yoast_meta,
+    })
+  );
 }
 
 export async function metadataForPrivacy(): Promise<Metadata> {
   const page = await fetchPageBySlug("privacy-policy");
-  return yoastToMetadata(page?.yoast_head_json, {
-    frontPath: "/privacy-policy",
-    fallbackTitle:
-      page?.title?.rendered ||
-      "Політика конфіденційності та використання файлів cookies",
-    yoastMeta: page?.yoast_meta,
-  });
+  return withSiteIcons(
+    yoastToMetadata(page?.yoast_head_json, {
+      frontPath: "/privacy-policy",
+      fallbackTitle:
+        page?.title?.rendered ||
+        "Політика конфіденційності та використання файлів cookies",
+      yoastMeta: page?.yoast_meta,
+    })
+  );
 }
 
 export async function metadataForPostSlug(slug: string): Promise<Metadata> {
   const post = await fetchPostBySlug(slug);
-  return yoastToMetadata(post?.yoast_head_json, {
-    frontPath: `/blog/${slug}`,
-    fallbackTitle: post?.title?.rendered,
-    fallbackDescription: post?.excerpt?.rendered,
-    yoastMeta: post?.yoast_meta,
-  });
+  return withSiteIcons(
+    yoastToMetadata(post?.yoast_head_json, {
+      frontPath: `/blog/${slug}`,
+      fallbackTitle: post?.title?.rendered,
+      fallbackDescription: post?.excerpt?.rendered,
+      yoastMeta: post?.yoast_meta,
+    })
+  );
 }
 
 export async function metadataForApartmentSlug(slug: string): Promise<Metadata> {
   const apartment = await fetchApartmentBySlug(slug);
-  return yoastToMetadata(apartment?.yoast_head_json, {
-    frontPath: `/catalog/${slug}`,
-    fallbackTitle: apartment?.title?.rendered,
-    yoastMeta: apartment?.yoast_meta,
-  });
+  return withSiteIcons(
+    yoastToMetadata(apartment?.yoast_head_json, {
+      frontPath: `/catalog/${slug}`,
+      fallbackTitle: apartment?.title?.rendered,
+      yoastMeta: apartment?.yoast_meta,
+    })
+  );
 }
 
 export async function schemaForHome() {

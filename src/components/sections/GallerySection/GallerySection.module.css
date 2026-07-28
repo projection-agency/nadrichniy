@@ -40,6 +40,7 @@
         img {
           width: 100% !important;
           height: 100% !important;
+          object-fit: cover;
         }
       }
     }
@@ -54,16 +55,19 @@
       border-radius: 1.67vw;
 
       .paginationCont {
+        display: flex;
+        flex-direction: column;
+        gap: 0.83vw;
         height: 28.33vw;
-        overflow-y: scroll;
+        overflow-y: auto;
         scroll-behavior: smooth;
+
         .paginationItem {
           cursor: pointer;
           display: flex;
+          flex-shrink: 0;
           justify-content: center;
           align-items: center;
-          margin-bottom: 0.83vw;
-
           width: 5vw;
           height: 5vw;
           background-image: var(--brand-primary-transparent);
@@ -77,11 +81,13 @@
             height: 4.6vw;
             border-radius: 100%;
             background-color: #fff;
+            overflow: hidden;
 
             .image {
               width: 4.17vw !important;
               height: 4.17vw !important;
               border-radius: 100%;
+              object-fit: cover;
             }
           }
         }
@@ -89,7 +95,7 @@
           background-color: var(--brand-primary-transparent);
 
           img {
-            opacity: 0.2;
+            opacity: 0.65;
           }
         }
 

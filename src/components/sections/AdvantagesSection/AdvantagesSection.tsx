@@ -108,10 +108,11 @@ const AdvantagesSection = () => {
               </div>
               <Image
                 className={s.background}
-                src={"/images/advantages_bg2.jpg"}
-                width={300}
-                height={200}
-                alt="bg"
+                src={"/images/Group 7.png"}
+                width={820}
+                height={702}
+                alt=""
+                aria-hidden
               />
             </div>
           </div>
@@ -126,10 +127,11 @@ const AdvantagesSection = () => {
               </div>
               <Image
                 className={s.background}
-                src={"/images/advantages_bg1.jpg"}
-                width={300}
-                height={200}
-                alt="bg"
+                src={"/images/Group 7.png"}
+                width={820}
+                height={702}
+                alt=""
+                aria-hidden
               />
             </div>
             <div className={`${s.item} ${isMobile ? s.dark : s.white}`}>

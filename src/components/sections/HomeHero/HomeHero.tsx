@@ -4,23 +4,40 @@ import s from "./HomeHero.module.css";
 import Link from "next/link";
 import Container from "@/components/Container/Container";
 import { useThemeSettings } from "@/lib/useThemeSettings";
+import { usePageFeaturedImage } from "@/lib/usePageFeaturedImage";
+
+const FALLBACK = "/images/home-hero.jpg";
 
 const HomeHero = () => {
   const { settings } = useThemeSettings();
   const title = settings.home_hero_title?.trim() || "Житловий масив Надрічний";
   const cta = settings.home_hero_cta?.trim() || "Дивитись квартири";
   const ctaLink = settings.home_hero_cta_link?.trim() || "/catalog";
+  const heroImage = usePageFeaturedImage("home", FALLBACK);
+  const isRemote = /^https?:\/\//i.test(heroImage);
 
   return (
     <section className={s.section}>
       <Container className={s.container}>
-        <Image
-          className={s.background}
-          alt="hero-bg"
-          width={3840}
-          height={2160}
-          src={"/images/home-hero.jpg"}
-        />
+        {isRemote ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className={s.background}
+            alt=""
+            width={3840}
+            height={2160}
+            src={heroImage}
+          />
+        ) : (
+          <Image
+            className={s.background}
+            alt=""
+            width={3840}
+            height={2160}
+            src={heroImage}
+            priority
+          />
+        )}
         <h1>{title}</h1>
         <Link href={ctaLink} className={s.catalogPageLink}>
           {cta}

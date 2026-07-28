@@ -2,12 +2,11 @@
 import { useState, useEffect, useRef } from "react";
 import Container from "@/components/Container/Container";
 import s from "./NewsSection.module.css";
-import Image from "next/image";
-import Link from "next/link";
 import NewsItem from "@/components/NewsItem/NewsItem";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { getWindowWidth } from "@/utils/getWindowWidth";
+import { API_URL } from "@/constants";
 export interface NewItem {
   id: number;
   author: number;
@@ -29,25 +28,28 @@ export interface NewItem {
 }
 
 const NewsSection = () => {
-  const [newsData, setNewsData] = useState([]);
+  const [newsData, setNewsData] = useState<NewItem[] | null>(null);
   const [activeSlide, setActiveSlide] = useState<number | null>(0);
   const swiperRef = useRef<any>(null);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch(
-          "https://api.lcdoy.projection-learn.website/wp-json/wp/v2/posts"
-        );
+        const response = await fetch(`${API_URL}/wp-json/wp/v2/posts`);
         const data = await response.json();
-        setNewsData(data);
+        setNewsData(Array.isArray(data) ? data : []);
       } catch (error) {
         console.log(error);
+        setNewsData([]);
       }
     };
 
     fetchNews();
   }, []);
+
+  if (newsData === null || newsData.length === 0) {
+    return null;
+  }
 
   return (
     <section className={s.section}>

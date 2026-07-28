@@ -6,7 +6,11 @@ import Link from "next/link";
 import StatisticsList from "@/components/StatisticsList/StatisticsList";
 import { useThemeSettings } from "@/lib/useThemeSettings";
 import { getMapCenter, getMapsPlaceUrl } from "@/lib/themeSettings";
-import { useMemo } from "react";
+import { usePageFeaturedImage } from "@/lib/usePageFeaturedImage";
+import { useMemo, type CSSProperties } from "react";
+
+const FALLBACK_DESKTOP = "/images/home-hero.jpg";
+const FALLBACK_MOBILE = "/images/catalog_bg_mobile.jpg";
 
 const CatalogHero = () => {
   const { settings } = useThemeSettings();
@@ -21,17 +25,36 @@ const CatalogHero = () => {
       ? mapsUrl
       : `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 
+  const pageImage = usePageFeaturedImage("catalog", "");
+  const desktopImage = pageImage || FALLBACK_DESKTOP;
+  const mobileImage = pageImage || FALLBACK_MOBILE;
+  const mobileIsRemote = /^https?:\/\//i.test(mobileImage);
+  const containerStyle = {
+    "--catalog-hero-bg": `url(${desktopImage})`,
+  } as CSSProperties;
+
   return (
     <section className={s.section}>
-      <Container className={s.container}>
-        <Image
-          className={s.background}
-          alt="hero-bg"
-          width={3840}
-          height={2160}
-          src={"/images/catalog_bg_mobile.jpg"}
-          sizes="(max-width:1024px) 376vw 178.13vw"
-        />
+      <Container className={s.container} style={containerStyle}>
+        {mobileIsRemote ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className={s.background}
+            alt=""
+            width={3840}
+            height={2160}
+            src={mobileImage}
+          />
+        ) : (
+          <Image
+            className={s.background}
+            alt=""
+            width={3840}
+            height={2160}
+            src={mobileImage}
+            sizes="(max-width:1024px) 100vw"
+          />
+        )}
         <h1>{title}</h1>
         <Link
           className={s.link}

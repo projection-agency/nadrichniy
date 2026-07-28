@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
@@ -12,7 +11,7 @@ const onest = Onest({
   subsets: ["latin", "cyrillic"],
 });
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata() {
   const meta = await metadataForHome();
   return {
     ...meta,
