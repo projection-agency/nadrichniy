@@ -6,6 +6,7 @@ import {
   rewriteBackendToFrontend,
   rewriteBackendUrlsDeep,
 } from "./rewriteDomains";
+import { applyBrandTerminology, applyBrandTerminologyDeep } from "@/lib/brandTerminology";
 
 const stripTags = (html?: string | null) =>
   (html ?? "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
@@ -45,7 +46,7 @@ export function rewriteSchemaUrls(
     // keep deep-rewritten schema
   }
 
-  return rewritten;
+  return applyBrandTerminologyDeep(rewritten);
 }
 
 function robotsFromYoast(
@@ -92,7 +93,8 @@ export function collectYoastKeywords(yoastMeta?: YoastMeta | null): string[] | u
       .map((k) => k.trim())
       .filter(Boolean)
       .forEach((k) => {
-        if (!parts.includes(k)) parts.push(k);
+        const normalized = applyBrandTerminology(k) || k;
+        if (!parts.includes(normalized)) parts.push(normalized);
       });
   };
 
@@ -105,7 +107,7 @@ export function collectYoastKeywords(yoastMeta?: YoastMeta | null): string[] | u
       const parsed = JSON.parse(yoastMeta.keywordsynonyms);
       if (Array.isArray(parsed)) {
         parsed.forEach((item) => {
-          const k = String(item || "").trim();
+          const k = applyBrandTerminology(String(item || "").trim()) || "";
           if (k && !parts.includes(k)) parts.push(k);
         });
       } else {
@@ -130,15 +132,23 @@ export function yoastToMetadata(
 ): Metadata {
   const { frontPath, fallbackTitle, fallbackDescription, yoastMeta } = options;
   const canonical = frontendAbsoluteUrl(frontPath);
+
+  const metaTitle = applyBrandTerminology(yoastMeta?.title?.trim() || "");
+  const metaDescription = applyBrandTerminology(
+    yoastMeta?.description?.trim() || ""
+  );
+
   const title =
-    yoast?.title ||
-    yoast?.og_title ||
-    fallbackTitle ||
-    "ЖК Надрічний";
+    metaTitle ||
+    applyBrandTerminology(yoast?.title) ||
+    applyBrandTerminology(yoast?.og_title) ||
+    applyBrandTerminology(fallbackTitle) ||
+    "Житловий масив Надрічний";
   const description =
-    yoast?.description ||
-    yoast?.og_description ||
-    stripTags(fallbackDescription) ||
+    metaDescription ||
+    applyBrandTerminology(yoast?.description) ||
+    applyBrandTerminology(yoast?.og_description) ||
+    applyBrandTerminology(stripTags(fallbackDescription)) ||
     undefined;
 
   const ogImage = yoast?.og_image?.[0];
@@ -146,6 +156,20 @@ export function yoastToMetadata(
 
   const ogImageUrl = ogImage?.url || undefined;
   const twitterImage = yoast?.twitter_image || undefined;
+  const ogTitle =
+    applyBrandTerminology(yoast?.og_title) ||
+    metaTitle ||
+    title;
+  const ogDescription =
+    applyBrandTerminology(yoast?.og_description) ||
+    metaDescription ||
+    description;
+  const twitterTitle =
+    applyBrandTerminology(yoast?.twitter_title) ||
+    ogTitle;
+  const twitterDescription =
+    applyBrandTerminology(yoast?.twitter_description) ||
+    ogDescription;
 
   const metadata: Metadata = {
     title,
@@ -155,10 +179,10 @@ export function yoastToMetadata(
     alternates: { canonical },
     robots: robotsFromYoast(yoast?.robots),
     openGraph: {
-      title: yoast?.og_title || title,
-      description: yoast?.og_description || description,
+      title: ogTitle,
+      description: ogDescription,
       url: canonical,
-      siteName: yoast?.og_site_name,
+      siteName: applyBrandTerminology(yoast?.og_site_name),
       locale: yoast?.og_locale,
       type: yoast?.og_type === "article" ? "article" : "website",
       images: ogImageUrl
@@ -182,8 +206,8 @@ export function yoastToMetadata(
       card:
         (yoast?.twitter_card as "summary" | "summary_large_image") ||
         "summary_large_image",
-      title: yoast?.twitter_title || yoast?.og_title || title,
-      description: yoast?.twitter_description || description,
+      title: twitterTitle,
+      description: twitterDescription,
       images: twitterImage
         ? [twitterImage]
         : ogImageUrl
@@ -194,7 +218,9 @@ export function yoastToMetadata(
     ...(keywords?.length
       ? {
           other: {
-            keywords: keywords.join(", "),
+            keywords: keywords
+              .map((k) => applyBrandTerminology(k) || k)
+              .join(", "),
           },
         }
       : {}),

@@ -11,60 +11,57 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
   const pathname = usePathname();
   const windowWidth = getWindowWidth();
   const layoutSrc = resolveMediaUrl(item.Flour_layout);
+  const hasAdvantages =
+    item.Postponement == "1" || item.Isoselya == "1" || item.Discount == "1";
+
+  const advantagesList = hasAdvantages ? (
+    <ul className={s.advantages}>
+      {item.Postponement == "1" ? (
+        <li>
+          <Image
+            src={"/icons/advantage1.svg"}
+            width={38}
+            height={38}
+            alt="icon"
+          />
+        </li>
+      ) : null}
+      {item.Isoselya == "1" ? (
+        <li>
+          <Image
+            src={"/icons/advantage2.svg"}
+            width={38}
+            height={38}
+            alt="icon"
+          />
+        </li>
+      ) : null}
+      {item.Discount == "1" ? (
+        <li>
+          <Image
+            src={"/icons/advantage3.svg"}
+            width={38}
+            height={38}
+            alt="icon"
+          />
+        </li>
+      ) : null}
+    </ul>
+  ) : null;
+
   return (
     <li className={s.item}>
       <div className={s.topBlock}>
         <ul className={s.apartmentInfo}>
           <li>{item.Area} м²</li>
           <li>{item.apartments_category[0].name}</li>
-          <li>{item.Corps} корпус</li>
-          <li>{item.Flour} поверх</li>
+          <li>{item.Corps ? `${item.Corps} корпус` : "—"}</li>
+          {item.Flour ? <li>{item.Flour} поверх</li> : null}
         </ul>
         <div>
           <p>Запланована здача</p>
           {item.Schedule}
-          {windowWidth <= 1024 ? (
-            <ul className={s.advantages}>
-              {item.Postponement == "1" ? (
-                <li>
-                  <Image
-                    src={"/icons/advantage1.svg"}
-                    width={38}
-                    height={38}
-                    alt="icon"
-                  />
-                </li>
-              ) : (
-                ""
-              )}
-              {item.Isoselya == "1" ? (
-                <li>
-                  <Image
-                    src={"/icons/advantage2.svg"}
-                    width={38}
-                    height={38}
-                    alt="icon"
-                  />
-                </li>
-              ) : (
-                ""
-              )}
-              {item.Discount == "1" ? (
-                <li>
-                  <Image
-                    src={"/icons/advantage3.svg"}
-                    width={38}
-                    height={38}
-                    alt="icon"
-                  />
-                </li>
-              ) : (
-                ""
-              )}
-            </ul>
-          ) : (
-            ""
-          )}
+          {windowWidth <= 1024 ? advantagesList : null}
         </div>
       </div>
       <div className={s.bottomBlock}>
@@ -86,48 +83,7 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
             Дізнатись вартість
             {arrow}
           </Link>
-          {windowWidth >= 1024 ? (
-            <ul className={s.advantages}>
-              {item.Postponement == "1" ? (
-                <li>
-                  <Image
-                    src={"/icons/advantage1.svg"}
-                    width={38}
-                    height={38}
-                    alt="icon"
-                  />
-                </li>
-              ) : (
-                ""
-              )}
-              {item.Isoselya == "1" ? (
-                <li>
-                  <Image
-                    src={"/icons/advantage2.svg"}
-                    width={38}
-                    height={38}
-                    alt="icon"
-                  />
-                </li>
-              ) : (
-                ""
-              )}
-              {item.Discount == "1" ? (
-                <li>
-                  <Image
-                    src={"/icons/advantage3.svg"}
-                    width={38}
-                    height={38}
-                    alt="icon"
-                  />
-                </li>
-              ) : (
-                ""
-              )}
-            </ul>
-          ) : (
-            ""
-          )}
+          {windowWidth >= 1024 ? advantagesList : null}
         </div>
       </div>
     </li>

@@ -1,36 +1,29 @@
 "use client";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { usePathname } from "next/navigation";
 import s from "./ApartmentFilterPopup.module.css";
 import {
   setAreaFilter,
-  setFloorFilter,
   toggleRoomType,
-  toggleHouseNumber,
-  setPriceFilter,
+  toggleCorps,
   setYearFilter,
+  resetFilters,
 } from "@/Redux/apartmentSlice/slice";
 import { useSelector } from "react-redux";
 import {
   selectArea,
-  selectFloor,
-  selectHouseNumbers,
+  selectCorps,
   selectRoomTypes,
   selectYear,
 } from "@/Redux/apartmentSlice/selectors";
 import debounce from "@/utils/debounce";
 import { closeIco } from "../ModalContext";
 import { initialState } from "@/Redux/apartmentSlice/slice";
-const houseNumbersArray = [
-  { number: "one" },
-  { number: "two" },
-  { number: "three" },
-  { number: "four" },
-  { number: "five" },
-];
+
+const corpsNumbersArray = ["1", "2", "3", "4", "5", "6", "7"];
+const SLIDER_DEBOUNCE_MS = 400;
 
 export default function ApartmentFilterPopup({
   onClose,
@@ -39,50 +32,41 @@ export default function ApartmentFilterPopup({
 }) {
   const dispatch = useDispatch();
   const area = useSelector(selectArea);
-  const floor = useSelector(selectFloor);
   const roomTypes = useSelector(selectRoomTypes);
-  const houseNumbers = useSelector(selectHouseNumbers);
+  const corps = useSelector(selectCorps);
   const yearsFilter = useSelector(selectYear);
   const date = new Date();
   const year = date.getFullYear();
   const [localArea, setLocalArea] = useState(area);
-  const [localFloor, setLocalFloor] = useState(floor);
   const [localYear, setLocalYear] = useState(yearsFilter);
-  const pathname = usePathname();
   const isInitialFilter =
     area === initialState.filters.area &&
     roomTypes === initialState.filters.selectedTypes &&
-    floor === initialState.filters.floor &&
-    houseNumbers === initialState.filters.house &&
+    corps === initialState.filters.corps &&
     yearsFilter === initialState.filters.year;
 
-  const handleChangeArea = (e: number[]) => {
-    dispatch(setAreaFilter([e[0], e[1]]));
-  };
+  const debouncedArea = useMemo(
+    () =>
+      debounce((e: number[]) => {
+        dispatch(setAreaFilter([e[0], e[1]]));
+      }, SLIDER_DEBOUNCE_MS),
+    [dispatch]
+  );
 
-  const handleChangeFloor = (e: number[]) => {
-    dispatch(setFloorFilter([e[0], e[1]]));
-  };
-
-  const handleChangeYear = (e: number[]) => {
-    dispatch(setYearFilter([e[0], e[1]]));
-  };
-
-  const debouncedArea = debounce(handleChangeArea, 1000);
-  const debouncedFloor = debounce(handleChangeFloor, 1000);
-  const debouncedYear = debounce(handleChangeYear, 1000);
+  const debouncedYear = useMemo(
+    () =>
+      debounce((e: number[]) => {
+        dispatch(setYearFilter([e[0], e[1]]));
+      }, SLIDER_DEBOUNCE_MS),
+    [dispatch]
+  );
 
   return (
     <div className={s.filter}>
       <button onClick={() => onClose()} className={s.closeBtn}>
         {closeIco}
       </button>
-      <form
-        action="#"
-        className={`${s.form} ${
-          pathname.includes("/catalog") ? s.onCatalogPage : ""
-        }`}
-      >
+      <form action="#" className={s.form}>
         <div className={`${s.filterGroup} ${s.roomFilter}`}>
           <span className={s.filterOption}>Кількість кімнат</span>
           <div className={s.options}>
@@ -137,38 +121,28 @@ export default function ApartmentFilterPopup({
           </div>
         </div>
 
-        {pathname.includes("/catalog") ? (
-          <div className={`${s.filterGroup} ${s.houseFilter}`}>
-            <span className={s.filterOption}>Будинок</span>
-            <div className={s.options}>
-              {houseNumbersArray.map((item: { number: string }, idx) => {
-                return (
-                  <label
-                    className={`${
-                      houseNumbers.includes(`house-${item.number}`)
-                        ? s.selected
-                        : ""
-                    }`}
-                    key={idx}
-                    htmlFor={`${item.number}`}
-                  >
-                    <input
-                      type="checkbox"
-                      name="houseNumber"
-                      id={`${item.number}`}
-                      onChange={() =>
-                        dispatch(toggleHouseNumber(`house-${item.number}`))
-                      }
-                    />
-                    № {idx + 1}
-                  </label>
-                );
-              })}
-            </div>
+        <div className={`${s.filterGroup} ${s.houseFilter}`}>
+          <span className={s.filterOption}>Корпус</span>
+          <div className={s.options}>
+            {corpsNumbersArray.map((num) => {
+              return (
+                <label
+                  className={`${corps.includes(num) ? s.selected : ""}`}
+                  key={num}
+                  htmlFor={`popup-corps-${num}`}
+                >
+                  <input
+                    type="checkbox"
+                    name="corps"
+                    id={`popup-corps-${num}`}
+                    onChange={() => dispatch(toggleCorps(num))}
+                  />
+                  № {num}
+                </label>
+              );
+            })}
           </div>
-        ) : (
-          ""
-        )}
+        </div>
 
         <div className={`${s.filterGroup}`}>
           <span className={s.filterOption}>Площа, м²</span>
@@ -198,67 +172,45 @@ export default function ApartmentFilterPopup({
           </div>
         </div>
 
-        <div className={s.filterGroup}>
-          <span className={s.filterOption}>Поверх</span>
+        <div className={`${s.filterGroup}`}>
+          <span className={s.filterOption}>Термін здачі</span>
           <div className="rangeCont">
             <div className={s.rangeValuesCont}>
               <p>
-                <span className={s.min}>від</span>
-                <span className={s.floor}>{localFloor[0]}</span>
+                <span className={s.min}>з</span>
+                <span className={s.price}>{localYear[0]}</span>
               </p>
               <p>
-                <span className={s.max}>до</span>
-                <span className={s.floor}>{localFloor[1]}</span>
+                <span className={s.max}>по</span>
+                <span className={s.price}>{localYear[1]}</span>
               </p>
             </div>
             <div className={s.range}>
               <RangeSlider
-                defaultValue={[1, 9]}
+                defaultValue={[year, 2029]}
                 step={1}
-                min={1}
-                max={9}
+                min={year}
+                max={2029}
                 onInput={(e) => {
-                  setLocalFloor([e[0], e[1]]);
-                  debouncedFloor(e);
+                  setLocalYear(e);
+                  debouncedYear(e);
                 }}
               />
             </div>
           </div>
         </div>
-
-        {pathname.includes("/catalog") ? (
-          <div className={`${s.filterGroup}`}>
-            <span className={s.filterOption}>Термін здачі</span>
-            <div className="rangeCont">
-              <div className={s.rangeValuesCont}>
-                <p>
-                  <span className={s.min}>з</span>
-                  <span className={s.price}>{localYear[0]}</span>
-                </p>
-                <p>
-                  <span className={s.max}>по</span>
-                  <span className={s.price}>{localYear[1]}</span>
-                </p>
-              </div>
-              <div className={s.range}>
-                <RangeSlider
-                  defaultValue={[year, 2027]}
-                  step={1}
-                  min={year}
-                  max={2027}
-                  onInput={(e) => {
-                    setLocalYear(e);
-                    debouncedYear(e);
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
       </form>
-      <button onClick={() => onClose()} className={s.falseSubmitBtn}>
+      <button
+        onClick={() => {
+          if (!isInitialFilter) {
+            dispatch(resetFilters());
+            setLocalArea(initialState.filters.area);
+            setLocalYear(initialState.filters.year);
+          }
+          onClose();
+        }}
+        className={s.falseSubmitBtn}
+      >
         {isInitialFilter ? "Застосувати" : "Скинути"}
       </button>
     </div>

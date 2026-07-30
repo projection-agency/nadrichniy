@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { stat } from "fs";
 
 export interface Apartment {
     Area: string,
@@ -33,6 +32,7 @@ export interface Apartment {
 }
 
 export type HouseNumber = `house-${string}`
+export type CorpsNumber = `${number}` | string;
 export type RoomTypes = "one-room" | "two-room" | "three-room" | "commercial-premises";
 
 export interface ApartmentState {
@@ -42,7 +42,9 @@ export interface ApartmentState {
         selectedTypes: RoomTypes[],
         area: [number, number],
         floor: [number, number],
+        /** @deprecated house_number taxonomy — replaced by corps */
         house: HouseNumber[],
+        corps: CorpsNumber[],
         price: [number, number],
         year: [number, number]
     }
@@ -60,6 +62,7 @@ export const initialState: ApartmentState = {
         area: [20, 250],
         floor: [1, 9],
         house: [],
+        corps: [],
         price: [1000, 2000],
         year: [year, 2029]
     }
@@ -85,6 +88,14 @@ export const apartmentsSlice = createSlice({
                 state.filters.house.push(value);
             }
         },
+        toggleCorps(state, action) {
+            const value = String(action.payload);
+            if (state.filters.corps.includes(value)) {
+                state.filters.corps = state.filters.corps.filter((v) => v !== value);
+            } else {
+                state.filters.corps.push(value);
+            }
+        },
         setAreaFilter(state, action) {
             state.filters.area = action.payload
         },
@@ -98,10 +109,11 @@ export const apartmentsSlice = createSlice({
             state.filters.year = action.payload
         },
         resetFilters(state) {
-            state.filters.area = [28, 110]
-            state.filters.area = [1, 9]
+            state.filters.area = [20, 250]
+            state.filters.floor = [1, 9]
             state.filters.selectedTypes = [];
             state.filters.house = [];
+            state.filters.corps = [];
             state.filters.price = [1000, 2000];
             state.filters.year = [year, 2027]
         },
@@ -109,6 +121,6 @@ export const apartmentsSlice = createSlice({
 }
 );
 
-export const { toggleRoomType, setAreaFilter, setFloorFilter, resetFilters, toggleHouseNumber, setPriceFilter, setYearFilter } = apartmentsSlice.actions;
+export const { toggleRoomType, setAreaFilter, setFloorFilter, resetFilters, toggleHouseNumber, toggleCorps, setPriceFilter, setYearFilter } = apartmentsSlice.actions;
 
 export default apartmentsSlice.reducer;

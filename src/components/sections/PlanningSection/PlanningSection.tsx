@@ -58,50 +58,50 @@ const PlanningSection = () => {
               </div>
               <div className={s.bottomInfo}>
                 <p className={s.houseNumber}>
-                  Будинок №{item.house_number[0].name}
+                  Корпус {item.Corps || "—"}
                 </p>
-                <p className={s.floor}>Поверх {item.Flour}</p>
-                <ul className={s.advantages}>
-                  {item.Postponement == "1" ? (
-                    <li>
-                      <Image
-                        src={"/icons/advantage1.svg"}
-                        width={38}
-                        height={38}
-                        alt="icon"
-                      />
-                      {windowWidth >= 1024 && "Розтермінування"}
-                    </li>
-                  ) : (
-                    ""
-                  )}
-                  {item.Isoselya == "1" ? (
-                    <li>
-                      <Image
-                        src={"/icons/advantage2.svg"}
-                        width={38}
-                        height={38}
-                        alt="icon"
-                      />
-                      {windowWidth >= 1024 && "єОселя"}
-                    </li>
-                  ) : (
-                    ""
-                  )}
-                  {item.Discount == "1" ? (
-                    <li>
-                      <Image
-                        src={"/icons/advantage3.svg"}
-                        width={38}
-                        height={38}
-                        alt="icon"
-                      />
-                      {windowWidth >= 1024 && "Знижка при повній оплаті"}
-                    </li>
-                  ) : (
-                    ""
-                  )}
-                </ul>
+                {item.Flour ? (
+                  <p className={s.floor}>Поверх {item.Flour}</p>
+                ) : null}
+                {item.Postponement == "1" ||
+                item.Isoselya == "1" ||
+                item.Discount == "1" ? (
+                  <ul className={s.advantages}>
+                    {item.Postponement == "1" ? (
+                      <li>
+                        <Image
+                          src={"/icons/advantage1.svg"}
+                          width={38}
+                          height={38}
+                          alt="icon"
+                        />
+                        {windowWidth >= 1024 && "Розтермінування"}
+                      </li>
+                    ) : null}
+                    {item.Isoselya == "1" ? (
+                      <li>
+                        <Image
+                          src={"/icons/advantage2.svg"}
+                          width={38}
+                          height={38}
+                          alt="icon"
+                        />
+                        {windowWidth >= 1024 && "єОселя"}
+                      </li>
+                    ) : null}
+                    {item.Discount == "1" ? (
+                      <li>
+                        <Image
+                          src={"/icons/advantage3.svg"}
+                          width={38}
+                          height={38}
+                          alt="icon"
+                        />
+                        {windowWidth >= 1024 && "Знижка при повній оплаті"}
+                      </li>
+                    ) : null}
+                  </ul>
+                ) : null}
 
                 <div className={s.buttons}>
                   <button

@@ -82,7 +82,7 @@ const GallerySection = () => {
     <section className={s.section}>
       <Container>
         <h2>
-          Галерея <br /> ЖК “Надрічний”
+          Галерея <br /> житлового масиву «Надрічний»
         </h2>
         <div className={s.swiperCont}>
           <div className={s.mobileNav}>

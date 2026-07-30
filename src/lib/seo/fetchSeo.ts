@@ -74,7 +74,7 @@ export async function metadataForHome(): Promise<Metadata> {
   return withSiteIcons(
     yoastToMetadata(yoast, {
       frontPath: "/",
-      fallbackTitle: homePage?.title?.rendered || "ЖК Надрічний",
+      fallbackTitle: homePage?.title?.rendered || "Житловий масив Надрічний",
       yoastMeta: homePage?.yoast_meta,
     })
   );
