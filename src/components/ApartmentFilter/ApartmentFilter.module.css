@@ -45,9 +45,9 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                flex: 0 0 0.94vw;
-                width: 0.94vw;
-                height: 0.94vw;
+                flex: 0 0 0.73vw;
+                width: 0.73vw;
+                height: 0.73vw;
 
                 svg {
                     display: block;
@@ -62,12 +62,12 @@
             .spinner {
                 display: block;
                 box-sizing: border-box;
-                width: 0.94vw;
-                height: 0.94vw;
-                border: 0.12vw solid rgba(255, 255, 255, 0.35);
+                width: 0.73vw;
+                height: 0.73vw;
+                border: 0.1vw solid rgba(255, 255, 255, 0.35);
                 border-top-color: currentColor;
                 border-radius: 50%;
-                animation: catalogCtaSpin 0.7s linear infinite;
+                animation: catalogCtaSpin 0.85s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
             }
         }
 
@@ -80,9 +80,11 @@
             }
         }
 
-        .catalogCta:disabled {
+        .catalogCta:disabled,
+        .catalogCta[aria-disabled="true"] {
             cursor: default;
             opacity: 0.72;
+            pointer-events: none;
         }
 
         .filterGroup {

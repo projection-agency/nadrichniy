@@ -4,6 +4,7 @@ import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   setAreaFilter,
@@ -196,7 +197,7 @@ const ApartmentFilter = ({
             <div className={s.range}>
               <RangeSlider
                 defaultValue={[1000, 2000]}
-                step={50}
+                step={10}
                 min={1000}
                 max={2000}
                 onInput={(e) => {
@@ -236,30 +237,56 @@ const ApartmentFilter = ({
           </div>
         </div>
 
-        <button
-          type="button"
-          className={s.catalogCta}
-          disabled={!isLoading && totalCount === 0}
-          onClick={() => {
-            if (isLoading || totalCount === 0) return;
-            document
-              .getElementById("apartments-results")
-              ?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }}
-        >
-          <span className={s.ctaLabel}>
-            {!isLoading && totalCount === 0
-              ? "Немає варіантів за фільтром"
-              : `Дивитися ще ${totalCount} ${pluralVariants(totalCount)}`}
-          </span>
-          <span className={s.icon} aria-hidden="true">
-            {!isLoading && totalCount === 0 ? null : isLoading ? (
-              <span className={s.spinner} />
-            ) : (
-              arrow
-            )}
-          </span>
-        </button>
+        {!isCatalogPage ? (
+          <Link
+            href="/catalog"
+            className={s.catalogCta}
+            aria-disabled={!isLoading && totalCount === 0}
+            onClick={(e) => {
+              if (isLoading || totalCount === 0) {
+                e.preventDefault();
+              }
+            }}
+          >
+            <span className={s.ctaLabel}>
+              {!isLoading && totalCount === 0
+                ? "Немає варіантів за фільтром"
+                : `Дивитися ще ${totalCount} ${pluralVariants(totalCount)}`}
+            </span>
+            <span className={s.icon} aria-hidden="true">
+              {!isLoading && totalCount === 0 ? null : isLoading ? (
+                <span className={s.spinner} />
+              ) : (
+                arrow
+              )}
+            </span>
+          </Link>
+        ) : (
+          <button
+            type="button"
+            className={s.catalogCta}
+            disabled={!isLoading && totalCount === 0}
+            onClick={() => {
+              if (isLoading || totalCount === 0) return;
+              document
+                .getElementById("apartments-results")
+                ?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+          >
+            <span className={s.ctaLabel}>
+              {!isLoading && totalCount === 0
+                ? "Немає варіантів за фільтром"
+                : `Дивитися ще ${totalCount} ${pluralVariants(totalCount)}`}
+            </span>
+            <span className={s.icon} aria-hidden="true">
+              {!isLoading && totalCount === 0 ? null : isLoading ? (
+                <span className={s.spinner} />
+              ) : (
+                arrow
+              )}
+            </span>
+          </button>
+        )}
       </form>
     </div>
   );
