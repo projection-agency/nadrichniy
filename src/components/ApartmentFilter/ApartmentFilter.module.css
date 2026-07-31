@@ -1,169 +1,231 @@
 .filter {
-  padding: 1.67vw 2.71vw;
-  border-radius: 1.67vw;
-  background-color: var(--background-white);
-  margin-bottom: 0.83vw;
+    padding: 1.67vw 2.71vw;
+    border-radius: 1.67vw;
+    background-color: var(--background-white);
+    margin-bottom: 0.83vw;
 
-  .form {
-    display: flex;
-    align-items: center;
-    row-gap: 1.46vw;
-    column-gap: 1.46vw;
-
-    a {
-      height: max-content;
-      margin-left: auto;
-      padding: 1.25vw 1.67vw;
-      border-radius: 5.21vw;
-
-      color: #ffffff;
-      transition: background-color 300ms ease-in-out;
-      background-color: var(--brand-primary);
-
-      svg {
-        margin-left: 0.52vw;
-        transition: width 300ms ease-in-out;
-        width: 0.47vw;
-        stroke: var(--text-light);
-      }
-    }
-
-    a:hover {
-      background-color: var(--brand-primary-hover);
-
-      svg {
-        width: 0.63vw;
-      }
-    }
-    .filterGroup {
-      .filterOption {
-        display: block;
-        margin-bottom: 0.83vw;
-
-        font-weight: 600;
-        font-size: 0.73vw;
-        text-transform: uppercase;
-        color: rgba(25, 27, 26, 1);
-        opacity: 0.6;
-      }
-
-      .options {
+    .form {
         display: flex;
-        gap: 0.31vw;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        row-gap: 1.46vw;
+        column-gap: 1.04vw;
 
-        label {
-          cursor: pointer;
-          padding: 0.73vw 1.04vw;
-          border-radius: 5.21vw;
-          background-color: rgba(250, 248, 248, 1);
-          transition: color 300ms ease-in-out,
-            background-color 300ms ease-in-out;
+        a,
+        .catalogCta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.52vw;
+            box-sizing: border-box;
+            /*width: 16.5vw;*/
+            /*min-width: 16.5vw;*/
+            /*max-width: 16.5vw;*/
+            height: max-content;
+            padding: 1.25vw 1.25vw;
+            border: none;
+            border-radius: 5.21vw;
+            cursor: pointer;
 
-          font-size: 0.83vw;
-          input {
-            visibility: hidden;
-            width: 0;
+            font: inherit;
+            line-height: 1;
+            white-space: nowrap;
+            color: #ffffff;
+            transition: background-color 300ms ease-in-out;
+            background-color: var(--brand-primary);
+
+            .ctaLabel {
+                flex: 1 1 auto;
+                min-width: 0;
+                text-align: center;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 0.94vw;
+                width: 0.94vw;
+                height: 0.94vw;
+
+                svg {
+                    display: block;
+                    width: 0.73vw;
+                    height: 0.73vw;
+                    stroke: currentColor;
+                    stroke-width: 1.5;
+                    transition: transform 300ms ease-in-out;
+                }
+            }
+
+            .spinner {
+                display: block;
+                box-sizing: border-box;
+                width: 0.94vw;
+                height: 0.94vw;
+                border: 0.12vw solid rgba(255, 255, 255, 0.35);
+                border-top-color: currentColor;
+                border-radius: 50%;
+                animation: catalogCtaSpin 0.7s linear infinite;
+            }
+        }
+
+        a:hover,
+        .catalogCta:hover:not(:disabled) {
+            background-color: var(--brand-primary-hover);
+
+            .icon svg {
+                transform: translateX(0.15vw);
+            }
+        }
+
+        .catalogCta:disabled {
+            cursor: default;
+            opacity: 0.72;
+        }
+
+        .filterGroup {
+            .filterOption {
+                display: block;
+                margin-bottom: 0.83vw;
+
+                font-weight: 600;
+                font-size: 0.73vw;
+                text-transform: uppercase;
+                color: rgba(25, 27, 26, 1);
+                opacity: 0.6;
+            }
+
+            .options {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 0.31vw;
+
+                label {
+                    cursor: pointer;
+                    flex: 0 0 auto;
+                    white-space: nowrap;
+                    padding: 0.73vw 1.04vw;
+                    border-radius: 5.21vw;
+                    background-color: rgba(250, 248, 248, 1);
+                    transition: color 300ms ease-in-out,
+                    background-color 300ms ease-in-out;
+
+                    font-size: 0.83vw;
+
+                    input {
+                        visibility: hidden;
+                        width: 0;
+                        height: 0;
+                    }
+                }
+
+                label.commercial {
+                    padding: 0.73vw 1.25vw;
+                }
+
+                label.selected {
+                    background-color: var(--text-gray-dark);
+                    color: var(--text-light);
+                }
+
+                label:hover {
+                    background-color: var(--text-gray-dark);
+                    color: var(--text-light);
+                }
+            }
+        }
+
+        .houseFilter {
+            .options label {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-width: 2.8vw;
+                padding: 0.73vw 0.9vw;
+
+                width: 6.4vw;
+            }
+        }
+
+        .rowBreak {
+            flex-basis: 100%;
+            width: 100%;
             height: 0;
-          }
+            margin: 0;
+            padding: 0;
+            border: 0;
+            overflow: hidden;
+            pointer-events: none;
         }
 
-        label.selected {
-          background-color: var(--text-gray-dark);
-          color: var(--text-light);
+        .areaFilter,
+        .priceFilter,
+        .scheduleFilter {
+            flex: 0 1 auto;
+
+            .rangeValuesCont {
+                display: flex;
+                background-color: rgba(250, 248, 248, 1);
+                border-radius: 5.21vw;
+
+                p {
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: space-between;
+                    gap: 0.63vw;
+                    padding: 0.73vw 1.25vw 0.73vw 1.04vw;
+
+                    font-size: 0.83vw;
+                    font-weight: 600;
+                    line-height: 1;
+                    color: var(--text-gray-dark);
+
+                    .min,
+                    .max {
+                        font-size: 0.63vw;
+                        font-weight: 600;
+                        color: var(--text-gray-dark);
+                        text-transform: uppercase;
+                        opacity: 0.6;
+                    }
+
+                    .area {
+                        width: 2.5vw;
+                    }
+
+                    .price {
+                        min-width: 2vw;
+                    }
+                }
+
+                p:first-child {
+                    border-right: 1px solid rgba(131, 131, 131, 1);
+                }
+            }
+
+            .range {
+                position: relative;
+                bottom: 0.22vw;
+                padding: 0 1.04vw 0 1.04vw;
+            }
         }
 
-        label:hover {
-          background-color: var(--text-gray-dark);
-          color: var(--text-light);
+        .catalogCta {
+            align-self: flex-end;
+            flex: 0 0 16.5vw;
         }
-      }
-
-      .rangeValuesCont {
-        display: flex;
-        background-color: rgba(250, 248, 248, 1);
-        border-radius: 5.21vw;
-
-        p {
-          display: flex;
-          align-items: baseline;
-          gap: 0.63vw;
-          padding: 0.73vw 2.08vw 0.73vw 1.04vw;
-
-          font-size: 0.83vw;
-          font-weight: 600;
-          line-height: 1;
-          color: var(--text-gray-dark);
-
-          .min,
-          .max {
-            font-size: 0.63vw;
-            font-weight: 600;
-            color: var(--text-gray-dark);
-            text-transform: uppercase;
-            opacity: 0.6;
-          }
-
-          .area {
-            width: 2.5vw;
-          }
-
-          .floor {
-            width: 0.5vw;
-          }
-        }
-
-        p:first-child {
-          border-right: 1px solid rgba(131, 131, 131, 1);
-        }
-      }
-
-      .range {
-        position: relative;
-        bottom: 0.22vw;
-        padding: 0 1.04vw 0 1.04vw;
-      }
-    }
-  }
-
-  .form.onCatalogPage {
-    flex-wrap: wrap;
-    row-gap: 2.08vw;
-
-    a {
-      margin-left: 0;
     }
 
-    .roomFilter {
-      flex-grow: 1;
-      .options {
-        label:last-child {
-          display: flex;
-          justify-content: center;
-          flex-grow: 1;
-        }
-      }
+    .form.onCatalogPage,
+    .form.onHomePage {
+        row-gap: 2.08vw;
     }
+}
 
-    .houseFilter {
-      .options {
-        label {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 7.6vw;
-        }
-      }
+@keyframes catalogCtaSpin {
+    to {
+        transform: rotate(360deg);
     }
-
-    .filterGroup:nth-child(3),
-    .filterGroup:nth-child(4),
-    .filterGroup:nth-child(5),
-    .filterGroup:nth-child(6) {
-      .rangeValuesCont {
-        p {
-          justify-content: space-between;
-        }
-      }
-    }
-  }
 }

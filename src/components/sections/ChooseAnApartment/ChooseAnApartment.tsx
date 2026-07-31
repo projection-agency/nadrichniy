@@ -10,20 +10,22 @@ import s from "./ChooseAnApartment.module.css";
 import ApartmentFilter from "@/components/ApartmentFilter/ApartmentFilter";
 import {
   selectArea,
-  selectFloor,
-  selectHouseNumbers,
+  // selectFloor,
+  // selectHouseNumbers,
+  selectCorps,
   selectRoomTypes,
   selectYear,
 } from "@/Redux/apartmentSlice/selectors";
 import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
 import { useModal } from "@/components/ModalContext";
-import Link from "next/link";
 import { useWindowWidth } from "@/utils/useWindowWidth";
 
 const ChooseAnApartment = () => {
   const pathname = usePathname();
   const isCatalogPage = pathname.includes("/catalog");
   const [apartmentData, setApartmentData] = useState<Apartment[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [hasAnyApartments, setHasAnyApartments] = useState<boolean | null>(
     null
   );
@@ -32,9 +34,10 @@ const ChooseAnApartment = () => {
   );
   const windowWidth = useWindowWidth();
   const selectedArea = useSelector(selectArea);
-  const selectedFloor = useSelector(selectFloor);
+  // const selectedFloor = useSelector(selectFloor);
   const selectedRoomTypes = useSelector(selectRoomTypes);
-  const selectedHouses = useSelector(selectHouseNumbers);
+  // const selectedHouses = useSelector(selectHouseNumbers);
+  const selectedCorps = useSelector(selectCorps);
   const selectDelivery = useSelector(selectYear);
   const { openModal } = useModal();
 
@@ -71,11 +74,9 @@ const ChooseAnApartment = () => {
 
   useEffect(() => {
     const selectedDeliveryParams = `delivery_min=${selectDelivery[0]}-01-01&delivery_max=${selectDelivery[1]}-12-31`;
-    const selectedHouseParams = `${
-      selectedHouses.length !== 0
-        ? `house_number=${selectedHouses.join(",")}`
-        : ""
-    }`;
+
+    const selectedCorpsParams =
+      selectedCorps.length !== 0 ? `corps=${selectedCorps.join(",")}` : "";
 
     const selectedRoomParams = `${
       selectedRoomTypes.length !== 0
@@ -83,27 +84,61 @@ const ChooseAnApartment = () => {
         : ""
     }`;
 
-    const selectedFloorParams = `floor_min=${selectedFloor[0]}&floor_max=${selectedFloor[1]}`;
     const selectedAreaParams = `area_min=${selectedArea[0]}&area_max=${selectedArea[1]}`;
 
-    const fetchApartments = async () => {
-      try {
-        const response = await fetch(
-          `${API_URL}/wp-json/wp/v2/apartments?${selectedRoomParams}&${selectedFloorParams}&${selectedAreaParams}&${selectedHouseParams}${selectedDeliveryParams}`
-        );
-        const data = await response.json();
-        setApartmentData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    const controller = new AbortController();
+    let cancelled = false;
+    setIsLoading(true);
 
-    fetchApartments();
+    const timer = window.setTimeout(async () => {
+      try {
+        const params = [
+          selectedRoomParams,
+          selectedAreaParams,
+          selectedCorpsParams,
+          selectedDeliveryParams,
+          "per_page=100",
+        ]
+          .filter(Boolean)
+          .join("&");
+
+        const response = await fetch(
+          `${API_URL}/wp-json/wp/v2/apartments?${params}`,
+          { signal: controller.signal }
+        );
+        if (cancelled) return;
+
+        const data = await response.json();
+        if (cancelled) return;
+
+        const total = Number(response.headers.get("X-WP-Total") || "0");
+        const list = Array.isArray(data) ? data : [];
+        setApartmentData(list);
+        setTotalCount(total > 0 ? total : list.length);
+      } catch (error) {
+        if (
+          error instanceof DOMException &&
+          error.name === "AbortError"
+        ) {
+          return;
+        }
+        console.log(error);
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    }, 350);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      controller.abort();
+    };
   }, [
     selectedRoomTypes,
-    selectedFloor,
     selectedArea,
-    selectedHouses,
+    selectedCorps,
     selectDelivery,
   ]);
 
@@ -147,16 +182,49 @@ const ChooseAnApartment = () => {
           </ul>
           <button onClick={() => openModal("formA")}>Відкрити фільтр</button>
         </div>
-        {windowWidth >= 1024 ? <ApartmentFilter /> : ""}
-        <ul className={`${s.apartmentsList} `}>
-          {apartmentData.slice(0, endSliceNumber).map((item: Apartment) => {
-            return <ApartmentItem item={item} key={item.id} />;
-          })}
+        {windowWidth >= 1024 ? (
+          <ApartmentFilter totalCount={totalCount} isLoading={isLoading} />
+        ) : (
+          ""
+        )}
+        <ul id="apartments-results" className={`${s.apartmentsList} `}>
+          {isLoading && apartmentData.length === 0 ? (
+            <li className={s.emptyResults}>Шукаємо приміщення…</li>
+          ) : apartmentData.length === 0 ? (
+            <li className={s.emptyResults}>
+              За обраними фільтрами приміщень немає
+            </li>
+          ) : (
+            apartmentData.slice(0, endSliceNumber).map((item: Apartment) => {
+              return <ApartmentItem item={item} key={item.id} />;
+            })
+          )}
         </ul>
-        {windowWidth <= 1024 ? (
-          <Link href={"/catalog"} className={s.paginationBtn}>
-            Дивитися ще {arrow}
-          </Link>
+        {windowWidth <= 1024 && !isCatalogPage ? (
+          <button
+            type="button"
+            className={s.paginationBtn}
+            disabled={!isLoading && totalCount === 0}
+            onClick={() => {
+              if (isLoading || totalCount === 0) return;
+              document
+                .getElementById("apartments-results")
+                ?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+          >
+            {!isLoading && totalCount === 0 ? (
+              "Немає варіантів за фільтром"
+            ) : (
+              <>
+                Дивитися ще {totalCount} {pluralVariants(totalCount)}{" "}
+                {isLoading ? (
+                  <span className={s.spinner} aria-hidden="true" />
+                ) : (
+                  arrow
+                )}
+              </>
+            )}
+          </button>
         ) : (
           ""
         )}
@@ -166,6 +234,15 @@ const ChooseAnApartment = () => {
 };
 
 export default ChooseAnApartment;
+
+function pluralVariants(n: number): string {
+  const abs = Math.abs(n) % 100;
+  const last = abs % 10;
+  if (abs > 10 && abs < 20) return "варіантів";
+  if (last === 1) return "варіант";
+  if (last >= 2 && last <= 4) return "варіанти";
+  return "варіантів";
+}
 
 const arrow = (
   <svg
