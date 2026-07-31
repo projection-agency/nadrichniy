@@ -20,6 +20,7 @@ const navLinks = [
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNotFoundPage, setIsNotFoundPage] = useState(false);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
   const pathname = usePathname();
   const params = useParams();
@@ -45,6 +46,21 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const syncNotFound = () => {
+      setIsNotFoundPage(document.body.classList.contains("page-404"));
+    };
+
+    syncNotFound();
+    const observer = new MutationObserver(syncNotFound);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, [pathname]);
+
   const openMenu = () => {
     setMobileMenuIsOpen(true);
   };
@@ -69,16 +85,19 @@ const Header = () => {
   const useForcedStaticLogo =
     isClientsPage || isBlogPage || isContactsPage;
 
+  // 404: always use scrolled chrome (white bar + scrolled logo).
+  const treatAsScrolled =
+    isNotFoundPage || (isScrolled && !mobileMenuIsOpen);
+
   // Light chrome → static (colored) logo; dark hero → scroll (white text) logo.
   const useStaticLogo =
-    (isScrolled && !mobileMenuIsOpen) ||
-    (isLightPage && !mobileMenuIsOpen);
+    treatAsScrolled || (isLightPage && !mobileMenuIsOpen);
 
   return (
     <>
       <header
         className={`${s.header}   
-        ${isScrolled && !mobileMenuIsOpen ? s.scrolled : ""}
+        ${treatAsScrolled ? s.scrolled : ""}
         ${params.slug && isCatalogPage ? `${s.dark} ${s.planningPage}` : ""}
         `}
       >
@@ -147,7 +166,7 @@ const Header = () => {
               type="button"
               className={`${s.menuBtn} ${
                 mobileMenuIsOpen ||
-                ((isLightPage || isClientsPage) && !isScrolled)
+                ((isLightPage || isClientsPage) && !treatAsScrolled)
                   ? s.white
                   : ""
               }`}

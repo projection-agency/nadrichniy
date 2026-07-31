@@ -18,7 +18,12 @@ import {
 } from "@/Redux/apartmentSlice/selectors";
 import ApartmentItem from "@/components/ApartmentItem/ApartmentItem";
 import { useModal } from "@/components/ModalContext";
+import Link from "next/link";
 import { useWindowWidth } from "@/utils/useWindowWidth";
+
+const INITIAL_HOME = 3;
+const INITIAL_CATALOG = 9;
+const LOAD_MORE_STEP = 6;
 
 const ChooseAnApartment = () => {
   const pathname = usePathname();
@@ -30,16 +35,18 @@ const ChooseAnApartment = () => {
     null
   );
   const [endSliceNumber, setEndSliceNumber] = useState(
-    isCatalogPage ? 9 : 3
+    isCatalogPage ? INITIAL_CATALOG : INITIAL_HOME
   );
   const windowWidth = useWindowWidth();
   const selectedArea = useSelector(selectArea);
-  // const selectedFloor = useSelector(selectFloor);
   const selectedRoomTypes = useSelector(selectRoomTypes);
-  // const selectedHouses = useSelector(selectHouseNumbers);
   const selectedCorps = useSelector(selectCorps);
   const selectDelivery = useSelector(selectYear);
   const { openModal } = useModal();
+
+  const visibleCount = Math.min(endSliceNumber, apartmentData.length);
+  const remainingCount = Math.max(0, totalCount - visibleCount);
+  const canLoadMore = isCatalogPage && remainingCount > 0;
 
   useEffect(() => {
     let cancelled = false;
@@ -115,11 +122,9 @@ const ChooseAnApartment = () => {
         const list = Array.isArray(data) ? data : [];
         setApartmentData(list);
         setTotalCount(total > 0 ? total : list.length);
+        setEndSliceNumber(isCatalogPage ? INITIAL_CATALOG : INITIAL_HOME);
       } catch (error) {
-        if (
-          error instanceof DOMException &&
-          error.name === "AbortError"
-        ) {
+        if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
         console.log(error);
@@ -140,7 +145,12 @@ const ChooseAnApartment = () => {
     selectedArea,
     selectedCorps,
     selectDelivery,
+    isCatalogPage,
   ]);
+
+  const handleLoadMore = () => {
+    setEndSliceNumber((prev) => prev + LOAD_MORE_STEP);
+  };
 
   if (hasAnyApartments !== true) {
     return null;
@@ -187,7 +197,7 @@ const ChooseAnApartment = () => {
         ) : (
           ""
         )}
-        <ul id="apartments-results" className={`${s.apartmentsList} `}>
+        <ul id="apartments-results" className={s.apartmentsList}>
           {isLoading && apartmentData.length === 0 ? (
             <li className={s.emptyResults}>Шукаємо приміщення…</li>
           ) : apartmentData.length === 0 ? (
@@ -200,34 +210,32 @@ const ChooseAnApartment = () => {
             })
           )}
         </ul>
-        {windowWidth <= 1024 && !isCatalogPage ? (
+
+        {canLoadMore ? (
           <button
             type="button"
-            className={s.paginationBtn}
-            disabled={!isLoading && totalCount === 0}
-            onClick={() => {
-              if (isLoading || totalCount === 0) return;
-              document
-                .getElementById("apartments-results")
-                ?.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
+            className={s.loadMoreBtn}
+            disabled={isLoading}
+            onClick={handleLoadMore}
           >
-            {!isLoading && totalCount === 0 ? (
-              "Немає варіантів за фільтром"
-            ) : (
-              <>
-                Дивитися ще {totalCount} {pluralVariants(totalCount)}{" "}
-                {isLoading ? (
-                  <span className={s.spinner} aria-hidden="true" />
-                ) : (
-                  arrow
-                )}
-              </>
-            )}
+            Завантажити ще
+            <span className={s.loadMoreIcon} aria-hidden="true">
+              {arrowDown}
+            </span>
           </button>
-        ) : (
-          ""
-        )}
+        ) : null}
+
+        {windowWidth <= 1024 && !isCatalogPage ? (
+          !isLoading && totalCount === 0 ? (
+            <button type="button" className={s.paginationBtn} disabled>
+              Немає варіантів за фільтром
+            </button>
+          ) : (
+            <Link href="/catalog" className={s.paginationBtn}>
+              Дивитися ще {totalCount} {pluralVariants(totalCount)} {arrow}
+            </Link>
+          )
+        ) : null}
       </Container>
     </section>
   );
@@ -245,6 +253,18 @@ function pluralVariants(n: number): string {
 }
 
 const arrow = (
+  <svg
+    width="10"
+    height="9"
+    viewBox="0 0 10 9"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M0 4.5H9M9 4.5L4.76471 0.5M9 4.5L4.76471 8.5" />
+  </svg>
+);
+
+const arrowDown = (
   <svg
     width="10"
     height="9"
