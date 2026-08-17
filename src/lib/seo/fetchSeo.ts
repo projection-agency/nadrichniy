@@ -74,7 +74,11 @@ export async function metadataForHome(): Promise<Metadata> {
   return withSiteIcons(
     yoastToMetadata(yoast, {
       frontPath: "/",
-      fallbackTitle: homePage?.title?.rendered || "Житловий масив Надрічний",
+      fallbackTitle:
+        homePage?.title?.rendered ||
+        "Житловий масив Надрічний — житло біля річки | Купити приміщення",
+      fallbackDescription:
+        "Житловий масив «Надрічний» — сучасні приміщення біля річки в тихому районі. Перегляньте планування, переваги, галерею та умови придбання.",
       yoastMeta: homePage?.yoast_meta,
     })
   );

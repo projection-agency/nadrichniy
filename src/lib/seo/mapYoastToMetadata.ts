@@ -11,6 +11,22 @@ import { applyBrandTerminology, applyBrandTerminologyDeep } from "@/lib/brandTer
 const stripTags = (html?: string | null) =>
   (html ?? "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 
+/** Normalize Yoast/text so «Надрічний» is not emitted as a fake HTML tag. */
+function cleanSeoText(value?: string | null): string {
+  if (!value) return "";
+  return String(value)
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&laquo;/gi, "«")
+    .replace(/&raquo;/gi, "»")
+    .replace(/&#171;/g, "«")
+    .replace(/&#187;/g, "»")
+    .replace(/<\s*Надрічний\s*>/gi, "«Надрічний»")
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /** @deprecated Prefer frontendAbsoluteUrl — kept for callers. */
 export function rewriteToFrontend(
   _wpUrl: string | undefined,
@@ -133,23 +149,23 @@ export function yoastToMetadata(
   const { frontPath, fallbackTitle, fallbackDescription, yoastMeta } = options;
   const canonical = frontendAbsoluteUrl(frontPath);
 
-  const metaTitle = applyBrandTerminology(yoastMeta?.title?.trim() || "");
-  const metaDescription = applyBrandTerminology(
-    yoastMeta?.description?.trim() || ""
+  const metaTitle = cleanSeoText(applyBrandTerminology(yoastMeta?.title?.trim() || ""));
+  const metaDescription = cleanSeoText(
+    applyBrandTerminology(yoastMeta?.description?.trim() || "")
   );
 
   const title =
     metaTitle ||
-    applyBrandTerminology(yoast?.title) ||
-    applyBrandTerminology(yoast?.og_title) ||
-    applyBrandTerminology(fallbackTitle) ||
+    cleanSeoText(applyBrandTerminology(yoast?.title)) ||
+    cleanSeoText(applyBrandTerminology(yoast?.og_title)) ||
+    cleanSeoText(applyBrandTerminology(fallbackTitle)) ||
     "Житловий масив Надрічний";
   const description =
     metaDescription ||
-    applyBrandTerminology(yoast?.description) ||
-    applyBrandTerminology(yoast?.og_description) ||
-    applyBrandTerminology(stripTags(fallbackDescription)) ||
-    undefined;
+    cleanSeoText(applyBrandTerminology(yoast?.description)) ||
+    cleanSeoText(applyBrandTerminology(yoast?.og_description)) ||
+    cleanSeoText(applyBrandTerminology(stripTags(fallbackDescription))) ||
+    "Житловий масив «Надрічний» — сучасні приміщення біля річки. Планування, умови придбання та контакти на офіційному сайті.";
 
   const ogImage = yoast?.og_image?.[0];
   const keywords = collectYoastKeywords(yoastMeta);
@@ -157,18 +173,18 @@ export function yoastToMetadata(
   const ogImageUrl = ogImage?.url || undefined;
   const twitterImage = yoast?.twitter_image || undefined;
   const ogTitle =
-    applyBrandTerminology(yoast?.og_title) ||
+    cleanSeoText(applyBrandTerminology(yoast?.og_title)) ||
     metaTitle ||
     title;
   const ogDescription =
-    applyBrandTerminology(yoast?.og_description) ||
+    cleanSeoText(applyBrandTerminology(yoast?.og_description)) ||
     metaDescription ||
     description;
   const twitterTitle =
-    applyBrandTerminology(yoast?.twitter_title) ||
+    cleanSeoText(applyBrandTerminology(yoast?.twitter_title)) ||
     ogTitle;
   const twitterDescription =
-    applyBrandTerminology(yoast?.twitter_description) ||
+    cleanSeoText(applyBrandTerminology(yoast?.twitter_description)) ||
     ogDescription;
 
   const metadata: Metadata = {
@@ -182,8 +198,10 @@ export function yoastToMetadata(
       title: ogTitle,
       description: ogDescription,
       url: canonical,
-      siteName: applyBrandTerminology(yoast?.og_site_name),
-      locale: yoast?.og_locale,
+      siteName:
+        cleanSeoText(applyBrandTerminology(yoast?.og_site_name)) ||
+        "Житловий масив Надрічний",
+      locale: yoast?.og_locale || "uk_UA",
       type: yoast?.og_type === "article" ? "article" : "website",
       images: ogImageUrl
         ? [
@@ -191,7 +209,7 @@ export function yoastToMetadata(
               url: ogImageUrl,
               width: ogImage?.width,
               height: ogImage?.height,
-              alt: ogImage?.alt,
+              alt: ogImage?.alt || title,
             },
           ]
         : undefined,
