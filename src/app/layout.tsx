@@ -1,4 +1,5 @@
 import "./globals.css";
+import "leaflet/dist/leaflet.css";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import StoreProvider from "@/components/StoreProvider/StoreProvider";

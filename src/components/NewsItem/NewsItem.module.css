@@ -4,8 +4,17 @@
   background-color: #ffffff;
   border-radius: 2.71vw;
 
+  .link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
   .subtitle {
     width: max-content;
+    max-width: 100%;
     color: var(--brand-primary);
     border: 0.1vw solid var(--brand-primary);
     border-radius: 8.65vw;
@@ -19,42 +28,65 @@
   }
 
   h3 {
-    height: 3.96vw;
     margin-bottom: 0.63vw;
     font-size: 1.67vw;
-    line-height: normal;
+    line-height: 1.2;
     letter-spacing: -0.96px;
     color: rgba(25, 27, 26, 1);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
   }
 
   .content {
     margin-bottom: 0.83vw;
-    height: 4.5vw;
-
     font-size: 0.83vw;
     line-height: 1.4;
     letter-spacing: -0.48px;
     color: var(--text-gray);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+
+    p {
+      margin: 0;
+      display: contents;
+    }
   }
 
   .timeAndDate {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.63vw;
     margin-bottom: 0.83vw;
 
     .readingTime {
       display: flex;
       align-items: center;
       gap: 0.42vw;
-
+      min-width: 0;
       font-size: 0.83vw;
       line-height: normal;
       letter-spacing: -0.32px;
       color: var(--text-gray);
+
+      span {
+        display: inline-flex;
+        flex-shrink: 0;
+        line-height: 0;
+
+        img {
+          width: 0.83vw;
+          height: 0.83vw;
+        }
+      }
     }
 
     .date {
+      flex-shrink: 0;
       font-size: 0.83vw;
       line-height: normal;
       letter-spacing: -0.32px;
@@ -65,8 +97,9 @@
   .image {
     display: block;
     margin-bottom: 1.67vw;
-    width: 22.08vw;
+    width: 100%;
     height: 15.05vw;
+    object-fit: cover;
     transition: border-radius 300ms ease-in-out;
     border-radius: 2.08vw;
   }
@@ -76,6 +109,7 @@
     gap: 0.63vw;
     justify-content: center;
     align-items: center;
+    margin-top: auto;
     padding-top: 0.94vw;
     padding-bottom: 0.94vw;
     font-size: 0.83vw;
@@ -83,7 +117,6 @@
     font-weight: 600;
     text-align: center;
     transition: all 300ms ease-in-out;
-
     background-color: rgba(246, 246, 246, 1);
     border-radius: 5.21vw;
 
@@ -118,13 +151,15 @@
     display: flex;
     flex-direction: column;
     width: 88.27vw;
-    height: 100%;
+    height: auto;
     padding: 8.53vw 5.33vw;
     border-radius: 8.53vw;
 
     .link {
       display: flex;
       flex-direction: column;
+      gap: 0;
+      height: auto;
     }
 
     .subtitle {
@@ -132,7 +167,6 @@
       padding: 3.2vw 4.27vw;
       border-width: 0.53vw;
       border-radius: 44.27vw;
-
       font-size: 3.2vw;
       line-height: 1;
       font-weight: 800;
@@ -141,30 +175,41 @@
 
     h3 {
       height: auto;
+      max-height: none;
       margin-bottom: 3.2vw;
-
       font-size: 6.4vw;
       font-weight: 600;
-      line-height: 1.1;
+      line-height: 1.15;
       letter-spacing: -0.72px;
+      -webkit-line-clamp: unset;
+      display: block;
+      overflow: visible;
     }
 
     .content {
       height: auto;
+      max-height: none;
       margin-bottom: 3.2vw;
-
       font-size: 3.73vw;
-      font-weight: 600;
+      font-weight: 500;
       line-height: 1.4;
       letter-spacing: -0.42px;
+      -webkit-line-clamp: 5;
+      display: -webkit-box;
+      overflow: hidden;
     }
 
     .timeAndDate {
-      margin-bottom: 3.2vw;
+      margin-bottom: 4.27vw;
 
       .readingTime {
         gap: 2.13vw;
         font-size: 3.73vw;
+
+        span img {
+          width: 4.27vw;
+          height: 4.27vw;
+        }
       }
 
       .date {
@@ -174,7 +219,9 @@
 
     .image {
       width: 100%;
-      height: 59.47vw;
+      height: auto;
+      aspect-ratio: 16 / 10;
+      margin-bottom: 5.33vw;
       border-radius: 10.67vw;
     }
 
@@ -183,7 +230,6 @@
       padding-top: 4.8vw;
       padding-bottom: 4.8vw;
       border-radius: 26.67vw;
-
       font-size: 4.27vw;
 
       svg {

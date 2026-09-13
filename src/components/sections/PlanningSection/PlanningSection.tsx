@@ -63,9 +63,7 @@ const PlanningSection = () => {
                 {item.Flour ? (
                   <p className={s.floor}>Поверх {item.Flour}</p>
                 ) : null}
-                {item.Postponement == "1" ||
-                item.Isoselya == "1" ||
-                item.Discount == "1" ? (
+                {item.Postponement == "1" || item.Discount == "1" ? (
                   <ul className={s.advantages}>
                     {item.Postponement == "1" ? (
                       <li>
@@ -78,17 +76,6 @@ const PlanningSection = () => {
                         {windowWidth >= 1024 && "Розтермінування"}
                       </li>
                     ) : null}
-                    {item.Isoselya == "1" ? (
-                      <li>
-                        <Image
-                          src={"/icons/advantage2.svg"}
-                          width={38}
-                          height={38}
-                          alt="icon"
-                        />
-                        {windowWidth >= 1024 && "єОселя"}
-                      </li>
-                    ) : null}
                     {item.Discount == "1" ? (
                       <li>
                         <Image
@@ -97,7 +84,7 @@ const PlanningSection = () => {
                           height={38}
                           alt="icon"
                         />
-                        {windowWidth >= 1024 && "Знижка при повній оплаті"}
+                        {windowWidth >= 1024 && "При повному внеску"}
                       </li>
                     ) : null}
                   </ul>
@@ -110,7 +97,7 @@ const PlanningSection = () => {
                     }}
                     className={s.secondary}
                   >
-                    Дізнатися ціну
+                    Дізнатися вартість
                   </button>
                   <button
                     onClick={() => {
@@ -156,7 +143,7 @@ const PlanningSection = () => {
                   </li>
                   <li>
                     <Link
-                      href={`https://api.lcdoy.projection-learn.website/wp-json/download/v1/pdf?post_id=${item.id}`}
+                      href={`${API_URL}/wp-json/download/v1/pdf?post_id=${item.id}`}
                     >
                       {download}
                     </Link>

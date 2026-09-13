@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/dev.cjs",
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 127.1.8.73 -p ${PORT:-3000}",
     "lint": "next lint"
   },
   "dependencies": {

@@ -11,12 +11,20 @@ import MapSectionSwiperItem from "@/components/MapSectionSwiperItem/MapSectionSw
 import { getWindowWidth } from "@/utils/getWindowWidth";
 import { useThemeSettings } from "@/lib/useThemeSettings";
 import {
+  fetchThemeSettings,
   getMapCenter,
   getMapLogoUrl,
   getMapsPlaceUrl,
   getAudienceContent,
 } from "@/lib/themeSettings";
-
+import {
+  getMapMarkersFromSettings,
+  legendMarkerGroups,
+  getMapMarkerLabel,
+} from "@/lib/mapMarkers";
+import {
+  addInfrastructureMarkers,
+} from "@/lib/leafletInfrastructure";
 const line = (
   <svg
     width="10"
@@ -145,7 +153,7 @@ const gym = (
 
 type Location = {
   title: string;
-  coordinates: number[][] | number[];
+  coordinates: number[][];
 };
 
 const iconMap: Record<string, JSX.Element> = {
@@ -171,6 +179,10 @@ const MapSection = () => {
   const mapCenter = useMemo(() => getMapCenter(settings), [settings]);
   const mapsPlaceUrl = useMemo(() => getMapsPlaceUrl(settings), [settings]);
   const audience = useMemo(() => getAudienceContent(settings), [settings]);
+  const legendItems = useMemo(
+    () => legendMarkerGroups(markersData),
+    [markersData]
+  );
   const [lat, lng] = mapCenter;
   const googleMapsHref =
     mapsPlaceUrl && mapsPlaceUrl !== "#"
@@ -180,37 +192,34 @@ const MapSection = () => {
   const appleMapsHref = `http://maps.apple.com/?ll=${lat},${lng}`;
 
   useEffect(() => {
-    const fromSettings = settings.map_markers;
-    if (Array.isArray(fromSettings)) {
-      setMarkersData(fromSettings as Location[]);
+    const fromSettings = getMapMarkersFromSettings(settings);
+    if (fromSettings.length > 0 || Array.isArray(settings.map_markers)) {
+      setMarkersData(fromSettings);
       return;
     }
 
     const fetchdata = async () => {
       try {
-        const response = await fetch(
-          "https://api.lcdoy.projection-learn.website/wp-json/wp/v2/theme_settings"
-        );
-        const data = await response.json();
-        setMarkersData(data.map_markers || []);
+        const data = await fetchThemeSettings();
+        setMarkersData(getMapMarkersFromSettings(data));
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchdata();
-  }, [settings.map_markers]);
+  }, [settings]);
 
   useEffect(() => {
     if (!mapRef.current) return;
 
     let cancelled = false;
+    let mapInstance: LeafletMap | null = null;
     let enableWheelZoom: (() => void) | null = null;
     let disableWheelZoom: (() => void) | null = null;
     let mapElementForCleanup: HTMLDivElement | null = null;
 
     const initMap = async () => {
-      await import("leaflet/dist/leaflet.css");
       const leaflet = await import("leaflet");
       if (cancelled || !mapRef.current) return;
 
@@ -225,24 +234,27 @@ const MapSection = () => {
           "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
       });
 
-      if (leafletMapRef.current) {
+      const mapElement = mapRef.current;
+      mapElementForCleanup = mapElement;
+
+      if ((mapElement as HTMLElement & { _leaflet_id?: number })._leaflet_id) {
         try {
-          leafletMapRef.current.remove();
+          leafletMapRef.current?.remove();
         } catch {
-          // Container may already be detached during React teardown.
+          // ignore
         }
         leafletMapRef.current = null;
+        delete (mapElement as HTMLElement & { _leaflet_id?: number })._leaflet_id;
       }
 
       if (cancelled || !mapRef.current) return;
 
-      const mapElement = mapRef.current;
-      mapElementForCleanup = mapElement;
       const map = L.map(mapElement, {
         scrollWheelZoom: false,
         zoomControl: false,
       }).setView(mapCenter, 14);
 
+      mapInstance = map;
       leafletMapRef.current = map;
 
       L.control
@@ -265,59 +277,21 @@ const MapSection = () => {
         attribution: "&copy; OpenStreetMap contributors",
       }).addTo(map);
 
-      const markerIcon = L.icon({
-        iconUrl: mapLogoUrl,
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -32],
-        className: s.mainMarker,
-      });
-
-      const getCustomIcon = (type: string) => {
-        return new L.DivIcon({
-          className: `${s.markerIcon}`,
-          iconUrl: `/icons/${type}.svg`,
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-          shadowUrl: undefined,
-          shadowSize: undefined,
-          shadowAnchor: undefined,
-
-          html: `
-      <div class=${s.iconContainer}>
-        <img src="/icons/white-${type}.svg" alt="${type}" />
-      </div>
-    `,
-        });
-      };
-
-      L.marker(mapCenter, { icon: markerIcon })
-        .addTo(map)
-        .bindPopup("Надрічний");
-
-      const markers = L.layerGroup().addTo(map);
-
-      if (markersData.length !== 0) {
-        markersData.forEach((item: Location) => {
-          const title = item.title;
-          const coordsArray =
-            Array.isArray(item.coordinates) && item.coordinates.length > 0
-              ? Array.isArray(item.coordinates[0])
-                ? (item.coordinates as number[][])
-                : [item.coordinates as number[]]
-              : [];
-
-          coordsArray.forEach((coords) => {
-            if (coords.length !== 0) {
-              L.marker([coords[0], coords[1]], {
-                icon: getCustomIcon(item.title),
-              })
-                .addTo(markers)
-                .bindPopup(checkLocationTitle(title));
-            }
-          });
-        });
+      if (cancelled) {
+        map.remove();
+        return;
       }
+
+      addInfrastructureMarkers({
+        L,
+        map,
+        markers: markersData,
+        mapLogoUrl,
+        markerClassName: s.markerIcon,
+        iconContainerClassName: s.iconContainer,
+        mainMarkerClassName: s.mainMarker,
+        center: mapCenter,
+      });
     };
 
     initMap();
@@ -328,35 +302,19 @@ const MapSection = () => {
         mapElementForCleanup.removeEventListener("mouseenter", enableWheelZoom);
         mapElementForCleanup.removeEventListener("mouseleave", disableWheelZoom);
       }
-      if (leafletMapRef.current) {
+      if (mapInstance) {
         try {
-          leafletMapRef.current.remove();
+          mapInstance.remove();
         } catch {
           // Container may already be detached during React teardown.
         }
-        leafletMapRef.current = null;
+        if (leafletMapRef.current === mapInstance) {
+          leafletMapRef.current = null;
+        }
+        mapInstance = null;
       }
     };
   }, [markersData, mapLogoUrl, mapCenter]);
-
-  const checkLocationTitle = (value: string) => {
-    if (value == "school") {
-      return "Школа";
-    }
-    if (value == "kindergarten") {
-      return "Садочок";
-    }
-    if (value == "hospital") {
-      return "Лікарня";
-    }
-    if (value == "shop") {
-      return "Магазин";
-    }
-    if (value == "mall") {
-      return "Торговий центр";
-    }
-    return "";
-  };
 
   return (
     <section className={s.section}>
@@ -366,20 +324,15 @@ const MapSection = () => {
           <div className={s.mapLegend}>
             <h3>Розміщення та інфраструктура</h3>
             <ul className={s.infoList}>
-              {markersData?.map((item: Location, idx: number) => {
-                if (item.coordinates.length !== 0) {
-                  return (
-                    <li key={idx} className={s.infoItem}>
-                      <div className={s.infoIconCont}>
-                        <div className={s.infoIcon}>{iconMap[item.title]}</div>
-                        <p>{checkLocationTitle(item.title)}</p>
-                      </div>
-
-                      <p>{item.coordinates.length}</p>
-                    </li>
-                  );
-                }
-              })}
+              {legendItems.map((item, idx) => (
+                <li key={`${item.title}-${idx}`} className={s.infoItem}>
+                  <div className={s.infoIconCont}>
+                    <div className={s.infoIcon}>{iconMap[item.title]}</div>
+                    <p>{getMapMarkerLabel(item.title)}</p>
+                  </div>
+                  <p>{item.coordinates.length}</p>
+                </li>
+              ))}
             </ul>
             <div className={s.googleMapsLinks}>
               <p>відкрити карту</p>

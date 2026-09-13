@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useParams } from "next/navigation";
 import s from "./Header.module.css";
 import Container from "../Container/Container";
 import Link from "next/link";
@@ -20,46 +19,34 @@ const navLinks = [
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isNotFoundPage, setIsNotFoundPage] = useState(false);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
+  const [logoReady, setLogoReady] = useState(false);
   const pathname = usePathname();
-  const params = useParams();
-  const isCatalogPage = pathname.includes("/catalog");
   const { openModal } = useModal();
   const { settings } = useThemeSettings();
   const phones = [settings.input_text_phone_1, settings.input_text_phone_2]
     .map((v) => (v || "").trim())
     .filter(Boolean);
+  const onDarkHero = Boolean(pathname?.match(/^\/blog\/.+/));
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+  const markLogoReady = useCallback(() => {
+    setLogoReady(true);
   }, []);
 
   useEffect(() => {
-    const syncNotFound = () => {
-      setIsNotFoundPage(document.body.classList.contains("page-404"));
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
     };
 
-    syncNotFound();
-    const observer = new MutationObserver(syncNotFound);
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    return () => observer.disconnect();
-  }, [pathname]);
+  useEffect(() => {
+    const timeout = window.setTimeout(markLogoReady, 8000);
+    return () => window.clearTimeout(timeout);
+  }, [markLogoReady]);
 
   const openMenu = () => {
     setMobileMenuIsOpen(true);
@@ -69,37 +56,12 @@ const Header = () => {
     setMobileMenuIsOpen(false);
   };
 
-  const isClientsPage =
-    pathname === "/clients" || pathname.startsWith("/clients/");
-
-  const isBlogPage =
-    pathname === "/blog" || pathname.startsWith("/blog/");
-
-  const isContactsPage = pathname === "/contacts";
-
-  const isLightPage =
-    isBlogPage ||
-    isContactsPage ||
-    pathname === "/privacy-policy";
-
-  const useForcedStaticLogo =
-    isClientsPage || isBlogPage || isContactsPage;
-
-  // 404: always use scrolled chrome (white bar + scrolled logo).
-  const treatAsScrolled =
-    isNotFoundPage || (isScrolled && !mobileMenuIsOpen);
-
-  // Light chrome → static (colored) logo; dark hero → scroll (white text) logo.
-  const useStaticLogo =
-    treatAsScrolled || (isLightPage && !mobileMenuIsOpen);
-
   return (
     <>
       <header
-        className={`${s.header}   
-        ${treatAsScrolled ? s.scrolled : ""}
-        ${params.slug && isCatalogPage ? `${s.dark} ${s.planningPage}` : ""}
-        `}
+        className={`${s.header} ${isScrolled ? s.scrolled : ""} ${
+          logoReady ? s.ready : s.pending
+        } ${onDarkHero && !isScrolled ? s.onDarkHero : ""}`}
       >
         <Container className={s.container}>
           <div className={s.topBlock}>
@@ -109,8 +71,7 @@ const Header = () => {
                 mode="header"
                 width={80}
                 height={80}
-                logoVariant={useForcedStaticLogo ? "static" : "auto"}
-                inverted={useStaticLogo}
+                onReady={markLogoReady}
               />
             </Link>
             <nav>
@@ -130,20 +91,13 @@ const Header = () => {
           </div>
           <div className={s.bottomBlock}>
             <div className={s.numberAccordion}>
-              {phoneIcon}{" "}
-              {phones.length > 0 ? (
-                <div className={s.number}>
-                  <span>Контакти:</span>
-                  {phones.map((phone, index) => {
-                      if (index >=1) return
-                      return (
-                          <a key={`${phone}-${index}`} href={`tel:${phone.replace(/\s/g, "")}`}>
-                              {phone}
-                          </a>
-                      )
-                  })}
-                </div>
-              ) : null}
+              {phoneIcon}
+              <div className={s.number}>
+                <span>Контакти:</span>
+                {phones[0] ? (
+                  <a href={`tel:${phones[0].replace(/\s/g, "")}`}>{phones[0]}</a>
+                ) : null}
+              </div>
             </div>
             <button
               type="button"
@@ -164,17 +118,12 @@ const Header = () => {
             </button>
             <button
               type="button"
-              className={`${s.menuBtn} ${
-                mobileMenuIsOpen ||
-                ((isLightPage || isClientsPage) && !treatAsScrolled)
-                  ? s.white
-                  : ""
-              }`}
+              className={s.menuBtn}
               aria-label={mobileMenuIsOpen ? "Закрити меню" : "Відкрити меню"}
               onClick={() => {
                 if (mobileMenuIsOpen) {
                   closeMenu();
-                } else if (!mobileMenuIsOpen) {
+                } else {
                   openMenu();
                 }
               }}

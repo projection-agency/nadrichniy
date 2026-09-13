@@ -17,16 +17,22 @@
 
     .advantagesCont {
       display: flex;
+      align-items: stretch;
       gap: 0.83vw;
 
       .leftBlock,
       .rightBlock {
         display: flex;
         flex-wrap: wrap;
+        align-content: flex-start;
         gap: 0.83vw;
+        flex: 1 1 0;
+        min-width: 0;
+        width: calc((100% - 0.83vw) / 2);
 
         .item {
           position: relative;
+          box-sizing: border-box;
           padding: 2.71vw;
           border-radius: 2.71vw;
           overflow: hidden;
@@ -42,6 +48,7 @@
           }
 
           svg {
+            display: block;
             width: 4.79vw;
             height: 4.79vw;
           }
@@ -49,6 +56,7 @@
           .icon {
             display: inline-flex;
             line-height: 0;
+            margin-bottom: 2.92vw;
           }
 
           .icon svg {
@@ -61,7 +69,7 @@
             font-size: 1.66vw;
             font-weight: 600;
             letter-spacing: -1.5px;
-            line-height: normal;
+            line-height: 1.15;
           }
 
           .advantageDescr {
@@ -146,23 +154,20 @@
       }
 
       .leftBlock {
-        .item:first-child {
-          width: calc(100% / 2 - 8px);
-
-          svg {
-            margin-bottom: 2.92vw;
-          }
-        }
-
+        .item:first-child,
         .item:nth-child(2) {
-          width: calc(100% / 2 - 8px);
-          svg {
+          width: calc((100% - 0.83vw) / 2);
+
+          > svg {
             margin-bottom: 2.92vw;
           }
         }
 
         .item:last-child {
-          svg {
+          width: 100%;
+
+          .icon,
+          > svg {
             position: relative;
             z-index: 1;
             margin-bottom: 4.32vw;
@@ -172,35 +177,28 @@
 
       .rightBlock {
         .item:first-child {
+          width: 100%;
+
           .advantage {
             position: relative;
             z-index: 1;
-            width: 29.83vw;
+            max-width: 29.83vw;
           }
 
-          svg {
+          .icon,
+          > svg {
             position: relative;
             z-index: 1;
             margin-bottom: 0.94vw;
           }
         }
 
-        .item:nth-child(2) {
-          width: calc(100% / 2 - 8px);
-
-          svg {
-            margin-bottom: 4.17vw;
-          }
-        }
-
+        .item:nth-child(2),
         .item:last-child {
-          width: calc(100% / 2 - 8px);
+          width: calc((100% - 0.83vw) / 2);
 
-          .advantage {
-            width: 1vw;
-          }
-
-          svg {
+          .icon,
+          > svg {
             margin-bottom: 4.17vw;
           }
         }

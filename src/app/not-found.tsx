@@ -2,16 +2,8 @@
 import s from "./not-found.module.css";
 import Container from "@/components/Container/Container";
 import Link from "next/link";
-import { useEffect } from "react";
 
 export default function Custom404() {
-  useEffect(() => {
-    document.body.classList.add("page-404");
-    return () => {
-      document.body.classList.remove("page-404");
-    };
-  }, []);
-
   return (
     <section className={s.heroSection}>
       <Container>

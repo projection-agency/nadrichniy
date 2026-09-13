@@ -1,4 +1,4 @@
-import { API_URL } from "@/constants";
+import { fetchThemeSettings } from "@/lib/themeSettings";
 
 export type BlogCategoryKey = "news" | "special" | "workSchedule";
 
@@ -17,11 +17,7 @@ export async function fetchBlogCategoryMap(): Promise<BlogCategoryMap> {
 
   pending = (async () => {
     try {
-      const res = await fetch(`${API_URL}/wp-json/wp/v2/theme_settings`, {
-        headers: { Accept: "application/json" },
-      });
-      if (!res.ok) return {};
-      const data = await res.json();
+      const data = await fetchThemeSettings();
       const map = (data?.blog_categories ?? {}) as BlogCategoryMap;
       cachedMap = map;
       return map;

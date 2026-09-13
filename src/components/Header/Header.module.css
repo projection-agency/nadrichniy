@@ -1,5 +1,4 @@
 .header {
-  /* 80px @ 1920 → 4.17vw logo + vertical padding */
   padding-top: 0.83vw;
   padding-bottom: 0.83vw;
   position: fixed;
@@ -7,8 +6,146 @@
   left: 0;
   z-index: 10000000;
   width: 100%;
-  transition: background-color 300ms ease-in-out;
-  background-color: transparent;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.75);
+  transform: translateY(-110%);
+  pointer-events: none;
+  transition: padding 300ms ease-in-out, background-color 300ms ease-in-out,
+    transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  &.pending {
+    transform: translateY(-110%);
+  }
+
+  &.ready {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  &.onDarkHero {
+    background-color: transparent;
+
+    .topBlock {
+      .logoLink img,
+      .logoLink span svg {
+        filter: brightness(0) invert(1);
+      }
+
+      .logoLink span svg {
+        fill: #ffffff;
+      }
+    }
+
+    .navList {
+      li a {
+        color: #ffffff;
+      }
+
+      li:hover,
+      li.active {
+        background-color: rgba(255, 255, 255, 0.18);
+      }
+    }
+
+    .bottomBlock {
+      .numberAccordion {
+        .number {
+          span {
+            color: rgba(255, 255, 255, 0.7);
+          }
+
+          a {
+            color: #ffffff;
+          }
+        }
+
+        svg {
+          fill: #ffffff;
+        }
+      }
+
+      .orderCallBtn {
+        background-color: #ffffff;
+        color: #191b1a;
+      }
+
+      .orderCallBtn:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #191b1a;
+      }
+    }
+
+    .mobMenuBlock {
+      .phoneBtn {
+        background-color: rgba(255, 255, 255, 0.2);
+
+        svg {
+          fill: #ffffff;
+        }
+      }
+
+      .menuBtn {
+        background-color: #ffffff;
+
+        svg path {
+          fill: #191b1a;
+        }
+      }
+    }
+  }
+
+  &.scrolled {
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: #ffffff;
+
+    @media screen and (min-width: 1025px) {
+      padding-top: 0.42vw;
+      padding-bottom: 0.42vw;
+      .topBlock {
+        gap: 2.805vw;
+
+        .logoLink {
+          height: 2.6vw;
+          max-height: 2.6vw;
+        }
+      }
+
+      .navList li a {
+        padding: 0.536vw 0.884vw;
+        font-size: 0.612vw;
+      }
+
+      .bottomBlock {
+        gap: 1.105vw;
+
+        .numberAccordion {
+          gap: 0.536vw;
+
+          .number {
+            span {
+              font-size: clamp(9px, 0.442vw, 11px);
+            }
+
+            a {
+              font-size: clamp(11px, 0.612vw, 14px);
+            }
+          }
+
+          svg {
+            width: clamp(15px, 1.0625vw, 20px);
+            height: clamp(15px, 1.0625vw, 20px);
+          }
+        }
+
+        .orderCallBtn {
+          padding: 0.765vw 1.615vw;
+          border-radius: 1.275vw;
+          font-size: 0.51vw;
+        }
+      }
+    }
+  }
 
   .container {
     display: flex;
@@ -20,37 +157,40 @@
     display: flex;
     align-items: center;
     gap: 3.3vw;
+    transition: gap 300ms ease-in-out;
 
     .logoLink {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      width: 4.17vw; /* 80px @ 1920 */
-      height: 4.17vw;
+      height: 3.4vw;
+      max-height: 3.4vw;
+      width: auto;
+      overflow: hidden;
       line-height: 0;
+      transition: height 300ms ease-in-out, max-height 300ms ease-in-out;
     }
 
-    .logoImg {
+    .logoImg,
+    .logoLink img,
+    .logoLink span,
+    .logoLink svg {
       display: block;
-      width: 100%;
       height: 100%;
+      width: auto;
+      max-height: 100%;
+      min-width: 0;
+      min-height: 0;
       object-fit: contain;
     }
 
     .logoLink span {
-      display: block;
-      width: 100%;
-      height: 100%;
       line-height: 0;
     }
 
     .logoLink span svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-      fill: var(--background-white);
-      transition: fill 500ms ease-in-out;
+      fill: #000000;
     }
   }
 
@@ -68,17 +208,18 @@
         padding: 0.63vw 1.04vw;
         border-radius: inherit;
         font-size: 0.72vw;
-        color: var(--text-light);
-        transition: color 500ms ease-in-out;
+        color: var(--text-gray-dark);
+        transition: color 500ms ease-in-out, padding 300ms ease-in-out,
+          font-size 300ms ease-in-out;
       }
     }
 
     li:hover {
-      background-color: var(--background-semi-transparent);
+      background-color: rgba(223, 223, 223, 1);
     }
 
     li.active {
-      background-color: var(--background-semi-transparent);
+      background-color: rgba(223, 223, 223, 1);
     }
   }
 
@@ -86,38 +227,42 @@
     display: flex;
     align-items: center;
     gap: 1.3vw;
+    transition: gap 300ms ease-in-out;
 
     .numberAccordion {
       display: flex;
       align-items: center;
-      gap: 0.8vw;
+      gap: 0.63vw;
 
       .number {
         display: flex;
         flex-direction: column;
-        font-weight: 700;
-        font-size: 0.6vw;
-        color: var(--text-light);
-        transition: color 500ms ease-in-out;
+        gap: 0.1vw;
+        line-height: 1.2;
 
         span {
-          font-size: 0.6vw;
-          font-weight: 500;
-          margin-bottom: 0.2vw;
+          font-size: clamp(11px, 0.52vw, 13px);
+          font-weight: 400;
+          color: var(--text-gray);
+          transition: font-size 300ms ease-in-out;
         }
 
         a {
-          color: inherit;
+          font-size: clamp(13px, 0.72vw, 16px);
+          font-weight: 700;
+          color: #191b1a;
           text-decoration: none;
+          white-space: nowrap;
+          transition: font-size 300ms ease-in-out;
         }
       }
 
       svg {
-        width: 1.25vw; /* 24px @ 1920 */
-        height: 1.25vw;
+        width: clamp(18px, 1.25vw, 24px);
+        height: clamp(18px, 1.25vw, 24px);
         flex-shrink: 0;
-        fill: var(--text-light);
-        transition: fill 500ms ease-in-out;
+        fill: #191b1a;
+        transition: width 300ms ease-in-out, height 300ms ease-in-out;
       }
     }
 
@@ -129,9 +274,11 @@
       font: inherit;
       font-size: 0.6vw;
       font-weight: 500;
-      transition: color 300ms ease-in-out, background-color 300ms ease-in-out;
-      color: var(--text-primary);
-      background-color: var(--background-light);
+      transition: color 300ms ease-in-out, background-color 300ms ease-in-out,
+        padding 300ms ease-in-out, font-size 300ms ease-in-out,
+        border-radius 300ms ease-in-out;
+      color: var(--text-light);
+      background-color: var(--brand-primary);
     }
 
     .orderCallBtn:hover {
@@ -145,57 +292,10 @@
   }
 }
 
-.header.scrolled,
-.header.dark {
-  background-color: #ffffff;
-  .topBlock {
-    .logoLink span svg {
-      fill: #000000;
-    }
-  }
-
-  .navList {
-    li {
-      a {
-        color: var(--text-gray-dark);
-      }
-    }
-
-    li:hover {
-      background-color: rgba(223, 223, 223, 1);
-    }
-
-    li.active {
-      background-color: rgba(223, 223, 223, 1);
-    }
-  }
-
-  .bottomBlock {
-    .numberAccordion {
-      .number {
-        color: var(--text-gray-dark);
-      }
-      svg {
-        stroke: var(--text-gray-dark);
-        fill: var(--text-gray-dark);
-      }
-    }
-
-    .orderCallBtn {
-      color: var(--text-light);
-      background-color: var(--brand-primary);
-    }
-  }
-}
-
-.header.planningPage {
-  background-color: transparent;
-}
-
 @media screen and (max-width: 1024px) {
   .header {
-    padding-top: 4.27vw;
-    padding-bottom: 4.27vw;
+    padding-top: 0;
+    padding-bottom: 0;
 
     .container {
       align-items: center;
@@ -203,8 +303,8 @@
 
     .topBlock {
       .logoLink {
-        width: 16vw; /* ~60px @ 375 */
         height: 16vw;
+        max-height: 16vw;
       }
 
       nav {
@@ -235,13 +335,12 @@
       }
 
       .phoneBtn {
-        background-color: #ffffff;
+        background-color: #f0f0f0;
 
         svg {
           width: 5.33vw;
           height: 5.33vw;
-          fill: rgba(25, 27, 26, 1);
-          transition: fill 30ms ease-in-out;
+          fill: #191b1a;
         }
       }
 
@@ -251,52 +350,19 @@
         svg {
           width: 6.4vw;
           height: 6.4vw;
-          fill: var(--text-light);
+          fill: #ffffff;
+          stroke: #ffffff;
           stroke-width: 0.53vw;
-          transition: fill 30ms ease-in-out, stroke 30ms ease-in-out;
-        }
-      }
-
-      .menuBtn.white {
-        background-color: #fff;
-
-        svg {
-          fill: var(--brand-primary);
-          stroke: var(--brand-primary);
-          stroke-width: 0.35vw;
         }
       }
     }
   }
+}
 
-  /* Scrolled mobile header: white bar, colored logo, gray phone, blue burger */
-  .header.scrolled {
-    .mobMenuBlock {
-      .phoneBtn {
-        background-color: #f0f0f0;
-
-        svg {
-          fill: #191b1a;
-        }
-      }
-
-      .menuBtn {
-        background-color: var(--brand-primary);
-
-        svg {
-          fill: #ffffff;
-          stroke: #ffffff;
-        }
-      }
-
-      .menuBtn.white {
-        background-color: var(--brand-primary);
-
-        svg {
-          fill: #ffffff;
-          stroke: #ffffff;
-        }
-      }
-    }
+@media (prefers-reduced-motion: reduce) {
+  .header {
+    transform: none;
+    pointer-events: auto;
+    transition: padding 300ms ease-in-out, background-color 300ms ease-in-out;
   }
 }

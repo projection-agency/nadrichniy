@@ -8,13 +8,24 @@ import QuestionsFormSection from "@/components/sections/QuestionsFormSection/Que
 import ContactsSection from "@/components/sections/ContactsSection/ContactsSection";
 import addHeadingsId from "@/utils/addHeadingsId";
 import s from "./page.module.css";
-import Image from "next/image";
 import Link from "next/link";
 import extractHeadingsWithIds from "@/utils/extractHeadingsWithIds";
 import extractImagesFromHtml from "@/utils/extractImagesFromHtml";
-import { API_URL } from "@/constants";
+import { unescapeWpHtml } from "@/utils/unescapeWpHtml";
+import { resolveMediaUrl } from "@/utils/resolveMediaUrl";
+import { fetchWpJson } from "@/lib/wpRest";
 import { getWindowWidth } from "@/utils/getWindowWidth";
 import { resolveCategoryLabel } from "@/lib/themeSettings";
+
+type PromoOffer = {
+  enabled?: boolean;
+  source?: string;
+  subtitle?: string;
+  button_text?: string;
+  title?: string;
+  image?: string;
+  link?: string;
+};
 
 type Post = {
   title: { rendered: string };
@@ -23,6 +34,9 @@ type Post = {
   reading_time: number;
   content: { rendered: string };
   date: string;
+  featured_media?: number;
+  featured_media_url?: string;
+  promo_offer?: PromoOffer | null;
 };
 
 const telegram = (
@@ -132,11 +146,12 @@ const BlogPostPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/wp-json/wp/v2/posts?slug=${params.slug}`
+        const data = await fetchWpJson<Post[]>(
+          `wp/v2/posts?slug=${encodeURIComponent(String(params.slug))}`
         );
-        const data = await response.json();
-        setPostData(data[0]);
+        if (data?.[0]) {
+          setPostData(data[0]);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -163,16 +178,46 @@ const BlogPostPage = () => {
   }, [postData]);
 
   if (!postData) {
-    return;
+    return (
+      <div className={s.page}>
+        <section className={s.heroSection}>
+          <Container>
+            <p className={s.loading}>Завантаження…</p>
+          </Container>
+        </section>
+      </div>
+    );
   }
   const date = new Date(postData.date);
   const formatted = date.toLocaleDateString("uk-UA");
 
-  const { images, htmlWithoutImages } = extractImagesFromHtml(
-    postData.content.rendered
-  );
+  const rawContent = unescapeWpHtml(postData.content.rendered || "");
+  const { images, htmlWithoutImages } = extractImagesFromHtml(rawContent);
   const contentWithHeadings = addHeadingsId(htmlWithoutImages);
   const headingsWithId = extractHeadingsWithIds(contentWithHeadings);
+
+  const featuredFromAdmin = (postData.featured_media_url || "").trim();
+  const featuredFromContent = images.find((item) => Boolean(item.src))?.src || "";
+  const heroImage = featuredFromAdmin
+    ? resolveMediaUrl(featuredFromAdmin, "")
+    : featuredFromContent
+      ? resolveMediaUrl(featuredFromContent, "")
+      : "";
+  const readingLabel =
+    postData.reading_time === 1
+      ? "1 хвилина читання"
+      : `${postData.reading_time} хвилин читання`;
+
+  const promo = postData.promo_offer;
+  const promoSubtitle = (promo?.subtitle || "").trim();
+  const promoTitle = (promo?.title || "").trim();
+  const promoImage = resolveMediaUrl(promo?.image || "", "");
+  const promoLink = (promo?.link || "").trim();
+  const promoButtonText = (promo?.button_text || "").trim() || "Дізнатись більше";
+  const hasPromo = Boolean(
+    promo?.enabled &&
+      (promoSubtitle || promoTitle || promoImage || promoLink)
+  );
 
   const breadcrumbData = [
     { label: "Блог", href: "/blog" },
@@ -183,72 +228,62 @@ const BlogPostPage = () => {
   return (
     <div className={s.page}>
       <section className={s.heroSection}>
-        {postData ? (
-          <Container>
-            <Breadcrumbs items={breadcrumbData} />
-            <h1>{postData.title.rendered}</h1>
-            <div className={s.subtitleBlock}>
-              <p
-                dangerouslySetInnerHTML={{ __html: postData.excerpt.rendered }}
-              ></p>
-              <div className={s.timeBlock}>
-                <p className={s.readingTime}>
-                  <span>{clock}</span> {postData.reading_time} хвилин читання
-                </p>
-                <p>{formatted}</p>
-              </div>
+        <Container>
+          <Breadcrumbs items={breadcrumbData} />
+          <h1>{postData.title.rendered}</h1>
+          <div className={s.subtitleBlock}>
+            <div
+              className={s.excerpt}
+              dangerouslySetInnerHTML={{
+                __html: unescapeWpHtml(postData.excerpt.rendered || ""),
+              }}
+            />
+            <div className={s.timeBlock}>
+              <p className={s.readingTime}>
+                <span>{clock}</span> {readingLabel}
+              </p>
+              <p>{formatted}</p>
             </div>
-          </Container>
-        ) : (
-          <p>please wait</p>
-        )}
+          </div>
+        </Container>
       </section>
       <section className={s.content}>
-        {postData ? (
-          <Container>
-            {images.length > 0 ? (
-              images
-                .filter((item) => Boolean(item.src))
-                .slice(0, 1)
-                .map((item, idx) => {
-                return (
-                  <Image
-                    className={s.image}
-                    key={idx}
-                    src={item.src}
-                    width={1920}
-                    height={720}
-                    alt={item.alt ? item.alt : "image"}
-                  />
-                );
-              })
-            ) : (
-              <p>please wait</p>
-            )}
-            <div className={s.articleCont}>
-              {getWindowWidth() <= 1024 && (
-                <div className={s.articleNavigationMobile}>
-                  <div>
-                    <p>зміст статті</p>
-                    {nav}
-                  </div>
-                  <nav>
-                    <ul>
-                      {headingsWithId.map((item, idx) => {
-                        return (
-                          <li key={idx}>
-                            <a href={`#${item.id}`}>{item.text}</a>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </nav>
+        <Container>
+          {heroImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className={s.featuredImage}
+              src={heroImage}
+              alt={postData.title.rendered}
+              width={1920}
+              height={720}
+            />
+          ) : null}
+          <div className={s.articleCont}>
+            {getWindowWidth() <= 1024 && headingsWithId.length > 0 ? (
+              <div className={s.articleNavigationMobile}>
+                <div>
+                  <p>зміст статті</p>
+                  {nav}
                 </div>
-              )}
-              <article
-                dangerouslySetInnerHTML={{ __html: contentWithHeadings }}
-              ></article>
-              <div className={s.navContainer}>
+                <nav>
+                  <ul>
+                    {headingsWithId.map((item, idx) => {
+                      return (
+                        <li key={idx}>
+                          <a href={`#${item.id}`}>{item.text}</a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+              </div>
+            ) : null}
+            <article
+              dangerouslySetInnerHTML={{ __html: contentWithHeadings }}
+            />
+            <aside className={s.navContainer}>
+              {headingsWithId.length > 0 ? (
                 <div className={s.articleNavigation}>
                   <div>
                     <p>зміст статті</p>
@@ -266,40 +301,48 @@ const BlogPostPage = () => {
                     </ul>
                   </nav>
                 </div>
-                <div className={s.socialsCont}>
-                  <p>поділитись</p>
-                  <ul>
-                    {socialLinks.map((item, idx) => {
-                      return (
-                        <li key={idx}>
-                          <Link href={"#"} />
+              ) : null}
+              <div className={s.socialsCont}>
+                <p>поділитись</p>
+                <ul>
+                  {socialLinks.map((item, idx) => {
+                    return (
+                      <li key={idx}>
+                        <Link href={"#"} aria-label={item.title}>
                           {iconMap[item.title]}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-                <div className={s.proposalCont}>
-                  <p className={s.title}>акційна пропозиція</p>
-                  <Image
-                    src={"/images/proposal.jpg"}
-                    width={432}
-                    height={352}
-                    alt="proposal"
-                  />
-                  <p className={s.proposal}>
-                    Заголовок (Чим особливий район біля річки)
-                  </p>
-                  <Link href={"#"}>Дізнатись більше {btnArrow}</Link>
-                </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-            </div>
-          </Container>
-        ) : (
-          <Container>
-            <p>please wait</p>
-          </Container>
-        )}
+              {hasPromo ? (
+                <div className={s.proposalCont}>
+                  {promoSubtitle ? (
+                    <p className={s.title}>{promoSubtitle}</p>
+                  ) : null}
+                  {promoImage ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={promoImage}
+                      width={432}
+                      height={352}
+                      alt={promoTitle || promoSubtitle || "proposal"}
+                    />
+                  ) : null}
+                  {promoTitle ? (
+                    <p className={s.proposal}>{promoTitle}</p>
+                  ) : null}
+                  {promoLink ? (
+                    <Link href={promoLink}>
+                      {promoButtonText} {btnArrow}
+                    </Link>
+                  ) : null}
+                </div>
+              ) : null}
+            </aside>
+          </div>
+        </Container>
       </section>
       <SimilarArticles category={postData.categories[0]} />
       <QuestionsFormSection />

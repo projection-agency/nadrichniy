@@ -12,7 +12,7 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
   const windowWidth = getWindowWidth();
   const layoutSrc = resolveMediaUrl(item.Flour_layout);
   const hasAdvantages =
-    item.Postponement == "1" || item.Isoselya == "1" || item.Discount == "1";
+    item.Postponement == "1" || item.Discount == "1";
 
   const advantagesList = hasAdvantages ? (
     <ul className={s.advantages}>
@@ -20,16 +20,6 @@ const ApartmentItem = ({ item }: { item: Apartment }) => {
         <li>
           <Image
             src={"/icons/advantage1.svg"}
-            width={38}
-            height={38}
-            alt="icon"
-          />
-        </li>
-      ) : null}
-      {item.Isoselya == "1" ? (
-        <li>
-          <Image
-            src={"/icons/advantage2.svg"}
             width={38}
             height={38}
             alt="icon"

@@ -173,21 +173,12 @@ const ChooseAnApartment = () => {
             </li>
             <li>
               <Image
-                src={"/icons/advantage2.svg"}
-                width={38}
-                height={38}
-                alt="icon"
-              />
-              єОселя
-            </li>
-            <li>
-              <Image
                 src={"/icons/advantage3.svg"}
                 width={38}
                 height={38}
                 alt="icon"
               />
-              Знижка при повній оплаті
+              При повному внеску
             </li>
           </ul>
           <button onClick={() => openModal("formA")}>Відкрити фільтр</button>

@@ -18,26 +18,24 @@ const HomeHero = () => {
 
   return (
     <section className={s.section}>
+      {isRemote ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className={s.background}
+          alt=""
+          src={heroImage}
+        />
+      ) : (
+        <Image
+          className={s.background}
+          alt=""
+          fill
+          sizes="100vw"
+          src={heroImage}
+          priority
+        />
+      )}
       <Container className={s.container}>
-        {isRemote ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            className={s.background}
-            alt=""
-            width={3840}
-            height={2160}
-            src={heroImage}
-          />
-        ) : (
-          <Image
-            className={s.background}
-            alt=""
-            width={3840}
-            height={2160}
-            src={heroImage}
-            priority
-          />
-        )}
         <h1>{title}</h1>
         <Link href={ctaLink} className={s.catalogPageLink}>
           {cta}

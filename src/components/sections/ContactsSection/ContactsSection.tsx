@@ -15,6 +15,11 @@ import {
   getMapsPlaceUrl,
 } from "@/lib/themeSettings";
 import { useModal } from "@/components/ModalContext";
+import { getMapMarkersFromSettings } from "@/lib/mapMarkers";
+import {
+  addInfrastructureMarkers,
+} from "@/lib/leafletInfrastructure";
+import mapSectionStyles from "@/components/sections/MapSection/MapSection.module.css";
 
 const ContactsSection = () => {
   const { openModal } = useModal();
@@ -26,67 +31,86 @@ const ContactsSection = () => {
   const mapsPlaceUrl = useMemo(() => getMapsPlaceUrl(settings), [settings]);
   const mapCenter = useMemo(() => getMapCenter(settings), [settings]);
   const mapLogoUrl = useMemo(() => getMapLogoUrl(settings), [settings]);
+  const markersData = useMemo(
+    () => getMapMarkersFromSettings(settings),
+    [settings]
+  );
   const windowWidth = getWindowWidth();
 
   useEffect(() => {
     if (!mapRef.current) return;
 
     let cancelled = false;
+    let mapInstance: LeafletMap | null = null;
 
     const initMap = async () => {
-      await import("leaflet/dist/leaflet.css");
       const leaflet = await import("leaflet");
       if (cancelled || !mapRef.current) return;
 
       const L = leaflet.default;
+      const container = mapRef.current;
 
-      if (leafletMapRef.current) {
+      // Re-init on the same DOM node leaves a stale leaflet_id.
+      if ((container as HTMLElement & { _leaflet_id?: number })._leaflet_id) {
         try {
-          leafletMapRef.current.remove();
+          leafletMapRef.current?.remove();
         } catch {
-          // Container may already be detached during React teardown.
+          // ignore
         }
         leafletMapRef.current = null;
+        delete (container as HTMLElement & { _leaflet_id?: number })._leaflet_id;
       }
 
       if (cancelled || !mapRef.current) return;
 
-      const map = L.map(mapRef.current, {
+      const map = L.map(container, {
         scrollWheelZoom: false,
+        zoomControl: false,
       }).setView(mapCenter, 14);
 
+      mapInstance = map;
       leafletMapRef.current = map;
+
+      L.control.zoom({ position: "topright" }).addTo(map);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
       }).addTo(map);
 
-      const markerIcon = L.icon({
-        iconUrl: mapLogoUrl,
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -32],
-        className: s.mainMarker,
-      });
+      if (cancelled) {
+        map.remove();
+        return;
+      }
 
-      L.marker(mapCenter, { icon: markerIcon })
-        .addTo(map)
-        .bindPopup("Надрічний");
+      addInfrastructureMarkers({
+        L,
+        map,
+        markers: markersData,
+        mapLogoUrl,
+        markerClassName: mapSectionStyles.markerIcon,
+        iconContainerClassName: mapSectionStyles.iconContainer,
+        mainMarkerClassName: s.mainMarker,
+        center: mapCenter,
+      });
     };
 
     initMap();
 
     return () => {
       cancelled = true;
-      if (leafletMapRef.current) {
+      if (mapInstance) {
         try {
-          leafletMapRef.current.remove();
+          mapInstance.remove();
         } catch {
           // Container may already be detached during React teardown.
         }
-        leafletMapRef.current = null;
+        if (leafletMapRef.current === mapInstance) {
+          leafletMapRef.current = null;
+        }
+        mapInstance = null;
       }
     };
-  }, [mapCenter, mapLogoUrl]);
+  }, [mapCenter, mapLogoUrl, markersData]);
 
   const getLinkUrl = (item: string) => {
     if (item.includes("+") || item.startsWith("0")) {

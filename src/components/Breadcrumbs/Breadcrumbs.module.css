@@ -1,12 +1,14 @@
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 0.42vw;
   margin-bottom: 1.67vw;
+  max-width: 100%;
 
   .breadcrumbItem {
     display: flex;
     gap: 0.42vw;
-
     font-size: 0.83vw;
     font-style: normal;
     font-weight: 600;
@@ -21,16 +23,31 @@
 
 @media screen and (max-width: 1024px) {
   .breadcrumbs {
+    flex-wrap: nowrap;
     gap: 1.07vw;
     margin-bottom: 6.4vw;
+    overflow: hidden;
+    white-space: nowrap;
 
     .breadcrumbItem {
+      flex-shrink: 0;
       gap: 1.07vw;
-
       font-size: 3.73vw;
       font-style: normal;
       font-weight: 500;
       line-height: 1.5;
+    }
+
+    .breadcrumbItem:last-child {
+      flex-shrink: 1;
+      min-width: 0;
+
+      > span,
+      > a {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 }

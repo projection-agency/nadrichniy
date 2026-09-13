@@ -122,16 +122,36 @@ function parseMaybeJson<T>(value: unknown, fallback: T): T {
   return value as T;
 }
 
+function themeSettingsFetchUrls(): string[] {
+  const base = API_URL.replace(/\/$/, "");
+  return [
+    `${base}/wp-json/wp/v2/theme_settings`,
+    `${base}/index.php?rest_route=/wp/v2/theme_settings`,
+  ];
+}
+
+async function fetchThemeSettingsResponse(): Promise<Response | null> {
+  for (const url of themeSettingsFetchUrls()) {
+    try {
+      const res = await fetch(url, {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      if (res.ok) return res;
+    } catch {
+      // try alternate REST URL (plain permalinks / nginx without wp-json rewrite)
+    }
+  }
+  return null;
+}
+
 export async function fetchThemeSettings(): Promise<ThemeSettings> {
   if (pending) return pending;
 
   pending = (async () => {
     try {
-      const res = await fetch(`${API_URL}/wp-json/wp/v2/theme_settings`, {
-        headers: { Accept: "application/json" },
-        cache: "no-store",
-      });
-      if (!res.ok) return {};
+      const res = await fetchThemeSettingsResponse();
+      if (!res) return {};
       return (await res.json()) as ThemeSettings;
     } catch {
       return {};
@@ -245,7 +265,7 @@ export function buildContactsList(settings: ThemeSettings) {
 
   return [
     {
-      title: "Відділ продажу",
+      title: "Інформаційний центр",
       icon: "/icons/footer-phone.svg",
       data: phones,
     },
@@ -274,11 +294,7 @@ export function getMapsPlaceUrl(settings: ThemeSettings): string {
 }
 
 export function getSiteLogoUrl(settings: ThemeSettings): string {
-  return (settings.site_logo || "").trim();
-}
-
-export function getSiteLogoScrollUrl(settings: ThemeSettings): string {
-  return (settings.site_logo_scroll || "").trim();
+  return (settings.site_logo || settings.site_logo_scroll || "").trim();
 }
 
 export function getSiteLogoSvg(settings: ThemeSettings): string {

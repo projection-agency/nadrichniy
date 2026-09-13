@@ -62,7 +62,7 @@ export default function SpecifyPopup({ onClose }: { onClose: () => void }) {
           {closeIco}
         </button>
 
-        <h3>Дізнатися ціну</h3>
+        <h3>Дізнатися вартість</h3>
         <p className={s.upperDescr}>
           Залиште свої контакти — ми зателефонуємо і підкажемо точну вартість.
         </p>

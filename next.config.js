@@ -1,10 +1,16 @@
 /** @type {import('next').NextConfig} */
+const apiHostname =
+  process.env.NEXT_PUBLIC_API_DOMAIN ||
+  (process.env.NEXT_PUBLIC_API_URL
+    ? new URL(process.env.NEXT_PUBLIC_API_URL).hostname
+    : "api.nadrichnyi.if.ua");
+
 const nextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.lcdoy.projection-learn.website",
+        hostname: apiHostname,
         pathname: "/wp-content/uploads/**",
       },
     ],

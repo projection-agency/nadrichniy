@@ -1,6 +1,13 @@
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ??
-  "https://api.lcdoy.projection-learn.website";
+const DEFAULT_API_URL = "https://api.nadrichnyi.if.ua";
+
+export const API_URL = (
+  process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_API_URL
+).replace(/\/$/, "");
+
+export const API_DOMAIN = (
+  process.env.NEXT_PUBLIC_API_DOMAIN ??
+  API_URL.replace(/^https?:\/\//, "").split("/")[0]
+);
 
 /**
  * Public Next.js site origin (canonical / OG / sitemap).

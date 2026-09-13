@@ -33,10 +33,10 @@ export default function NewsItem({ item }: { item: NewItem }) {
       <Link href={`/blog/${item.slug}`} className={s.link}>
         <p className={s.subtitle}>{categoryLabel}</p>
         <h3>{item.title.rendered}</h3>
-        <p
+        <div
           className={s.content}
           dangerouslySetInnerHTML={{ __html: item.excerpt.rendered }}
-        ></p>
+        />
         <div className={s.timeAndDate}>
           <p className={s.readingTime}>
             <span>

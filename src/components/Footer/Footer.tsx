@@ -62,6 +62,7 @@ const Footer = () => {
               <SiteLogo
                 mode="footer"
                 className={s.logoImg}
+                skeletonClassName={s.logoSkeleton}
                 width={100}
                 height={100}
               />

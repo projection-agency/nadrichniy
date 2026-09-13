@@ -9,6 +9,7 @@ import FormDateInput from "@/components/FormDateInput/FormDateInput";
 import TimePicker from "@/components/TimePicker/TimePicker";
 import { FormikValues } from "formik";
 import { formInstance } from "@/axios/axios";
+import { API_URL } from "@/constants";
 
 const validationSchema = object({
   name: string().required("Введіть Ім'я"),
@@ -46,7 +47,7 @@ const QuestionsFormSection = () => {
     console.log(values);
     try {
       const response = await formInstance.post(
-        "https://api.lcdoy.projection-learn.website/wp-json/applications/v1/call",
+        `${API_URL}/wp-json/applications/v1/call`,
         values
       );
       console.log(response);
